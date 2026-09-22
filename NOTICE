@@ -22,7 +22,7 @@ public/Stelios_Zacharioudakis_CV.pdf
 
 public/assets/mri-8x-reconstruction.png
   Figure from the score-based MRI reconstruction study. The website displays
-  the first example via CSS and links the unchanged full figure. Underlying
+  the unchanged full figure within the MRI case study. Underlying
   research/data rights and attributions remain with their respective holders;
   this repository does not grant additional rights to them. The figure is a
   retrospective research comparison, not evidence of clinical validation.

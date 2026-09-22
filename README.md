@@ -7,7 +7,7 @@ The site presents MRI reconstruction research, ongoing unpublished world-model r
 ## Architecture
 
 - Semantic HTML delivers the complete content before JavaScript runs.
-- CSS provides responsive layouts, light/dark appearance, print styles and reduced-motion support.
+- CSS provides responsive layouts, the navy/teal visual identity, print styles and reduced-motion support.
 - A small JavaScript enhancement controls the mobile menu; native `<details>` elements work without it.
 - Assets and fonts are local or system-provided. The portfolio has no analytics, tracking cookies, contact form or model requests.
 - There are no runtime or build dependencies to install. Build and test scripts use Node.js standard-library modules.
@@ -36,7 +36,7 @@ The CV and thesis are served as PDF documents. The sitemap lists the portfolio a
 ## Content and provenance
 
 - The BSc was completed in June 2026; the thesis manuscript is dated September 2026. These are separate dates.
-- The MRI figure comes from the accompanying reconstruction experiments. The hero shows its first example and links the unmodified full figure. Numerical results are reported in the thesis and concern retrospective research, not clinical validation.
+- The MRI figure comes from the accompanying reconstruction experiments. The case study includes the unmodified full figure. Numerical results are reported in the thesis and concern retrospective research, not clinical validation.
 - World-model research is explicitly ongoing and unpublished. The portfolio does not claim a peer-reviewed publication or general performance superiority.
 - The Paphos Medical Association role is current and pro bono. The public case study does not expose member data or private application source.
 - Demos link their own source repositories and describe their data and evaluation limits. Their backend implementations are maintained separately.

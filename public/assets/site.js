@@ -22,7 +22,7 @@ if (menu && navigation) {
       menu.focus();
     }
   });
-  matchMedia("(min-width: 761px)").addEventListener("change", () =>
+  matchMedia("(min-width: 901px)").addEventListener("change", () =>
     setMenu(false),
   );
 }

@@ -12,7 +12,7 @@ const script = await readFile(new URL("assets/site.js", publicRoot), "utf8");
 test("semantic static page delivers the author and every section before JavaScript", () => {
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.match(html, /<html lang="en">/);
-  assert.match(html, /<h1[^>]*>\s*Stelios\s*<br\s*\/?>\s*<span>Zacharioudakis/);
+  assert.match(html, /<h1[^>]*aria-label="Hi, I’m Stelios Zacharioudakis"/);
   for (const title of [
     "Selected work",
     "Live demos",
@@ -83,7 +83,8 @@ test("assets are self-hosted and interactions do not send analytics or contact d
   );
   assert.doesNotMatch(html, /<form\b/);
   assert.match(css, /prefers-reduced-motion:\s*reduce/);
-  assert.match(css, /prefers-color-scheme:\s*dark/);
+  assert.match(css, /--navy:\s*#0a192f/);
+  assert.match(css, /--accent:\s*#64ffda/);
   assert.match(html, /class="skip-link" href="#content"/);
 });
 
