@@ -22,6 +22,22 @@ const destination = new URL("dist/", root);
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
 await cp(new URL("public/", root), destination, { recursive: true });
+// Version asset URLs in the output only, so returning visitors cannot reuse a
+// previous release's stylesheet or script under the same unversioned URL.
+const indexFile = new URL("index.html", destination);
+let builtHtml = await readFile(indexFile, "utf8");
+for (const relative of ["assets/site.css", "assets/site.js"]) {
+  const version = createHash("sha256")
+    .update(await readFile(new URL(relative, destination)))
+    .digest("hex")
+    .slice(0, 12);
+  const sourceUrl = `"/${relative}"`;
+  if (!builtHtml.includes(sourceUrl))
+    throw new Error(`Missing asset link: ${relative}`);
+  builtHtml = builtHtml.replaceAll(sourceUrl, `"/${relative}?v=${version}"`);
+}
+await writeFile(indexFile, builtHtml);
+
 const manifest = {};
 async function walk(directory, prefix = "") {
   for (const entry of (await readdir(directory)).sort()) {

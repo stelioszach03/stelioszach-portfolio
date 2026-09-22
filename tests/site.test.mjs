@@ -2,6 +2,10 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFile, stat } from "node:fs/promises";
 import vm from "node:vm";
+import { createHash } from "node:crypto";
+import { execFile } from "node:child_process";
+import { promisify } from "node:util";
+import { fileURLToPath } from "node:url";
 const publicRoot = new URL("../public/", import.meta.url);
 const html = (
   await readFile(new URL("index.html", publicRoot), "utf8")
@@ -175,4 +179,35 @@ test("missing enhancement targets fail open and do not hide static navigation", 
     },
   });
   assert.equal(hidden, false);
+});
+
+test("build versions CSS/JS by content and hashes the final HTML without changing source", async () => {
+  const root = new URL("../", import.meta.url);
+  const original = await readFile(new URL("index.html", publicRoot), "utf8");
+  await promisify(execFile)(process.execPath, [
+    fileURLToPath(new URL("scripts/build.mjs", root)),
+  ]);
+  const built = await readFile(new URL("dist/index.html", root), "utf8");
+  for (const relative of ["assets/site.css", "assets/site.js"]) {
+    const bytes = await readFile(new URL(`dist/${relative}`, root));
+    const version = createHash("sha256")
+      .update(bytes)
+      .digest("hex")
+      .slice(0, 12);
+    assert.ok(
+      built.includes(`"/${relative}?v=${version}"`),
+      `${relative} requires content version`,
+    );
+  }
+  const manifest = JSON.parse(
+    await readFile(new URL("build-manifest.json", root), "utf8"),
+  );
+  assert.equal(
+    manifest["index.html"],
+    createHash("sha256").update(built).digest("hex"),
+  );
+  assert.equal(
+    await readFile(new URL("index.html", publicRoot), "utf8"),
+    original,
+  );
 });

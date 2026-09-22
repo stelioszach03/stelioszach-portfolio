@@ -25,7 +25,7 @@ python3 -m http.server 5183 --directory dist --bind 127.0.0.1
 
 Open `http://127.0.0.1:5183` after starting the preview. To preview edits before building, serve `public/` instead of `dist/`.
 
-The build checks that both linked documents are actual PDF files, copies `public/` into `dist/`, and writes a SHA-256 file manifest to `build-manifest.json`. Tests cover semantic content, local links/assets, scientific claim boundaries and mobile-menu behavior. CI checks syntax, runs the tests and builds the site; it does not deploy.
+The build checks that both linked documents are actual PDF files, copies `public/` into `dist/`, versions the built CSS/JS URLs with content hashes, and writes a SHA-256 file manifest to `build-manifest.json`. The manifest hashes the final HTML after URL rewriting; preview source paths stay unchanged. Tests cover semantic content, local links/assets, scientific claim boundaries and mobile-menu behavior. CI checks syntax, runs the tests and builds the site; it does not deploy.
 
 ## Hosting
 
