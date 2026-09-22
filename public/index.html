@@ -1,0 +1,631 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#f5f4ee" />
+    <title>
+      Stelios Zacharioudakis — Machine Learning Research &amp; Engineering
+    </title>
+    <meta
+      name="description"
+      content="Machine learning research and software engineering by Stelios Zacharioudakis. MRI reconstruction, unpublished world-model research, production systems, and runnable demos with explicit limitations."
+    />
+    <link rel="canonical" href="https://stelioszach.com/" />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:title"
+      content="Stelios Zacharioudakis — Research & Engineering"
+    />
+    <meta
+      property="og:description"
+      content="World models. Generative reconstruction. Reliable software."
+    />
+    <meta property="og:url" content="https://stelioszach.com/" />
+    <meta
+      property="og:image"
+      content="https://stelioszach.com/assets/mri-8x-reconstruction.png"
+    />
+    <meta
+      property="og:image:alt"
+      content="Retrospective MRI reconstruction examples from the BSc study"
+    />
+    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="stylesheet" href="/assets/site.css" />
+    <script src="/assets/site.js" defer></script>
+  </head>
+  <body>
+    <a class="skip-link" href="#content">Skip to content</a>
+    <header class="site-header">
+      <a
+        class="wordmark"
+        href="#intro"
+        aria-label="Stelios Zacharioudakis, home"
+        >SZ<span aria-hidden="true">.</span></a
+      >
+      <button
+        class="menu-toggle"
+        aria-expanded="false"
+        aria-controls="primary-navigation"
+        hidden
+      >
+        Menu
+        <svg aria-hidden="true" viewBox="0 0 24 24">
+          <path d="M4 8h16M4 16h16" />
+        </svg>
+      </button>
+      <nav id="primary-navigation" aria-label="Main navigation">
+        <a href="#work">Selected work</a><a href="#demos">Live demos</a
+        ><a href="#about">About</a><a href="#contact">Contact</a>
+        <a class="nav-cv" href="/Stelios_Zacharioudakis_CV.pdf"
+          >CV <span class="file-label">PDF</span
+          ><svg aria-hidden="true" viewBox="0 0 24 24">
+            <path d="M7 17 17 7M7 7h10v10" /></svg
+        ></a>
+      </nav>
+    </header>
+    <main id="content">
+      <section id="intro" class="hero" aria-labelledby="intro-title">
+        <div class="hero-inner">
+          <p class="eyebrow hero-enter">
+            Machine learning · Research &amp; engineering
+          </p>
+          <h1 id="intro-title" class="hero-enter">
+            Stelios <br /><span>Zacharioudakis</span
+            ><span class="name-dot">.</span>
+          </h1>
+          <div class="hero-bottom hero-enter">
+            <div class="hero-copy">
+              <p class="hero-statement">
+                World models. <br />Generative reconstruction. <br />Reliable
+                software.
+              </p>
+              <p>
+                I investigate how models learn, where their predictions fail,
+                and what it takes to turn an experiment into a working system.
+              </p>
+              <a class="button" href="#work"
+                >Explore selected work
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M12 4v16m-6-6 6 6 6-6" /></svg
+              ></a>
+            </div>
+            <figure class="hero-figure">
+              <a href="#mri" aria-label="Explore the MRI reconstruction study"
+                ><span class="figure-crop"
+                  ><img
+                    src="/assets/mri-8x-reconstruction.png"
+                    alt="One MRI example at 8× undersampling: zero-filled input, reconstructed image and reference."
+                    width="1028"
+                    height="1417"
+                    fetchpriority="high" /></span
+              ></a>
+              <figcaption>
+                <span>From the BSc study · MRI reconstruction</span
+                >Retrospective example, not clinical validation.
+                <a href="/assets/mri-8x-reconstruction.png"
+                  >Full figure <span aria-hidden="true">↗</span></a
+                >
+              </figcaption>
+            </figure>
+          </div>
+          <div class="hero-foot">
+            <span>Independent research &amp; software projects</span
+            ><a href="https://github.com/stelioszach03"
+              >Browse GitHub <span aria-hidden="true">↗</span></a
+            >
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="work"
+        class="section work-section"
+        aria-labelledby="work-title"
+      >
+        <div class="section-heading">
+          <p class="eyebrow">01 / Selected work</p>
+          <div>
+            <h2 id="work-title">
+              From a research question <br />to a working system.
+            </h2>
+            <p>
+              Three projects, with the contribution, evidence and limits kept
+              together.
+            </p>
+          </div>
+        </div>
+        <article id="mri" class="case-study">
+          <div class="case-index">
+            <span>01</span>
+            <p>BSc thesis <br />September 2026</p>
+          </div>
+          <div class="case-body">
+            <p class="eyebrow">Inverse problems · PyTorch · Medical imaging</p>
+            <h3>When a generative prior <br />helps—and when it fails.</h3>
+            <p class="case-lead">
+              Score-based reconstruction of undersampled MRI, from faithful
+              reproduction to uncertainty and domain shift.
+            </p>
+            <p>
+              I reimplemented a published MRI reconstruction solver in PyTorch,
+              converted its pretrained JAX/Flax checkpoint, and studied
+              reconstruction quality, sampling cost and the reliability of
+              uncertainty estimates.
+            </p>
+            <div class="evidence-line">
+              <strong>Within 0.15 dB</strong>
+              <p>
+                Thesis reports PSNR agreement with the reference on 256 BraTS
+                test slices, across 4×, 8× and 24× undersampling. <br /><a
+                  href="/documents/zacharioudakis-bsc-thesis-2026.pdf#page=33"
+                  >Thesis, Table 5.1 <span aria-hidden="true">↗</span></a
+                >
+              </p>
+            </div>
+            <details class="study-detail">
+              <summary>
+                Methods, findings &amp; limitations
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </summary>
+              <div class="detail-body">
+                <figure class="research-figure">
+                  <a
+                    href="/assets/mri-8x-reconstruction.png"
+                    aria-label="Open full MRI reconstruction figure"
+                    ><img
+                      src="/assets/mri-8x-reconstruction.png"
+                      alt="Four retrospective MRI examples at 8× undersampling, comparing zero-filled input, reconstructed images and ground truth."
+                      width="1028"
+                      height="1417"
+                      loading="lazy"
+                  /></a>
+                  <figcaption>
+                    Figure from the BSc study: retrospective MRI reconstruction
+                    at 8× undersampling. “Ours” identifies the implemented
+                    reconstruction pipeline, not a new model architecture. No
+                    clinical validation.
+                    <a href="/assets/mri-8x-reconstruction.png"
+                      >Open full figure</a
+                    >.
+                  </figcaption>
+                </figure>
+                <div>
+                  <h4>What I implemented</h4>
+                  <p>
+                    The inverse-problem pipeline, measurement operators,
+                    conditioning and data consistency, four solver modes,
+                    checkpoint conversion and experiment analysis. The original
+                    model architecture and pretrained prior are credited to the
+                    reference work.
+                  </p>
+                </div>
+                <div>
+                  <h4>What the experiments showed</h4>
+                  <p>
+                    Sample averaging improved reconstruction at additional
+                    sampling cost. Short adaptation was evaluated under domain
+                    shift, including a subject-disjoint OASIS-1 study.
+                    Uncertainty-guided acquisition did not outperform random
+                    selection under an equal extra-column budget.
+                  </p>
+                </div>
+                <div>
+                  <h4>What this does not establish</h4>
+                  <p>
+                    These are retrospective, single-coil reconstruction
+                    experiments on public imaging datasets. Uncertainty ranking
+                    is not a calibrated probability of failure. There was no
+                    prospective scanner study or clinical validation.
+                  </p>
+                </div>
+              </div>
+            </details>
+            <div class="case-links">
+              <a
+                class="text-link"
+                href="/documents/zacharioudakis-bsc-thesis-2026.pdf"
+                >Read the thesis <span class="file-label">PDF</span
+                ><span aria-hidden="true">↗</span></a
+              ><span class="quiet"
+                >BSc thesis · methods, experiments and limitations.</span
+              >
+            </div>
+          </div>
+        </article>
+
+        <span id="experience" class="anchor-alias" aria-hidden="true"></span>
+        <article id="asklepios" class="case-study">
+          <div class="case-index">
+            <span>02</span>
+            <p>Head Engineer <br />Pro bono · Current</p>
+          </div>
+          <div class="case-body">
+            <p class="eyebrow">Full-stack systems · Security · Operations</p>
+            <h3>A practical home for <br />a medical association.</h3>
+            <p class="case-lead">
+              AsklepiosMed brings the Paphos Medical Association’s member
+              services into one maintained platform.
+            </p>
+            <p>
+              As Head Engineer for the Paphos Medical Association, I developed
+              and donated a system spanning member onboarding, professional
+              events, learning records, confidential casework and the everyday
+              tools used by the secretariat.
+            </p>
+            <dl class="system-list">
+              <div>
+                <dt>Member experience</dt>
+                <dd>
+                  Profile review, passkeys, Wallet membership verification and
+                  personal communication preferences.
+                </dd>
+              </div>
+              <div>
+                <dt>Association operations</dt>
+                <dd>
+                  Content publishing, applications, meetings, attendance and
+                  scoped member casework.
+                </dd>
+              </div>
+              <div>
+                <dt>Production work</dt>
+                <dd>
+                  Role boundaries, encrypted sensitive records, backups, restore
+                  checks and service monitoring.
+                </dd>
+              </div>
+            </dl>
+            <details class="study-detail">
+              <summary>
+                Scope &amp; engineering boundaries
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </summary>
+              <div class="detail-body">
+                <div>
+                  <h4>Implementation</h4>
+                  <p>
+                    React, Express and PostgreSQL, with nginx and systemd on a
+                    VPS. The work includes application flows and the operational
+                    checks needed to maintain them.
+                  </p>
+                </div>
+                <div>
+                  <h4>Boundaries</h4>
+                  <p>
+                    A single-VPS deployment is not a highly available
+                    infrastructure. Encryption of selected records and backups
+                    is not whole-disk or end-to-end encryption. Membership
+                    verification does not certify a medical licence. Private
+                    source and member data are not published here.
+                  </p>
+                </div>
+              </div>
+            </details>
+            <div class="case-links">
+              <a class="text-link" href="https://asklepiosmed.org/"
+                >Visit the public website <span aria-hidden="true">↗</span></a
+              ><span class="quiet"
+                >Professional association software, not a clinical decision
+                system.</span
+              >
+            </div>
+          </div>
+        </article>
+
+        <span id="research" class="anchor-alias" aria-hidden="true"></span>
+        <article id="world-models" class="case-study research-study">
+          <div class="case-index">
+            <span>03</span>
+            <p>Current research <br />Ongoing · Unpublished</p>
+          </div>
+          <div class="case-body">
+            <p class="eyebrow">Model-based reinforcement learning</p>
+            <h3>Can a world model tell us <br />which policy to trust?</h3>
+            <p class="case-lead">
+              Investigating the gap between imagined performance and what a
+              policy actually does in an environment.
+            </p>
+            <p>
+              My current research studies imagination horizons, critic stability
+              and policy selection in latent world models. I develop PyTorch
+              experiments with controlled comparisons, paired evaluation
+              contexts and explicit reporting of failed hypotheses.
+            </p>
+            <ol class="research-process" aria-label="Research workflow">
+              <li><span>01</span>Learn latent dynamics</li>
+              <li><span>02</span>Train through imagination</li>
+              <li><span>03</span>Evaluate in a simulator</li>
+            </ol>
+            <details class="study-detail">
+              <summary>
+                Current questions &amp; evidence limits
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </summary>
+              <div class="detail-body">
+                <div>
+                  <h4>Questions</h4>
+                  <p>
+                    When do uncertainty signals help assign an imagination
+                    horizon? How do critic targets affect learning? Do internal
+                    model scores reliably rank policies by environment
+                    performance?
+                  </p>
+                </div>
+                <div>
+                  <h4>What I have learned so far</h4>
+                  <p>
+                    The outcomes are task-dependent. Recent controlled studies
+                    include failed controller and selection hypotheses, rather
+                    than evidence of a universal improvement. Source-level
+                    diagnostics help distinguish learning-objective problems
+                    from prediction error.
+                  </p>
+                </div>
+                <div>
+                  <h4>Status</h4>
+                  <p>
+                    This is ongoing, unpublished research. Experiments use
+                    simulated control environments, not physical robots. Limited
+                    task, world-model and training-seed coverage constrains
+                    generalization.
+                  </p>
+                </div>
+              </div>
+            </details>
+            <div class="case-links">
+              <a
+                class="text-link"
+                href="mailto:stelios@stelioszach.com?subject=World-model%20research"
+                >Discuss the research <span aria-hidden="true">↗</span></a
+              >
+            </div>
+          </div>
+        </article>
+      </section>
+
+      <section
+        id="demos"
+        class="section demo-section"
+        aria-labelledby="demos-title"
+      >
+        <div class="section-heading">
+          <p class="eyebrow">02 / Try the work</p>
+          <div>
+            <h2 id="demos-title">
+              Small interfaces. <br />Inspectable systems.
+            </h2>
+            <p>
+              Four live demos. Use the supplied examples; please don’t enter
+              personal or confidential data.
+            </p>
+          </div>
+        </div>
+        <div class="demo-list">
+          <article class="demo-row">
+            <span class="row-number" aria-hidden="true">01</span>
+            <div>
+              <h3>
+                <a href="/demos/smt-verify/"
+                  >Constraint verifier <span aria-hidden="true">↗</span></a
+                >
+              </h3>
+              <p>
+                Edit a candidate answer and let Z3 check whether it satisfies a
+                structured problem.
+              </p>
+              <p class="demo-limit">
+                Live solver verification. The paid language-model generation
+                step is not exposed.
+              </p>
+            </div>
+            <a
+              class="source-link"
+              href="https://github.com/stelioszach03/llm-smt-verifiable-reasoning"
+              aria-label="Source code for constraint verifier"
+              >Source
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m8 5-7 7 7 7m8-14 7 7-7 7" /></svg
+            ></a>
+          </article>
+          <article class="demo-row">
+            <span class="row-number" aria-hidden="true">02</span>
+            <div>
+              <h3>
+                <a href="/demos/deid/"
+                  >Text de-identification <span aria-hidden="true">↗</span></a
+                >
+              </h3>
+              <p>
+                Inspect how entity detection and explicit policies transform a
+                fabricated document.
+              </p>
+              <p class="demo-limit">
+                English-language demonstration. Detection can miss identifiers;
+                output requires review.
+              </p>
+            </div>
+            <a
+              class="source-link"
+              href="https://github.com/stelioszach03/deid-privacy-studio"
+              aria-label="Source code for text de-identification"
+              >Source
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m8 5-7 7 7 7m8-14 7 7-7 7" /></svg
+            ></a>
+          </article>
+          <article class="demo-row">
+            <span class="row-number" aria-hidden="true">03</span>
+            <div>
+              <h3>
+                <a href="/demos/fraud-graph/"
+                  >Transaction graph explorer
+                  <span aria-hidden="true">↗</span></a
+                >
+              </h3>
+              <p>
+                See how transaction history becomes features, scores and
+                explanations.
+              </p>
+              <p class="demo-limit">
+                Synthetic graph and rule-derived training labels. Not validated
+                fraud-detection performance.
+              </p>
+            </div>
+            <a
+              class="source-link"
+              href="https://github.com/stelioszach03/graph-fraud-command-center"
+              aria-label="Source code for transaction graph explorer"
+              >Source
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m8 5-7 7 7 7m8-14 7 7-7 7" /></svg
+            ></a>
+          </article>
+          <article class="demo-row">
+            <span class="row-number" aria-hidden="true">04</span>
+            <div>
+              <h3>
+                <a href="/demos/mta-scan/"
+                  >NYC subway anomaly monitor
+                  <span aria-hidden="true">↗</span></a
+                >
+              </h3>
+              <p>
+                Explore live public feed data alongside a separate, frozen
+                incident replay.
+              </p>
+              <p class="demo-limit">
+                A small replay sanity check, not a benchmark. Improved recall
+                comes with more false alarms.
+              </p>
+            </div>
+            <a
+              class="source-link"
+              href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection"
+              aria-label="Source code for NYC subway anomaly monitor"
+              >Source
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m8 5-7 7 7 7m8-14 7 7-7 7" /></svg
+            ></a>
+          </article>
+        </div>
+        <div id="projects" class="further-work">
+          <h3>More experiments, with their evidence.</h3>
+          <div>
+            <p>
+              <a href="https://github.com/stelioszach03/TrustQueryNet"
+                >TrustQueryNet <span aria-hidden="true">↗</span></a
+              ><span
+                >Noisy-label repair, matched-budget controls and external
+                domain-shift evaluation. Repair gains over random selection were
+                small.</span
+              >
+            </p>
+            <p>
+              <a
+                href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab"
+                >Speculative decoding lab <span aria-hidden="true">↗</span></a
+              ><span
+                >Recorded latency experiments on one A100. Benefits depend
+                on the runtime and workload; some tested configurations were
+                slower.</span
+              >
+            </p>
+          </div>
+        </div>
+      </section>
+
+      <section
+        id="about"
+        class="section about-section"
+        aria-labelledby="about-title"
+      >
+        <div class="section-heading">
+          <p class="eyebrow">03 / Background</p>
+          <div>
+            <h2 id="about-title">
+              Research curiosity. <br />Engineering follow-through.
+            </h2>
+          </div>
+        </div>
+        <div class="about-grid">
+          <div>
+            <p class="large-copy">
+              I enjoy the part where an elegant idea meets an inconvenient
+              result.
+            </p>
+            <p>
+              My work moves between machine learning experiments and software
+              that has to keep working after deployment. I care about clear
+              baselines, reproducible analysis and explaining what an experiment
+              does not show.
+            </p>
+            <p>
+              For research, that means preserving negative results. For
+              products, it means paying attention to access boundaries, recovery
+              paths and the person using the interface.
+            </p>
+          </div>
+          <div class="background-details">
+            <h3>Education</h3>
+            <p>
+              <strong>BSc, Computer Science</strong> <br />National and
+              Kapodistrian University of Athens <br /><span class="quiet"
+                >Completed June 2026</span
+              >
+            </p>
+            <h3>Working toolkit</h3>
+            <p>
+              Python, PyTorch, scientific evaluation and model-based
+              reinforcement learning. React, Node.js, PostgreSQL and Linux for
+              application development and operations.
+            </p>
+            <a class="text-link" href="/Stelios_Zacharioudakis_CV.pdf"
+              >Download my CV <span class="file-label">PDF</span
+              ><span aria-hidden="true">↗</span></a
+            >
+          </div>
+        </div>
+      </section>
+      <section
+        id="contact"
+        class="contact-section"
+        aria-labelledby="contact-title"
+      >
+        <div class="contact-inner">
+          <p class="eyebrow">04 / Get in touch</p>
+          <h2 id="contact-title">Have a question <br />worth investigating?</h2>
+          <p>
+            I’m happy to discuss research, engineering work and thoughtful
+            collaborations.
+          </p>
+          <a class="contact-email" href="mailto:stelios@stelioszach.com"
+            >stelios@stelioszach.com
+            <svg aria-hidden="true" viewBox="0 0 24 24">
+              <path d="M5 19 19 5M5 5h14v14" /></svg
+          ></a>
+          <div class="contact-links">
+            <a href="https://github.com/stelioszach03"
+              >GitHub <span aria-hidden="true">↗</span></a
+            ><a href="https://www.linkedin.com/in/stelios-zach"
+              >LinkedIn <span aria-hidden="true">↗</span></a
+            ><a href="/Stelios_Zacharioudakis_CV.pdf"
+              >CV <span class="file-label">PDF</span></a
+            >
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <p>© 2026 Stelios Zacharioudakis</p>
+      <p>No analytics or tracking cookies on this portfolio.</p>
+      <a href="#intro">Back to top <span aria-hidden="true">↑</span></a>
+    </footer>
+  </body>
+</html>

@@ -1,0 +1,32 @@
+Code and content licensing
+==========================
+
+The MIT grant in LICENSE covers only original website source code, including
+the layout, styles, scripts, tests and build configuration. It does not
+relicense research or personal documents, imagery, written research findings,
+third-party material or the projects linked from this website.
+
+Excluded documents and imagery
+------------------------------
+
+public/documents/zacharioudakis-bsc-thesis-2026.pdf
+  BSc thesis by Stylianos-Georgios E. Zacharioudakis, National and Kapodistrian
+  University of Athens, September 2026. Public copy with the student registry
+  identifier redacted. Academic content unchanged. Copyright and third-party
+  attributions remain as stated in the thesis; no additional licence is granted
+  by this repository's MIT file.
+
+public/Stelios_Zacharioudakis_CV.pdf
+  Curriculum vitae of Stelios Zacharioudakis. Personal document; excluded from
+  the MIT grant.
+
+public/assets/mri-8x-reconstruction.png
+  Figure from the score-based MRI reconstruction study. The website displays
+  the first example via CSS and links the unchanged full figure. Underlying
+  research/data rights and attributions remain with their respective holders;
+  this repository does not grant additional rights to them. The figure is a
+  retrospective research comparison, not evidence of clinical validation.
+
+Linked repositories and services retain their own licences. Refer to their
+source repositories and the thesis references for upstream methods and data
+attribution. No new licence to those materials is implied by linking them.
