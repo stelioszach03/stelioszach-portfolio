@@ -4,6 +4,18 @@ Source for [stelioszach.com](https://stelioszach.com): a static portfolio of mac
 
 The site presents MRI reconstruction research, ongoing unpublished world-model research, a donated medical-association platform, and four separately hosted interactive demos. Each project keeps its methods, evidence and limitations together.
 
+## Explore the projects
+
+| Project                    | Live interface                                          | Source or case study                                          |
+| -------------------------- | ------------------------------------------------------- | ------------------------------------------------------------- |
+| Constraint verifier        | [Open demo](https://stelioszach.com/demos/smt-verify/)  | [Adapter and UI](demo-services/smt-verify)                    |
+| Text de-identification     | [Open demo](https://stelioszach.com/demos/deid/)        | [Adapter and UI](demo-services/deid)                          |
+| Transaction graph explorer | [Open demo](https://stelioszach.com/demos/fraud-graph/) | [Adapter and UI](demo-services/fraud-graph)                   |
+| NYC subway monitor         | [Open demo](https://stelioszach.com/demos/mta-scan/)    | [Adapter and UI](demo-services/mta-scan)                      |
+| AsklepiosMed               | [Public association website](https://asklepiosmed.org/) | [Public engineering case study](case-studies/asklepiosmed.md) |
+
+The four demos expose bounded adapters, not every capability of their upstream research/library repositories. Use synthetic inputs. AsklepiosMed application source and member records remain private.
+
 ## Architecture
 
 - Semantic HTML delivers the complete content before JavaScript runs.
