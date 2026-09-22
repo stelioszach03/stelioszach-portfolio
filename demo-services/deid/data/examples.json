@@ -1,0 +1,23 @@
+{
+  "_note": "Every string below is invented for this demo. No real person, patient, record, account or institution is described. Identifiers use reserved test ranges (555 phone prefix, example.com, 4111-test PAN).",
+  "examples": [
+    {
+      "id": "clinical",
+      "title": "Clinical note",
+      "blurb": "Names, an MRN, a date, contact details and an address in one paragraph of free text.",
+      "text": "Discharge summary — Patient Maria Alvarez, MRN: BWH-4482911, admitted to Mercy General Hospital in Denver on 03/14/2024 and discharged 03/19/2024.\nReferring provider Dr. Peter Nakamura, NPI 1730495028. Contact the patient at maria.alvarez@example.com or (555) 234-9981.\nSSN on file 412-88-7735. Mailing address 218 Larkspur Lane, Denver, 80218.\nFollow-up scheduled with the cardiology clinic; records mirrored to https://portal.example.com/pt/4482911."
+    },
+    {
+      "id": "billing",
+      "title": "Billing / support ticket",
+      "blurb": "Financial identifiers: card number, routing number, IBAN, plus a Canadian postal code.",
+      "text": "Ticket #88213 opened by Jonas Whitfield, jonas.whitfield@example.com, phone +1 604 555 0142.\nCard on file 4111 1111 1111 1111 was declined; customer asks to switch to ACH.\nABA routing 021000021. European subsidiary settles via IBAN DE89370400440532013000.\nBilling address is in Vancouver, postal code V6B 2W9. Ticket raised 2024-11-02 from 203.0.113.44."
+    },
+    {
+      "id": "referral",
+      "title": "Referral letter",
+      "blurb": "Mostly prose. Shows the statistical NER layer carrying the load where no regex fires.",
+      "text": "Dear Dr. Amelia Rourke,\n\nThank you for seeing Thomas Beaumont, whom I referred from the Riverside Family Practice in Portland last month. He was previously under the care of St. Anne's Medical Centre in Halifax.\n\nHis employer, Northgate Logistics, has requested a fitness-for-duty note. Please copy me at c.mendez@example.com when the assessment is complete.\n\nKind regards,\nDr. Carla Mendez"
+    }
+  ]
+}

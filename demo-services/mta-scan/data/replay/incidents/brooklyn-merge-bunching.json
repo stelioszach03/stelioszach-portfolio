@@ -1,0 +1,1076 @@
+{
+  "incident_id": "brooklyn-merge-bunching",
+  "incident_title": "Brooklyn merge conflict triggers bunching at Bergen St",
+  "what_happened": "Representative replay scenario where merge pressure causes one long gap followed by bunching and stale updates.",
+  "window_start": "2026-02-05T12:30:00+00:00",
+  "window_end": "2026-02-05T13:15:00+00:00",
+  "peak_score": 1.0,
+  "peak_label": 1,
+  "detection_delay_min": -5.0,
+  "top_reasons": [
+    "service alert context",
+    "station baseline deviation",
+    "rolling z-score jump"
+  ],
+  "top_routes": [
+    {
+      "route_id": "F",
+      "peak_score": 1.0
+    }
+  ],
+  "top_stops": [
+    {
+      "stop_id": "F20N",
+      "stop_name": "Bergen St",
+      "route_id": "F",
+      "online_model_score": 1.0,
+      "headway_sec": 690.0,
+      "predicted_headway_sec": 736.1006819421326
+    },
+    {
+      "stop_id": "F20N",
+      "stop_name": "Bergen St",
+      "route_id": "F",
+      "online_model_score": 1.0,
+      "headway_sec": 760.0,
+      "predicted_headway_sec": 525.3277259793383
+    },
+    {
+      "stop_id": "F20N",
+      "stop_name": "Bergen St",
+      "route_id": "F",
+      "online_model_score": 0.8396969696969697,
+      "headway_sec": 430.0,
+      "predicted_headway_sec": 370.9164562106169
+    },
+    {
+      "stop_id": "F20N",
+      "stop_name": "Bergen St",
+      "route_id": "F",
+      "online_model_score": 0.7652648027233662,
+      "headway_sec": 640.0,
+      "predicted_headway_sec": 502.5548670706173
+    },
+    {
+      "stop_id": "F20N",
+      "stop_name": "Bergen St",
+      "route_id": "F",
+      "online_model_score": 0.674978354978355,
+      "headway_sec": 390.0,
+      "predicted_headway_sec": 332.04422407290394
+    }
+  ],
+  "points": [
+    {
+      "index": 18,
+      "observed_ts": "2026-02-05T12:30:00+00:00",
+      "model_peak_score": 0.2156960888954156,
+      "baseline_zscore_peak": 0.0,
+      "baseline_ewma_peak": 0.24934735733297023,
+      "baseline_threshold_peak": 0.0,
+      "label": 0,
+      "incident_id": "signal-delay-midtown",
+      "incident_title": "Signal delay cascades into northbound Midtown headway gap",
+      "top_routes": [
+        {
+          "route_id": "A",
+          "peak_score": 0.2156960888954156
+        },
+        {
+          "route_id": "F",
+          "peak_score": 0.19749031073638407
+        },
+        {
+          "route_id": "7",
+          "peak_score": 0.17987936750554295
+        }
+      ],
+      "top_stops": [
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 231.8,
+          "predicted_headway_sec": 77.15593840898563,
+          "online_model_score": 0.2156960888954156,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 340.0,
+          "predicted_headway_sec": 221.73491871153584,
+          "online_model_score": 0.19749031073638407,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "service alert context",
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 243.6,
+          "predicted_headway_sec": 98.26969110824504,
+          "online_model_score": 0.17987936750554295,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A15N",
+          "stop_name": "125 St",
+          "headway_sec": 280.0,
+          "predicted_headway_sec": 439.68881110281484,
+          "online_model_score": 0.16794044681069115,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.24934735733297023,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump",
+            "service alert context",
+            "headway jump vs previous train"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 267.2,
+          "predicted_headway_sec": 132.96663119521764,
+          "online_model_score": 0.13973897586694473,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump",
+            "station baseline deviation"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 19,
+      "observed_ts": "2026-02-05T12:35:00+00:00",
+      "model_peak_score": 0.674978354978355,
+      "baseline_zscore_peak": 0.26388888888888906,
+      "baseline_ewma_peak": 0.15913077706504755,
+      "baseline_threshold_peak": 0.0,
+      "label": 0,
+      "incident_id": "brooklyn-merge-bunching",
+      "incident_title": "Brooklyn merge conflict triggers bunching at Bergen St",
+      "top_routes": [
+        {
+          "route_id": "F",
+          "peak_score": 0.674978354978355
+        },
+        {
+          "route_id": "7",
+          "peak_score": 0.16570418470418463
+        },
+        {
+          "route_id": "A",
+          "peak_score": 0.12468890879235717
+        }
+      ],
+      "top_stops": [
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 390.0,
+          "predicted_headway_sec": 332.04422407290394,
+          "online_model_score": 0.674978354978355,
+          "baseline_zscore": 0.26388888888888906,
+          "baseline_ewma": 0.037536571712175996,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump",
+            "service alert context"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 298.8,
+          "predicted_headway_sec": 210.19530186072313,
+          "online_model_score": 0.1908644427467958,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 275.2,
+          "predicted_headway_sec": 174.28226376868642,
+          "online_model_score": 0.16570418470418463,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 251.6,
+          "predicted_headway_sec": 143.70956043210776,
+          "online_model_score": 0.14009235209235202,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 239.8,
+          "predicted_headway_sec": 119.59738919448803,
+          "online_model_score": 0.12468890879235717,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 20,
+      "observed_ts": "2026-02-05T12:40:00+00:00",
+      "model_peak_score": 0.8396969696969697,
+      "baseline_zscore_peak": 0.536111111111111,
+      "baseline_ewma_peak": 0.24291729013143257,
+      "baseline_threshold_peak": 0.0,
+      "label": 1,
+      "incident_id": "brooklyn-merge-bunching",
+      "incident_title": "Brooklyn merge conflict triggers bunching at Bergen St",
+      "top_routes": [
+        {
+          "route_id": "F",
+          "peak_score": 0.8396969696969697
+        },
+        {
+          "route_id": "7",
+          "peak_score": 0.21302695154308054
+        },
+        {
+          "route_id": "A",
+          "peak_score": 0.1813383838383839
+        }
+      ],
+      "top_stops": [
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 430.0,
+          "predicted_headway_sec": 370.9164562106169,
+          "online_model_score": 0.8396969696969697,
+          "baseline_zscore": 0.536111111111111,
+          "baseline_ewma": 0.24291729013143257,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump",
+            "service alert context"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 306.8,
+          "predicted_headway_sec": 225.31881797220706,
+          "online_model_score": 0.2367705627705629,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 283.2,
+          "predicted_headway_sec": 194.82909061280165,
+          "online_model_score": 0.21302695154308054,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 259.6,
+          "predicted_headway_sec": 155.5874888995253,
+          "online_model_score": 0.19045115753811417,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 247.8,
+          "predicted_headway_sec": 126.25925140195542,
+          "online_model_score": 0.1813383838383839,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 21,
+      "observed_ts": "2026-02-05T12:45:00+00:00",
+      "model_peak_score": 1.0,
+      "baseline_zscore_peak": 1.0,
+      "baseline_ewma_peak": 1.0,
+      "baseline_threshold_peak": 0.2892416225749559,
+      "label": 1,
+      "incident_id": "brooklyn-merge-bunching",
+      "incident_title": "Brooklyn merge conflict triggers bunching at Bergen St",
+      "top_routes": [
+        {
+          "route_id": "F",
+          "peak_score": 1.0
+        },
+        {
+          "route_id": "7",
+          "peak_score": 0.2621760461760461
+        },
+        {
+          "route_id": "A",
+          "peak_score": 0.23855699855699858
+        }
+      ],
+      "top_stops": [
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 690.0,
+          "predicted_headway_sec": 736.1006819421326,
+          "online_model_score": 1.0,
+          "baseline_zscore": 1.0,
+          "baseline_ewma": 1.0,
+          "baseline_threshold": 0.2892416225749559,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump",
+            "headway jump vs previous train"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 314.8,
+          "predicted_headway_sec": 254.9055178379609,
+          "online_model_score": 0.2884757307589167,
+          "baseline_zscore": 0.03333333333333333,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 291.2,
+          "predicted_headway_sec": 210.59068619934652,
+          "online_model_score": 0.2621760461760461,
+          "baseline_zscore": 0.03333333333333333,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 267.6,
+          "predicted_headway_sec": 169.60579344965743,
+          "online_model_score": 0.2385569985569989,
+          "baseline_zscore": 0.033333333333333805,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 255.8,
+          "predicted_headway_sec": 136.25264668912604,
+          "online_model_score": 0.23855699855699858,
+          "baseline_zscore": 0.03333333333333357,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 22,
+      "observed_ts": "2026-02-05T12:50:00+00:00",
+      "model_peak_score": 1.0,
+      "baseline_zscore_peak": 0.6324111762696293,
+      "baseline_ewma_peak": 0.43287381177409684,
+      "baseline_threshold_peak": 0.4538506760728983,
+      "label": 1,
+      "incident_id": "brooklyn-merge-bunching",
+      "incident_title": "Brooklyn merge conflict triggers bunching at Bergen St",
+      "top_routes": [
+        {
+          "route_id": "F",
+          "peak_score": 1.0
+        },
+        {
+          "route_id": "7",
+          "peak_score": 0.3365772005772005
+        },
+        {
+          "route_id": "A",
+          "peak_score": 0.312958152958153
+        }
+      ],
+      "top_stops": [
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 760.0,
+          "predicted_headway_sec": 525.3277259793383,
+          "online_model_score": 1.0,
+          "baseline_zscore": 0.6324111762696293,
+          "baseline_ewma": 0.43287381177409684,
+          "baseline_threshold": 0.4538506760728983,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump",
+            "service alert context"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 322.8,
+          "predicted_headway_sec": 263.6803873267972,
+          "online_model_score": 0.3631486291486292,
+          "baseline_zscore": 0.1,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 299.2,
+          "predicted_headway_sec": 223.80488228017845,
+          "online_model_score": 0.3365772005772005,
+          "baseline_zscore": 0.1,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 275.6,
+          "predicted_headway_sec": 181.6127524564918,
+          "online_model_score": 0.31295815295815316,
+          "baseline_zscore": 0.10000000000000048,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 263.8,
+          "predicted_headway_sec": 147.39467919003334,
+          "online_model_score": 0.312958152958153,
+          "baseline_zscore": 0.10000000000000024,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 23,
+      "observed_ts": "2026-02-05T12:55:00+00:00",
+      "model_peak_score": 0.7652648027233662,
+      "baseline_zscore_peak": 0.19773553618040685,
+      "baseline_ewma_peak": 0.03509372602854717,
+      "baseline_threshold_peak": 0.0,
+      "label": 1,
+      "incident_id": "brooklyn-merge-bunching",
+      "incident_title": "Brooklyn merge conflict triggers bunching at Bergen St",
+      "top_routes": [
+        {
+          "route_id": "F",
+          "peak_score": 0.7652648027233662
+        },
+        {
+          "route_id": "7",
+          "peak_score": 0.41097835497835494
+        },
+        {
+          "route_id": "A",
+          "peak_score": 0.38735930735930735
+        }
+      ],
+      "top_stops": [
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 640.0,
+          "predicted_headway_sec": 502.5548670706173,
+          "online_model_score": 0.7652648027233662,
+          "baseline_zscore": 0.19773553618040685,
+          "baseline_ewma": 0.03509372602854717,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "service alert context",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 330.8,
+          "predicted_headway_sec": 273.19921084267037,
+          "online_model_score": 0.43754978354978363,
+          "baseline_zscore": 0.16666666666666666,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 307.2,
+          "predicted_headway_sec": 234.891600298968,
+          "online_model_score": 0.41097835497835494,
+          "baseline_zscore": 0.16666666666666666,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 283.6,
+          "predicted_headway_sec": 183.84744309801533,
+          "online_model_score": 0.3873593073593076,
+          "baseline_zscore": 0.16666666666666713,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 271.8,
+          "predicted_headway_sec": 146.04990116398346,
+          "online_model_score": 0.38735930735930735,
+          "baseline_zscore": 0.1666666666666669,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 24,
+      "observed_ts": "2026-02-05T13:00:00+00:00",
+      "model_peak_score": 0.6681469749762433,
+      "baseline_zscore_peak": 0.3033333333333336,
+      "baseline_ewma_peak": 0.20062945002177973,
+      "baseline_threshold_peak": 0.0,
+      "label": 1,
+      "incident_id": "queens-rain-cascade",
+      "incident_title": "Rain-impacted dwell times cascade on the Queens corridor",
+      "top_routes": [
+        {
+          "route_id": "F",
+          "peak_score": 0.6681469749762433
+        },
+        {
+          "route_id": "7",
+          "peak_score": 0.5545266955266953
+        },
+        {
+          "route_id": "A",
+          "peak_score": 0.03609785919392949
+        }
+      ],
+      "top_stops": [
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 470.0,
+          "predicted_headway_sec": 553.7534867277172,
+          "online_model_score": 0.6681469749762433,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.20062945002177973,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "service alert context",
+            "headway jump vs previous train"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 300.0,
+          "predicted_headway_sec": 318.39369247074205,
+          "online_model_score": 0.5545266955266953,
+          "baseline_zscore": 0.3033333333333336,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "weather pressure",
+            "station baseline deviation",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A15N",
+          "stop_name": "125 St",
+          "headway_sec": 267.2,
+          "predicted_headway_sec": 345.0464997769061,
+          "online_model_score": 0.03609785919392949,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0511662263716068,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump",
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 231.8,
+          "predicted_headway_sec": 178.28144467652686,
+          "online_model_score": 0.034007024828259354,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 290.8,
+          "predicted_headway_sec": 317.90604491359403,
+          "online_model_score": 0.025095238095238347,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 25,
+      "observed_ts": "2026-02-05T13:05:00+00:00",
+      "model_peak_score": 0.8595151515151513,
+      "baseline_zscore_peak": 0.475,
+      "baseline_ewma_peak": 0.38520162989697426,
+      "baseline_threshold_peak": 0.0,
+      "label": 0,
+      "incident_id": "queens-rain-cascade",
+      "incident_title": "Rain-impacted dwell times cascade on the Queens corridor",
+      "top_routes": [
+        {
+          "route_id": "7",
+          "peak_score": 0.8595151515151513
+        },
+        {
+          "route_id": "F",
+          "peak_score": 0.05904761904761905
+        },
+        {
+          "route_id": "A",
+          "peak_score": 0.05092857142857147
+        }
+      ],
+      "top_stops": [
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 330.0,
+          "predicted_headway_sec": 173.36653352656057,
+          "online_model_score": 0.8595151515151513,
+          "baseline_zscore": 0.475,
+          "baseline_ewma": 0.13273445911385587,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "weather pressure",
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 275.2,
+          "predicted_headway_sec": 272.8961814376822,
+          "online_model_score": 0.05904761904761905,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 298.8,
+          "predicted_headway_sec": 301.502343079674,
+          "online_model_score": 0.05904761904761905,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 239.8,
+          "predicted_headway_sec": 188.48321569668587,
+          "online_model_score": 0.05092857142857147,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 340.0,
+          "predicted_headway_sec": 415.45975910307317,
+          "online_model_score": 0.025307527683101246,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.38520162989697426,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "rolling z-score jump",
+            "service alert context",
+            "headway jump vs previous train"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 26,
+      "observed_ts": "2026-02-05T13:10:00+00:00",
+      "model_peak_score": 1.0,
+      "baseline_zscore_peak": 1.0,
+      "baseline_ewma_peak": 0.6751662873128954,
+      "baseline_threshold_peak": 0.0,
+      "label": 1,
+      "incident_id": "queens-rain-cascade",
+      "incident_title": "Rain-impacted dwell times cascade on the Queens corridor",
+      "top_routes": [
+        {
+          "route_id": "7",
+          "peak_score": 1.0
+        },
+        {
+          "route_id": "F",
+          "peak_score": 0.44230999999999737
+        },
+        {
+          "route_id": "A",
+          "peak_score": 0.10185714285714294
+        }
+      ],
+      "top_stops": [
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 420.0,
+          "predicted_headway_sec": 380.9958932634602,
+          "online_model_score": 1.0,
+          "baseline_zscore": 1.0,
+          "baseline_ewma": 0.6751662873128954,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump",
+            "weather pressure"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F20N",
+          "stop_name": "Bergen St",
+          "headway_sec": 260.0,
+          "predicted_headway_sec": 1.5585667057753826e+16,
+          "online_model_score": 0.44230999999999737,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.3472302667450316,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump",
+            "service alert context"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 306.8,
+          "predicted_headway_sec": 108.78,
+          "online_model_score": 0.35746785142945725,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 283.2,
+          "predicted_headway_sec": 276.65411529820295,
+          "online_model_score": 0.1180952380952381,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 247.8,
+          "predicted_headway_sec": 185.5127477973349,
+          "online_model_score": 0.10185714285714294,
+          "baseline_zscore": 0.0,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        }
+      ]
+    },
+    {
+      "index": 27,
+      "observed_ts": "2026-02-05T13:15:00+00:00",
+      "model_peak_score": 1.0,
+      "baseline_zscore_peak": 1.0,
+      "baseline_ewma_peak": 0.8237772106677177,
+      "baseline_threshold_peak": 0.36248012718600947,
+      "label": 1,
+      "incident_id": "queens-rain-cascade",
+      "incident_title": "Rain-impacted dwell times cascade on the Queens corridor",
+      "top_routes": [
+        {
+          "route_id": "7",
+          "peak_score": 1.0
+        },
+        {
+          "route_id": "F",
+          "peak_score": 0.23650524954642768
+        },
+        {
+          "route_id": "A",
+          "peak_score": 0.22100303527659962
+        }
+      ],
+      "top_stops": [
+        {
+          "route_id": "7",
+          "stop_id": "726N",
+          "stop_name": "Queensboro Plaza",
+          "headway_sec": 560.0,
+          "predicted_headway_sec": 99.13755606701139,
+          "online_model_score": 1.0,
+          "baseline_zscore": 1.0,
+          "baseline_ewma": 0.8237772106677177,
+          "baseline_threshold": 0.36248012718600947,
+          "reasons": [
+            "station baseline deviation",
+            "rolling z-score jump",
+            "weather pressure"
+          ]
+        },
+        {
+          "route_id": "7",
+          "stop_id": "705N",
+          "stop_name": "74 St - Broadway",
+          "headway_sec": 291.2,
+          "predicted_headway_sec": 83.93517059170601,
+          "online_model_score": 0.310694780380854,
+          "baseline_zscore": 0.03333333333333333,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "F",
+          "stop_id": "F09N",
+          "stop_name": "Jay St - MetroTech",
+          "headway_sec": 314.8,
+          "predicted_headway_sec": 110.44366899810392,
+          "online_model_score": 0.23650524954642768,
+          "baseline_zscore": 0.03333333333333333,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A27N",
+          "stop_name": "59 St - Columbus Circle",
+          "headway_sec": 255.8,
+          "predicted_headway_sec": 75.68543449968244,
+          "online_model_score": 0.22100303527659962,
+          "baseline_zscore": 0.03333333333333357,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": [
+            "station baseline deviation"
+          ]
+        },
+        {
+          "route_id": "A",
+          "stop_id": "A15N",
+          "stop_name": "125 St",
+          "headway_sec": 291.2,
+          "predicted_headway_sec": 94.15298159679993,
+          "online_model_score": 0.20309774356105484,
+          "baseline_zscore": 0.03333333333333333,
+          "baseline_ewma": 0.0,
+          "baseline_threshold": 0.0,
+          "reasons": []
+        }
+      ]
+    }
+  ],
+  "plot_path": "plots/brooklyn-merge-bunching.svg"
+}

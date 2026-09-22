@@ -1,0 +1,32 @@
+{
+  "_note": "Account identifiers refer to the synthetic seeded graph (ACC_* ordinary accounts, RING_* a planted cash-out ring). No real accounts, people or institutions are involved.",
+  "examples": [
+    {
+      "id": "routine",
+      "title": "Routine domestic payment",
+      "blurb": "ACC_0336 has paid ACC_0002 before, the amount sits near its usual size, same country, low-risk channel. Nothing in the graph objects.",
+      "tx": {
+        "sender_id": "ACC_0336", "receiver_id": "ACC_0002", "amount": 287.5,
+        "currency": "USD", "channel": "ach", "country_from": "US", "country_to": "US"
+      }
+    },
+    {
+      "id": "spike",
+      "title": "Sudden spike to a new counterparty",
+      "blurb": "Same sender as above — but 68x its typical amount, by wire, abroad, to an account it has never paid. The signal is amount_z and is_new_pair, and neither exists without transaction history.",
+      "tx": {
+        "sender_id": "ACC_0336", "receiver_id": "ACC_0301", "amount": 19500.0,
+        "currency": "USD", "channel": "wire", "country_from": "US", "country_to": "SG"
+      }
+    },
+    {
+      "id": "ring",
+      "title": "Transfer inside the cash-out ring",
+      "blurb": "Both parties sit in the planted ring, so the graph already holds a reverse edge and shared counterparties between them. That structure is invisible to any per-transaction rule.",
+      "tx": {
+        "sender_id": "RING_004", "receiver_id": "RING_009", "amount": 28400.0,
+        "currency": "USD", "channel": "crypto", "country_from": "CY", "country_to": "AE"
+      }
+    }
+  ]
+}

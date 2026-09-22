@@ -27,6 +27,12 @@ Open `http://127.0.0.1:5183` after starting the preview. To preview edits before
 
 The build checks that both linked documents are actual PDF files, copies `public/` into `dist/`, versions the built CSS/JS URLs with content hashes, and writes a SHA-256 file manifest to `build-manifest.json`. The manifest hashes the final HTML after URL rewriting; preview source paths stay unchanged. Tests cover semantic content, local links/assets, scientific claim boundaries and mobile-menu behavior. CI checks syntax, runs the tests and builds the site; it does not deploy.
 
+## Demo source and regression tests
+
+[`demo-services/`](demo-services/README.md) contains the four standalone runtime adapters, selected vendor modules, public/synthetic data and their original licence notices. The portfolio build does not bundle or launch these services. Their model dependencies are installed separately.
+
+The demo test package has locked **development-only** jsdom and Playwright dependencies. Separate CI jobs exercise synthetic SMT/fraud interfaces, Python worker cancellation and source checks, and offline Chromium DeID/MTA regressions. None of those jobs trains a model, sends user data, contacts live inference services or collects MTA feeds. The original website checks run unchanged in their own job. See the demo README for commands and coverage limits.
+
 ## Hosting
 
 Serve `dist/` as the website root. The four `/demos/` routes belong to separate services and are intentionally not bundled here. Preserve their reverse-proxy routes when deploying this site. The historical `/Stelios_Zacharioudakis_CV.pdf` URL is retained, including compatibility with existing query strings.

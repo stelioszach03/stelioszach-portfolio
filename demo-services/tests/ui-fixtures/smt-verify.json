@@ -1,0 +1,1441 @@
+{
+  "source": "local service calls using bundled synthetic examples; not production requests",
+  "examples": {
+    "examples": [
+      {
+        "id": "certified",
+        "title": "A correct answer",
+        "blurb": "The proposed assignment satisfies every constraint. Z3 certifies it.",
+        "expect": "CERTIFIED_SAT",
+        "problem": {
+          "problem_id": "linear-sat-0230",
+          "variables": [
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 11
+              },
+              "domain": "int",
+              "name": "x1"
+            },
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 6
+              },
+              "domain": "int",
+              "name": "x2"
+            },
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 8
+              },
+              "domain": "int",
+              "name": "x3"
+            }
+          ],
+          "constraints": [
+            {
+              "constraint_id": "c1",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 14,
+              "terms": [
+                {
+                  "coefficient": 1,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c2",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "<=",
+              "rhs": 68,
+              "terms": [
+                {
+                  "coefficient": 5,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 4,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c3",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "<=",
+              "rhs": 33,
+              "terms": [
+                {
+                  "coefficient": 2,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 3,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 3,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c4",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 28,
+              "terms": [
+                {
+                  "coefficient": 2,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 2,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 4,
+                  "variable": "x3"
+                }
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "status": "sat",
+          "assignment": {
+            "x1": 11,
+            "x2": 3,
+            "x3": 0
+          }
+        }
+      },
+      {
+        "id": "violation",
+        "title": "A plausible answer that is wrong",
+        "blurb": "One variable changed. Every bound still holds, so it looks fine \u2014 the solver returns the exact conflicting constraints.",
+        "expect": "FAILED_CERTIFICATION",
+        "problem": {
+          "problem_id": "linear-sat-0230",
+          "variables": [
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 11
+              },
+              "domain": "int",
+              "name": "x1"
+            },
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 6
+              },
+              "domain": "int",
+              "name": "x2"
+            },
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 8
+              },
+              "domain": "int",
+              "name": "x3"
+            }
+          ],
+          "constraints": [
+            {
+              "constraint_id": "c1",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 14,
+              "terms": [
+                {
+                  "coefficient": 1,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c2",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "<=",
+              "rhs": 68,
+              "terms": [
+                {
+                  "coefficient": 5,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 4,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c3",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "<=",
+              "rhs": 33,
+              "terms": [
+                {
+                  "coefficient": 2,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 3,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 3,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c4",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 28,
+              "terms": [
+                {
+                  "coefficient": 2,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 2,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 4,
+                  "variable": "x3"
+                }
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "status": "sat",
+          "assignment": {
+            "x1": 0,
+            "x2": 3,
+            "x3": 0
+          }
+        }
+      },
+      {
+        "id": "domain",
+        "title": "Answer outside the declared domain",
+        "blurb": "Caught by the cheap pre-check before the solver is ever called.",
+        "expect": "REJECTED_DOMAIN",
+        "problem": {
+          "problem_id": "linear-sat-0230",
+          "variables": [
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 11
+              },
+              "domain": "int",
+              "name": "x1"
+            },
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 6
+              },
+              "domain": "int",
+              "name": "x2"
+            },
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 8
+              },
+              "domain": "int",
+              "name": "x3"
+            }
+          ],
+          "constraints": [
+            {
+              "constraint_id": "c1",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 14,
+              "terms": [
+                {
+                  "coefficient": 1,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c2",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "<=",
+              "rhs": 68,
+              "terms": [
+                {
+                  "coefficient": 5,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 4,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c3",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "<=",
+              "rhs": 33,
+              "terms": [
+                {
+                  "coefficient": 2,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 3,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 3,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c4",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 28,
+              "terms": [
+                {
+                  "coefficient": 2,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 2,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 4,
+                  "variable": "x3"
+                }
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "status": "sat",
+          "assignment": {
+            "x1": 18,
+            "x2": 3,
+            "x3": 0
+          }
+        }
+      },
+      {
+        "id": "unsat",
+        "title": "'No solution exists' \u2014 and that is true",
+        "blurb": "The problem really is unsatisfiable. Z3 proves it and names the minimal conflicting set.",
+        "expect": "CERTIFIED_UNSAT",
+        "problem": {
+          "problem_id": "linear-unsat-0022",
+          "variables": [
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 10
+              },
+              "domain": "int",
+              "name": "x1"
+            },
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 8
+              },
+              "domain": "int",
+              "name": "x2"
+            },
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 9
+              },
+              "domain": "int",
+              "name": "x3"
+            }
+          ],
+          "constraints": [
+            {
+              "constraint_id": "c1",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 37,
+              "terms": [
+                {
+                  "coefficient": 3,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 4,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 3,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c2",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": ">=",
+              "rhs": 9,
+              "terms": [
+                {
+                  "coefficient": 4,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c3",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 33,
+              "terms": [
+                {
+                  "coefficient": 4,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 3,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 4,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c4",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 17,
+              "terms": [
+                {
+                  "coefficient": 3,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 2,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c5",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": ">=",
+              "rhs": 1,
+              "terms": [
+                {
+                  "coefficient": 1,
+                  "variable": "x1"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c6",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "<=",
+              "rhs": 0,
+              "terms": [
+                {
+                  "coefficient": 1,
+                  "variable": "x1"
+                }
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "status": "unsat"
+        }
+      },
+      {
+        "id": "false_unsat",
+        "title": "'No solution exists' \u2014 but one does",
+        "blurb": "A wrong impossibility claim. The solver answers with a concrete counter-witness.",
+        "expect": "FALSE_UNSAT_CLAIM",
+        "problem": {
+          "problem_id": "linear-sat-0230",
+          "variables": [
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 11
+              },
+              "domain": "int",
+              "name": "x1"
+            },
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 6
+              },
+              "domain": "int",
+              "name": "x2"
+            },
+            {
+              "bounds": {
+                "lower": 0,
+                "upper": 8
+              },
+              "domain": "int",
+              "name": "x3"
+            }
+          ],
+          "constraints": [
+            {
+              "constraint_id": "c1",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 14,
+              "terms": [
+                {
+                  "coefficient": 1,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c2",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "<=",
+              "rhs": 68,
+              "terms": [
+                {
+                  "coefficient": 5,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 4,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 1,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c3",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "<=",
+              "rhs": 33,
+              "terms": [
+                {
+                  "coefficient": 2,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 3,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 3,
+                  "variable": "x3"
+                }
+              ]
+            },
+            {
+              "constraint_id": "c4",
+              "kind": "linear_ineq",
+              "offset": 0.0,
+              "relation": "=",
+              "rhs": 28,
+              "terms": [
+                {
+                  "coefficient": 2,
+                  "variable": "x1"
+                },
+                {
+                  "coefficient": 2,
+                  "variable": "x2"
+                },
+                {
+                  "coefficient": 4,
+                  "variable": "x3"
+                }
+              ]
+            }
+          ]
+        },
+        "candidate": {
+          "status": "unsat"
+        }
+      }
+    ],
+    "limits": {
+      "max_variables": 40,
+      "max_constraints": 200,
+      "solver_timeout_ms": 3000,
+      "max_body_bytes": 32768
+    }
+  },
+  "responses": [
+    {
+      "id": "certified",
+      "request": {
+        "variables": [
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 11
+            },
+            "domain": "int",
+            "name": "x1"
+          },
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 6
+            },
+            "domain": "int",
+            "name": "x2"
+          },
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 8
+            },
+            "domain": "int",
+            "name": "x3"
+          }
+        ],
+        "constraints": [
+          {
+            "constraint_id": "c1",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 14,
+            "terms": [
+              {
+                "coefficient": 1,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c2",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "<=",
+            "rhs": 68,
+            "terms": [
+              {
+                "coefficient": 5,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 4,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c3",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "<=",
+            "rhs": 33,
+            "terms": [
+              {
+                "coefficient": 2,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 3,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 3,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c4",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 28,
+            "terms": [
+              {
+                "coefficient": 2,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 2,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 4,
+                "variable": "x3"
+              }
+            ]
+          }
+        ],
+        "candidate": {
+          "status": "sat",
+          "assignment": {
+            "x1": 11,
+            "x2": 3,
+            "x3": 0
+          }
+        }
+      },
+      "response": {
+        "predicted_status": "sat",
+        "verified_outcome": "CERTIFIED_SAT",
+        "verifier_result": "sat",
+        "failure_type": null,
+        "solver_time_ms": 0.44720794539898634,
+        "unsat_core": [],
+        "sat_witness": null,
+        "certified_assignment": {
+          "x1": 11,
+          "x2": 3,
+          "x3": 0
+        },
+        "diagnostics": {
+          "violated_constraint_ids": []
+        },
+        "precheck_violations": 0,
+        "explanation": "Z3 proved the proposed assignment satisfies every constraint."
+      }
+    },
+    {
+      "id": "violation",
+      "request": {
+        "variables": [
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 11
+            },
+            "domain": "int",
+            "name": "x1"
+          },
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 6
+            },
+            "domain": "int",
+            "name": "x2"
+          },
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 8
+            },
+            "domain": "int",
+            "name": "x3"
+          }
+        ],
+        "constraints": [
+          {
+            "constraint_id": "c1",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 14,
+            "terms": [
+              {
+                "coefficient": 1,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c2",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "<=",
+            "rhs": 68,
+            "terms": [
+              {
+                "coefficient": 5,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 4,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c3",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "<=",
+            "rhs": 33,
+            "terms": [
+              {
+                "coefficient": 2,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 3,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 3,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c4",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 28,
+            "terms": [
+              {
+                "coefficient": 2,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 2,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 4,
+                "variable": "x3"
+              }
+            ]
+          }
+        ],
+        "candidate": {
+          "status": "sat",
+          "assignment": {
+            "x1": 0,
+            "x2": 3,
+            "x3": 0
+          }
+        }
+      },
+      "response": {
+        "predicted_status": "sat",
+        "verified_outcome": "FAILED_CERTIFICATION",
+        "verifier_result": "unsat",
+        "failure_type": "constraint_violation",
+        "solver_time_ms": 0.303249922581017,
+        "unsat_core": [
+          {
+            "constraint_id": "c1",
+            "constraint_text": "(1.0)*x1 + (1.0)*x2 + (1.0)*x3 = 14.0"
+          }
+        ],
+        "sat_witness": null,
+        "certified_assignment": null,
+        "diagnostics": {
+          "violated_constraint_ids": [
+            "c1",
+            "c4"
+          ],
+          "violated_constraint_texts": [
+            "(1.0)*x1 + (1.0)*x2 + (1.0)*x3 = 14.0",
+            "(2.0)*x1 + (2.0)*x2 + (4.0)*x3 = 28.0"
+          ],
+          "last_assignment": {
+            "x1": 0,
+            "x2": 3,
+            "x3": 0
+          }
+        },
+        "precheck_violations": 2,
+        "explanation": "The assignment is inside its declared bounds but breaks constraints. The unsat core is a conflicting subset, not necessarily minimal."
+      }
+    },
+    {
+      "id": "domain",
+      "request": {
+        "variables": [
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 11
+            },
+            "domain": "int",
+            "name": "x1"
+          },
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 6
+            },
+            "domain": "int",
+            "name": "x2"
+          },
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 8
+            },
+            "domain": "int",
+            "name": "x3"
+          }
+        ],
+        "constraints": [
+          {
+            "constraint_id": "c1",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 14,
+            "terms": [
+              {
+                "coefficient": 1,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c2",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "<=",
+            "rhs": 68,
+            "terms": [
+              {
+                "coefficient": 5,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 4,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c3",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "<=",
+            "rhs": 33,
+            "terms": [
+              {
+                "coefficient": 2,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 3,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 3,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c4",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 28,
+            "terms": [
+              {
+                "coefficient": 2,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 2,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 4,
+                "variable": "x3"
+              }
+            ]
+          }
+        ],
+        "candidate": {
+          "status": "sat",
+          "assignment": {
+            "x1": 18,
+            "x2": 3,
+            "x3": 0
+          }
+        }
+      },
+      "response": {
+        "predicted_status": "sat",
+        "verified_outcome": "REJECTED_DOMAIN",
+        "verifier_result": "precheck",
+        "failure_type": "domain_violation",
+        "solver_time_ms": 0.0,
+        "unsat_core": [],
+        "sat_witness": null,
+        "certified_assignment": null,
+        "diagnostics": {
+          "last_assignment": {
+            "x1": 18,
+            "x2": 3,
+            "x3": 0
+          },
+          "precheck_errors": [
+            "variable 'x1' above upper bound"
+          ],
+          "violated_constraint_ids": [
+            "c1",
+            "c2",
+            "c3",
+            "c4"
+          ],
+          "violated_constraint_texts": [
+            "(1.0)*x1 + (1.0)*x2 + (1.0)*x3 = 14.0",
+            "(5.0)*x1 + (4.0)*x2 + (1.0)*x3 <= 68.0",
+            "(2.0)*x1 + (3.0)*x2 + (3.0)*x3 <= 33.0",
+            "(2.0)*x1 + (2.0)*x2 + (4.0)*x3 = 28.0"
+          ]
+        },
+        "precheck_violations": 5,
+        "explanation": "Rejected by the pre-check: a variable is missing, extra, or outside its declared domain. The solver was never called."
+      }
+    },
+    {
+      "id": "unsat",
+      "request": {
+        "variables": [
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 10
+            },
+            "domain": "int",
+            "name": "x1"
+          },
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 8
+            },
+            "domain": "int",
+            "name": "x2"
+          },
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 9
+            },
+            "domain": "int",
+            "name": "x3"
+          }
+        ],
+        "constraints": [
+          {
+            "constraint_id": "c1",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 37,
+            "terms": [
+              {
+                "coefficient": 3,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 4,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 3,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c2",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": ">=",
+            "rhs": 9,
+            "terms": [
+              {
+                "coefficient": 4,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c3",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 33,
+            "terms": [
+              {
+                "coefficient": 4,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 3,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 4,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c4",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 17,
+            "terms": [
+              {
+                "coefficient": 3,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 2,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c5",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": ">=",
+            "rhs": 1,
+            "terms": [
+              {
+                "coefficient": 1,
+                "variable": "x1"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c6",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "<=",
+            "rhs": 0,
+            "terms": [
+              {
+                "coefficient": 1,
+                "variable": "x1"
+              }
+            ]
+          }
+        ],
+        "candidate": {
+          "status": "unsat"
+        }
+      },
+      "response": {
+        "predicted_status": "unsat",
+        "verified_outcome": "CERTIFIED_UNSAT",
+        "verifier_result": "unsat",
+        "failure_type": null,
+        "solver_time_ms": 0.2459170063957572,
+        "unsat_core": [
+          {
+            "constraint_id": "c6",
+            "constraint_text": "(1.0)*x1 <= 0.0"
+          },
+          {
+            "constraint_id": "c5",
+            "constraint_text": "(1.0)*x1 >= 1.0"
+          }
+        ],
+        "sat_witness": null,
+        "certified_assignment": null,
+        "diagnostics": {},
+        "precheck_violations": 0,
+        "explanation": "Z3 proved no assignment can satisfy all constraints. The 'unsat claim' was right."
+      }
+    },
+    {
+      "id": "false_unsat",
+      "request": {
+        "variables": [
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 11
+            },
+            "domain": "int",
+            "name": "x1"
+          },
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 6
+            },
+            "domain": "int",
+            "name": "x2"
+          },
+          {
+            "bounds": {
+              "lower": 0,
+              "upper": 8
+            },
+            "domain": "int",
+            "name": "x3"
+          }
+        ],
+        "constraints": [
+          {
+            "constraint_id": "c1",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 14,
+            "terms": [
+              {
+                "coefficient": 1,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c2",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "<=",
+            "rhs": 68,
+            "terms": [
+              {
+                "coefficient": 5,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 4,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 1,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c3",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "<=",
+            "rhs": 33,
+            "terms": [
+              {
+                "coefficient": 2,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 3,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 3,
+                "variable": "x3"
+              }
+            ]
+          },
+          {
+            "constraint_id": "c4",
+            "kind": "linear_ineq",
+            "offset": 0.0,
+            "relation": "=",
+            "rhs": 28,
+            "terms": [
+              {
+                "coefficient": 2,
+                "variable": "x1"
+              },
+              {
+                "coefficient": 2,
+                "variable": "x2"
+              },
+              {
+                "coefficient": 4,
+                "variable": "x3"
+              }
+            ]
+          }
+        ],
+        "candidate": {
+          "status": "unsat"
+        }
+      },
+      "response": {
+        "predicted_status": "unsat",
+        "verified_outcome": "FALSE_UNSAT_CLAIM",
+        "verifier_result": "sat",
+        "failure_type": "false_unsat_claim",
+        "solver_time_ms": 0.254040933214128,
+        "unsat_core": [],
+        "sat_witness": {
+          "x1": 11,
+          "x2": 3,
+          "x3": 0
+        },
+        "certified_assignment": null,
+        "diagnostics": {},
+        "precheck_violations": 0,
+        "explanation": "The claim of impossibility is wrong \u2014 here is a satisfying assignment as a counter-witness."
+      }
+    }
+  ]
+}

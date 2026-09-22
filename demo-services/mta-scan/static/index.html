@@ -1,0 +1,1564 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MTA Scan · Subway signal workspace</title>
+
+<link rel="icon" href="/favicon.ico" sizes="any">
+<meta name="description" content="Eight live MTA GTFS-Realtime feeds land every ~30 seconds. An online streaming model learns each station's normal train spacing as the data arrives — no labels, no offline training run.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://stelioszach.com/demos/mta-scan/">
+<meta property="og:title" content="mta-scan — anomaly detection on live NYC subway feeds">
+<meta property="og:description" content="Eight live MTA GTFS-Realtime feeds land every ~30 seconds. An online streaming model learns each station's normal train spacing as the data arrives — no labels, no offline training run.">
+<meta property="og:image" content="https://stelioszach.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="mta-scan — anomaly detection on live NYC subway feeds">
+<meta name="twitter:description" content="Eight live MTA GTFS-Realtime feeds land every ~30 seconds. An online streaming model learns each station's normal train spacing as the data arrives — no labels, no offline training run.">
+<meta name="twitter:image" content="https://stelioszach.com/og.png">
+<link rel="stylesheet" href="vendor/leaflet.css">
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1b2230; --line:#2b323c; --fg:#e6edf3; --dim:#9aa7b4;
+    --accent:#64ffda; --ok:#3fb950; --bad:#f85149; --warn:#d29922;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+    /* Dark treatment for the standard OSM raster; attribution stays visible. */
+    --tilefilter:none;
+  }
+  @media (prefers-color-scheme: light){
+    :root{ --bg:#ffffff; --panel:#f6f8fa; --panel2:#eef1f5; --line:#d8dee4; --fg:#1f2328; --dim:#59636e;
+           --accent:#0969da; --ok:#1a7f37; --bad:#cf222e; --warn:#9a6700; }
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{background:var(--bg);color:var(--fg);
+       font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;
+       -webkit-text-size-adjust:100%}
+  .wrap{max-width:1180px;margin:0 auto;padding:28px 18px 56px}
+  a{color:var(--accent)}
+  h1{font-size:23px;margin:0 0 7px;letter-spacing:-.015em;line-height:1.25}
+  .lede{color:var(--fg);margin:0 0 6px;max-width:74ch}
+  .src{color:var(--dim);font-size:13px;margin:0 0 18px;max-width:88ch}
+  h2{font-size:12px;text-transform:uppercase;letter-spacing:.07em;color:var(--dim);
+     margin:30px 0 10px;font-weight:600}
+
+  /* ---------- headline result strip ---------- */
+  .headline{border:1px solid var(--line);border-left:3px solid var(--accent);background:var(--panel);
+            border-radius:8px;padding:11px 14px;font-size:13.5px;margin:0 0 20px}
+  .headline b{font-variant-numeric:tabular-nums}
+  .headline .caveat{color:var(--warn)}
+  .headline .n{color:var(--dim)}
+
+  /* ---------- control bar ---------- */
+  .bar{display:flex;flex-wrap:wrap;gap:10px 14px;align-items:center;
+       border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:9px 12px;margin-bottom:12px}
+  .bar .sep{flex:1 1 auto}
+  .pill{display:inline-flex;align-items:center;gap:7px;font:600 12px/1 var(--mono);
+        padding:6px 10px;border-radius:999px;border:1px solid currentColor;white-space:nowrap}
+  .dot{width:8px;height:8px;border-radius:50%;background:currentColor;flex:none}
+  .p-live{color:var(--ok)} .p-warm{color:var(--warn)} .p-off{color:var(--bad)} .p-wait{color:var(--dim)}
+  .p-live .dot{animation:blip 2s ease-in-out infinite}
+  @keyframes blip{0%,100%{opacity:1}50%{opacity:.25}}
+  label.ctl{font-size:12px;color:var(--dim);display:inline-flex;align-items:center;gap:6px;min-width:0}
+  /* A <select> sizes to its longest option and ignores max-width:100% when its
+     containing block is auto-sized — which pushed the whole document 108 px wider
+     than a 375 px phone. Flexing the label and the control fixes it for good. */
+  label.ctl.grow{flex:1 1 230px}
+  label.ctl.grow select{flex:1 1 auto;width:100%}
+  select{background:var(--panel2);color:var(--fg);border:1px solid var(--line);border-radius:7px;
+         padding:6px 8px;font:13px/1.2 inherit;min-width:0;max-width:100%}
+  button{font:inherit}
+  .go{background:var(--accent);color:#fff;border:0;border-radius:7px;padding:8px 15px;
+      font-size:13.5px;font-weight:600;cursor:pointer;white-space:nowrap}
+  .go:hover{filter:brightness(1.08)}
+  .go[disabled]{opacity:.55;cursor:default}
+  .ghost{background:var(--panel2);color:var(--fg);border:1px solid var(--line);border-radius:7px;
+         padding:7px 13px;font-size:13px;cursor:pointer}
+  .ghost:hover{border-color:var(--accent)}
+  .ghost[aria-pressed="true"]{border-color:var(--accent);color:var(--accent)}
+
+  /* ---------- kpis ---------- */
+  .kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:12px}
+  .kpi{border:1px solid var(--line);background:var(--panel);border-radius:9px;padding:10px 12px;min-width:0}
+  .kpi .v{font:600 20px/1.1 var(--mono);font-variant-numeric:tabular-nums;
+          overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .kpi .k{color:var(--dim);font-size:11px;text-transform:uppercase;letter-spacing:.05em;margin-top:4px}
+  .kpi.warnbox .v{color:var(--warn)} .kpi.badbox .v{color:var(--bad)}
+
+  /* ---------- map + rail ---------- */
+  .stage{display:grid;grid-template-columns:minmax(0,1.9fr) minmax(0,1fr);gap:12px}
+  /* A grid item's automatic minimum size is its min-content width, so one wide
+     non-wrapping child — the route-bullet strip — can push a track past the
+     viewport even though the strip scrolls on its own. Measured at 375 px: a
+     644 px column inside a 349 px grid, 282 px of horizontal page overflow. */
+  .stage > *{min-width:0}
+  .mapwrap{position:relative;min-width:0}
+  #map{height:560px;border:1px solid var(--line);border-radius:10px;background:#11161d;
+       z-index:0}
+  @media (prefers-color-scheme: light){ #map{background:#e9edf1} }
+  .leaflet-tile-pane{filter:var(--tilefilter)}
+  .leaflet-container{background:transparent;font:inherit}
+  .leaflet-control-attribution{background:rgba(13,17,23,.82)!important;color:var(--dim)!important;
+       font-size:10.5px!important;padding:3px 7px!important;max-width:60vw}
+  .leaflet-control-attribution a{color:var(--accent)!important}
+  @media (prefers-color-scheme: light){
+    .leaflet-control-attribution{background:rgba(255,255,255,.88)!important}
+  }
+  /* Leaflet's zoom + custom buttons, themed. Untouched they are white-on-white
+     chrome sitting on a dark base map. */
+  .leaflet-bar,.leaflet-bar a,.mapbtn{background:var(--panel);color:var(--fg);
+       border-color:var(--line)}
+  .leaflet-bar a,.leaflet-bar a:hover{background:var(--panel);color:var(--fg);
+       border-bottom-color:var(--line)}
+  .leaflet-bar a:hover{background:var(--panel2)}
+  .leaflet-bar a.leaflet-disabled{background:var(--panel);opacity:.45}
+  .mapbtn{font:600 11.5px/1 inherit;border:1px solid var(--line);border-radius:6px;
+       padding:6px 9px;cursor:pointer;box-shadow:0 1px 4px rgba(0,0,0,.35)}
+  .mapbtn:hover{border-color:var(--accent);color:var(--accent)}
+
+  /* ---------- popups ---------- */
+  /* Default Leaflet popups are white with a white tip: unreadable over a dark
+     base map, which is exactly the "broken popup" look to avoid. */
+  .leaflet-popup-content-wrapper,.leaflet-popup-tip{
+       background:var(--panel);color:var(--fg);border:1px solid var(--line);
+       box-shadow:0 6px 22px rgba(0,0,0,.45)}
+  .leaflet-popup-content-wrapper{border-radius:9px}
+  .leaflet-popup-tip{border-top:0;border-left:0}
+  .leaflet-popup-content{margin:10px 12px;font:13px/1.45 inherit;
+       min-width:170px;max-width:min(268px,72vw)}
+  .leaflet-container a.leaflet-popup-close-button{color:var(--dim);padding:6px 7px 0 0}
+  .leaflet-container a.leaflet-popup-close-button:hover{color:var(--fg);background:transparent}
+  .pop-h{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:5px}
+  .pop-n{font-weight:600;font-size:13.5px;line-height:1.25}
+  .pop-score{font:700 15px/1 var(--mono);font-variant-numeric:tabular-nums}
+  .pop-row{display:flex;justify-content:space-between;gap:12px;font:12px/1.7 var(--mono);
+       color:var(--dim);font-variant-numeric:tabular-nums}
+  .pop-row b{color:var(--fg);font-weight:600}
+  .pop-why{color:var(--dim);font-size:11.5px;line-height:1.4;margin-top:5px;
+       border-top:1px solid var(--line);padding-top:5px}
+  .leaflet-tooltip{background:var(--panel);color:var(--fg);border:1px solid var(--line);
+       box-shadow:0 3px 12px rgba(0,0,0,.4);font:11.5px/1.3 var(--mono)}
+  .leaflet-tooltip-top:before{border-top-color:var(--line)}
+
+  /* ---------- MTA route bullets ---------- */
+  /* Colour and text colour come from the GTFS routes.txt fields carried in
+     basemap.json; nothing here hard-codes a palette. */
+  .bul{display:inline-flex;align-items:center;justify-content:center;flex:none;
+       width:19px;height:19px;border-radius:50%;
+       font:700 11.5px/1 Helvetica,Arial,sans-serif;letter-spacing:-.01em;
+       text-transform:uppercase;vertical-align:-4px}
+  .bul.w2{font-size:9px;letter-spacing:-.04em}
+  .bul.sm{width:16px;height:16px;font-size:10px;vertical-align:-3px}
+  .bul.sm.w2{font-size:7.5px}
+  .routefilter{display:flex;gap:5px;align-items:center;margin-top:9px;
+       overflow-x:auto;padding-bottom:3px;-webkit-overflow-scrolling:touch;
+       scrollbar-width:thin;min-width:0;max-width:100%}
+  .routefilter button{background:none;border:0;padding:2px;cursor:pointer;border-radius:50%;
+       line-height:0;opacity:.92;transition:opacity .12s,transform .12s}
+  .routefilter button:hover{opacity:1;transform:scale(1.12)}
+  .routefilter button[aria-pressed="true"]{outline:2px solid var(--fg);outline-offset:1px;opacity:1}
+  .routefilter.filtering button[aria-pressed="false"]{opacity:.3}
+  .routefilter .rfclear{line-height:1;font:600 11.5px/1 inherit;color:var(--dim);
+       border:1px solid var(--line);border-radius:6px;padding:6px 8px;white-space:nowrap}
+  .routefilter .rfclear:hover{color:var(--fg);border-color:var(--accent);transform:none}
+  .routefilter .rflab{font-size:11px;color:var(--dim);white-space:nowrap;padding-right:2px}
+
+  /* ---------- map legend ---------- */
+  .maplegend{display:flex;flex-wrap:wrap;align-items:center;gap:10px 18px;margin-top:10px;
+       color:var(--dim);font-size:11.5px}
+  .ramp{display:flex;flex-direction:column;gap:3px;min-width:190px;flex:1 1 190px}
+  .ramp .bar{height:9px;border-radius:5px;border:1px solid var(--line)}
+  .ramp .ticks{display:flex;justify-content:space-between;font:10.5px/1 var(--mono);
+       font-variant-numeric:tabular-nums}
+  .sizes{display:flex;align-items:flex-end;gap:9px;white-space:nowrap}
+  .sizes .formula{align-self:center;color:var(--dim);font:10.5px/1.3 var(--mono)}
+  .sizes span{display:flex;flex-direction:column;align-items:center;gap:3px;font:10.5px/1 var(--mono)}
+  .sizes i{display:block;border-radius:50%;border:1.4px solid currentColor;
+       background:color-mix(in srgb,currentColor 28%,transparent)}
+  .maplegend .swatch{display:inline-block;width:8px;height:8px;border-radius:50%;
+       margin-right:5px;vertical-align:0;background:var(--accent);opacity:.5}
+
+  /* Tap-to-activate shade: on a phone a Leaflet map that grabs one-finger drags
+     traps the page scroll. Dragging stays off until the reader asks for it. */
+  .maphint{position:absolute;inset:0;z-index:500;display:none;align-items:center;
+       justify-content:center;border-radius:10px;background:rgba(13,17,23,.42);
+       color:#fff;font:600 13px/1.3 inherit;text-align:center;padding:14px;cursor:pointer;
+       -webkit-backdrop-filter:blur(1px);backdrop-filter:blur(1px)}
+  .maphint.on{display:flex}
+  .maphint span{background:rgba(13,17,23,.86);border:1px solid rgba(255,255,255,.18);
+       border-radius:999px;padding:8px 15px}
+  .rail{display:flex;flex-direction:column;gap:10px;min-width:0}
+  .card{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:12px 13px;min-width:0}
+  .card h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);font-weight:600}
+  .note{color:var(--dim);font-size:12.5px;margin:0}
+  .note.bad{color:var(--bad)} .note.warn{color:var(--warn)}
+  #anoms{list-style:none;margin:0;padding:0;max-height:392px;overflow-y:auto}
+  #anoms li{border-top:1px solid var(--line);padding:8px 2px;display:grid;
+            grid-template-columns:1fr auto;gap:2px 10px;cursor:pointer}
+  #anoms li:first-child{border-top:0}
+  #anoms li:hover{background:var(--panel2)}
+  #anoms .st{font-size:13px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  #anoms .sc{font:600 13px/1 var(--mono);font-variant-numeric:tabular-nums;align-self:center}
+  #anoms .sub{grid-column:1/-1;color:var(--dim);font:11.5px/1.3 var(--mono)}
+
+  /* ---------- replay ---------- */
+  .replaybox{border:1px solid var(--line);background:var(--panel);border-radius:10px;padding:13px 14px}
+  #chart{width:100%;height:auto;display:block;touch-action:none}
+  .cap{font:12.5px/1.5 var(--mono);color:var(--dim);margin:8px 0 0;min-height:34px}
+  .cap b{color:var(--fg)}
+  .serieskey{display:flex;flex-wrap:wrap;gap:5px 16px;font-size:11.5px;color:var(--dim);margin:2px 0 8px}
+  .serieskey i{display:inline-block;width:14px;height:2.5px;margin-right:6px;vertical-align:3px;border-radius:2px}
+
+  /* ---------- table ---------- */
+  .scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;min-width:660px;font-size:13px}
+  th,td{text-align:right;padding:7px 9px;border-bottom:1px solid var(--line);white-space:nowrap}
+  th:first-child,td:first-child{text-align:left}
+  th{color:var(--dim);font-weight:600;font-size:11px;text-transform:uppercase;letter-spacing:.05em}
+  td{font-family:var(--mono);font-variant-numeric:tabular-nums}
+  td:first-child{font-family:inherit}
+  tr.me td{background:color-mix(in srgb,var(--accent) 11%,transparent)}
+  tr.me td:first-child{font-weight:600}
+  .best{color:var(--ok);font-weight:600}
+  .worst{color:var(--warn);font-weight:600}
+
+  footer{margin-top:34px;color:var(--dim);font-size:12.5px;border-top:1px solid var(--line);padding-top:14px}
+  footer p{margin:0 0 8px;max-width:92ch}
+  code{font-family:var(--mono);font-size:12.5px}
+
+  @media (max-width:960px){
+    .stage{grid-template-columns:minmax(0,1fr)}
+    #map{height:440px}
+    #anoms{max-height:260px}
+    .kpis{grid-template-columns:repeat(3,1fr)}
+  }
+  @media (max-width:560px){
+    .wrap{padding:20px 13px 44px}
+    h1{font-size:20px}
+    .lede{font-size:14px}
+    .headline{font-size:12.5px;padding:10px 12px}
+    /* Three across instead of two: it saves a whole row, which is what puts the
+       top of the map inside the first screen on a 375x812 phone. */
+    .kpis{grid-template-columns:repeat(3,1fr);gap:7px}
+    .kpi{padding:7px 8px}
+    .kpi .v{font-size:16px}
+    .kpi .k{font-size:9.5px;letter-spacing:.03em;line-height:1.25;margin-top:3px}
+    /* A 360 px map on a 375 px phone is a thumbnail of a city that is 40 km wide.
+       Tall enough to read Manhattan and Brooklyn at once, still short enough that
+       the KPI row above it stays on screen. */
+    #map{height:min(66vh,470px)}
+    .bar{padding:9px 10px}
+    .cap{font-size:11.5px}
+    .leaflet-control-attribution{max-width:78vw}
+    .routefilter{gap:4px}
+    .routefilter .rflab{display:none}
+  }
+  @media (prefers-reduced-motion: reduce){
+    .p-live .dot{animation:none}
+    *{transition:none!important}
+  }
+
+/* Portfolio workspace layer: restrained navy surfaces, one action accent. */
+:root{color-scheme:dark;--bg:#0a192f;--panel:#112240;--panel2:#142a48;--line:#233554;--fg:#ccd6f6;--dim:#a8b2d1;--accent:#64ffda;--ok:#64ffda;--warn:#f3c67a;--bad:#ff9d9d}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}[hidden]{display:none!important}button,a,select,input,[tabindex]{outline-offset:3px}button:focus-visible,a:focus-visible,select:focus-visible,input:focus-visible,[tabindex]:focus-visible{outline:2px solid var(--accent)}.skip{position:absolute;left:16px;top:-60px;background:var(--accent);color:#020c1b;padding:8px;z-index:2000}.skip:focus{top:8px}.portfolio-header{border-bottom:1px solid var(--line)}.portfolio-header>div{max-width:1480px;margin:auto;padding:17px 28px;display:flex;justify-content:space-between;align-items:center;gap:20px}.portfolio-brand{display:flex;gap:14px;align-items:center;font-weight:600;color:var(--fg);text-decoration:none}.portfolio-brand span{font:600 17px var(--mono);border:1px solid var(--accent);border-radius:4px;color:var(--accent);padding:4px 7px}.portfolio-header nav{display:flex;gap:24px;font-size:13px}.wrap{max-width:1480px;padding:28px 28px 50px}h1{font-size:clamp(28px,3vw,38px);letter-spacing:-.035em;color:#e6f1ff;margin-bottom:8px}.eyebrow{font:12px var(--mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}.lede{color:var(--dim);font-size:14px;max-width:85ch}.src{font-size:12px;margin-bottom:20px}.source-band{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;padding:11px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);margin:20px 0 16px;font-size:12px}.mode-label{font:600 12px var(--mono);color:var(--accent);letter-spacing:.035em}.mode-label[data-mode=replay]{color:var(--warn)}.source-meta{color:var(--dim);font-size:12px}.bar{border:0;padding:0;border-radius:0;background:transparent;gap:10px 13px}.bar .ctl{font-size:12px}.go{background:var(--accent);color:#020c1b;border:1px solid var(--accent);border-radius:5px;min-height:40px}.ghost{border-radius:5px;min-height:40px}.ctl select{min-height:40px}.kpis{gap:0;margin:20px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:15px 0}.kpi{border:0;border-right:1px solid var(--line);border-radius:0;background:transparent;padding:0 18px}.kpi:first-child{padding-left:0}.kpi:last-child{border-right:0}.kpi .v{font:600 25px/1.2 inherit;color:#e6f1ff}.kpi .k{font-size:10px;margin-top:7px;color:var(--dim)}.stage{grid-template-columns:minmax(0,2.3fr) minmax(290px,1fr);gap:24px}#map{height:620px;border-radius:6px;background:#081528}.mapwrap{border-radius:6px}.rail{gap:0;border-left:1px solid var(--line);padding-left:22px}.card{border:0;border-radius:0;background:transparent;padding:0 0 20px}.card+.card{padding-top:18px;border-top:1px solid var(--line)}.card h3{font-size:12px;color:var(--fg);margin-bottom:10px}.map-tools{display:flex;align-items:end;gap:10px;margin-bottom:12px}.map-tools label{display:flex;flex-direction:column;gap:5px;font-size:11px;color:var(--dim)}.map-tools .search{flex:1}.map-tools input{width:100%;min-width:0;background:var(--panel);border:1px solid var(--line);border-radius:5px;color:var(--fg);padding:10px 12px;font:13px inherit;height:40px}.map-tools select{height:40px}.filter-summary{font-size:11px;min-height:20px;color:var(--dim);margin:0 0 9px}.routefilter{padding:8px 2px 7px;gap:7px}.routefilter button{min-width:32px;min-height:35px;display:inline-flex;align-items:center;justify-content:center}.routefilter .rfclear{min-width:auto}.routefilter button:disabled{opacity:.3;cursor:not-allowed}.maplegend{border-top:1px solid var(--line);padding-top:12px;margin-top:6px}.maplegend .bar{margin:0}.maphint{background:rgba(2,12,27,.35);bottom:40px;backdrop-filter:none;-webkit-backdrop-filter:none}.maphint span{background:#112240}.leaflet-control-attribution{background:rgba(10,25,47,.9)!important;color:var(--dim)!important}.leaflet-popup-content-wrapper,.leaflet-popup-tip{box-shadow:0 6px 20px rgba(2,12,27,.4)}#anoms{max-height:440px}#anoms li{padding:13px 3px;transition:background .15s}#anoms .st{color:var(--fg);font-size:13px}#anoms .sub{font-size:11px;line-height:1.6}#anoms li:focus-visible{outline-offset:-2px}.station-detail{margin:0 0 18px;padding:0 0 18px;border-bottom:1px solid var(--line)}.rail:has(#stationDetail:not([hidden])) #anoms{max-height:260px}.station-detail header{display:flex;justify-content:space-between;align-items:start;gap:12px}.station-detail h3{margin:0;color:#e6f1ff;font-size:16px}.station-detail dl{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:16px 0}.station-detail dt{font-size:11px;color:var(--dim)}.station-detail dd{font:600 15px var(--mono);color:var(--fg);margin:5px 0 0}.station-detail p{font-size:12px;margin:8px 0;color:var(--dim)}.station-detail .ghost{min-height:32px;padding:4px 9px;font-size:11px}.headline{border:0;border-left:2px solid var(--warn);border-radius:0;background:rgba(243,198,122,.035);margin-top:18px}.replaybox{border-radius:6px}.replay-controls{display:flex;align-items:center;gap:15px;margin-top:15px;flex-wrap:wrap}.replay-controls label{font-size:12px;white-space:nowrap}.replay-controls input{flex:1;min-width:140px;accent-color:var(--accent);min-height:36px}.replay-controls output{font:11px var(--mono);color:var(--dim);min-width:145px}.model-note{color:var(--warn);font-size:12px;line-height:1.5;margin-top:10px}.method-note{font-size:11px;max-width:80ch;margin:10px 0 0;color:var(--dim)}.mapbtn{box-shadow:none;min-height:30px}.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}
+@media(max-width:1050px){.stage{grid-template-columns:minmax(0,1fr)}.rail{border-left:0;padding-left:0;display:grid;grid-template-columns:1.7fr 1fr;gap:24px}.card+.card{border-top:0;padding-top:0}.kpis{grid-template-columns:repeat(5,1fr)}#anoms{max-height:300px}#map{height:540px}}
+@media(max-width:600px){.portfolio-header>div{padding:15px 17px}.portfolio-header nav{gap:14px}.portfolio-header .source-link{display:none}.wrap{padding:23px 17px 40px}.lede{font-size:13px}.src{font-size:11px}.source-band{margin:16px 0}.source-meta{font-size:11px;line-height:1.6}.bar .sep{display:none}.bar .ctl.grow{flex-basis:100%}.bar .ctl.grow select{max-width:100%}.bar .go,.bar .ghost{flex-grow:1}.kpis{grid-template-columns:repeat(3,1fr);row-gap:17px;padding:14px 0}.kpi{padding:0 10px}.kpi .v{font-size:21px}.kpi:nth-child(3){border-right:0}.kpi:nth-child(4){padding-left:0}.kpi .k{font-size:9px}.map-tools{flex-wrap:wrap;gap:8px}.map-tools .search{flex-basis:100%}.map-tools label:not(.search){flex:1}.map-tools .ghost{font-size:12px}.rail{display:flex;gap:10px}.card+.card{border-top:1px solid var(--line);padding-top:18px}#map{height:min(68svh,540px);min-height:390px}.station-detail dl{grid-template-columns:1fr 1fr}.maplegend .sizes{display:none}.replay-controls{gap:6px}.replay-controls label{width:100%}.replay-controls output{font-size:10px;min-width:auto}.maplegend{font-size:10px}.map-tools .ghost{min-height:40px}.headline{font-size:12px}footer{font-size:12px}}
+@media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
+
+</style>
+</head>
+<body>
+<a class="skip" href="#workspace">Skip to subway workspace</a>
+<header class="portfolio-header"><div><a class="portfolio-brand" href="https://stelioszach.com"><span>SZ</span> MTA Scan</a><nav aria-label="Demo navigation"><a class="source-link" href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection">Source code ↗</a><a href="https://stelioszach.com">← Portfolio</a></nav></div></header>
+<main class="wrap" id="workspace">
+
+  <p class="eyebrow">Streaming systems / Subway signals</p><h1>Read the network.</h1>
+  <p class="lede">Live MTA GTFS-Realtime observations, streaming model scores and a separate frozen replay.</p>
+  <p class="src"><a href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection">Implementation ↗</a> · River PARegressor + HalfSpaceTrees + ADWIN · CPU inference</p>
+
+  <!-- Rewritten from static/data/replay.json on load so it can never drift from the
+       table at the bottom of the page; these values are the no-JS fallback. -->
+
+
+  <div class="source-band"><strong class="mode-label" id="mapMode" data-mode="live">MAP · LIVE SOURCE</strong><span class="source-meta" id="freshness" aria-live="polite">Waiting for the first API snapshot…</span></div>
+  <div class="bar">
+    <span class="pill p-wait" id="statepill"><span class="dot"></span><span id="statetext">connecting…</span></span>
+    <label class="ctl" for="win">window
+      <select id="win">
+        <option value="15m">15 min</option>
+        <option value="30m">30 min</option>
+        <option value="1h" selected>1 hour</option>
+        <option value="6h">6 hours</option>
+      </select>
+    </label>
+    <button class="ghost" id="refresh">Refresh now</button>
+    <button class="ghost" id="pauseLive" aria-pressed="false">Pause updates</button>
+    <span class="sep"></span>
+    <a class="source-meta" href="#replayHeading">Explore recorded replay ↓</a>
+    <button class="ghost" id="backlive" hidden>Back to live</button>
+  </div>
+
+  <p class="source-meta" id="counterScope">Counters describe the live-source window; replay has separate measurements.</p>
+  <div class="kpis" id="kpis">
+    <div class="kpi"><div class="v" id="k-stations">&mdash;</div><div class="k">stations scored</div></div>
+    <div class="kpi"><div class="v" id="k-rows">&mdash;</div><div class="k">rows scored</div></div>
+    <div class="kpi warnbox"><div class="v" id="k-anom">&mdash;</div><div class="k">anomalies &ge; 0.60</div></div>
+    <div class="kpi badbox"><div class="v" id="k-high">&mdash;</div><div class="k">critical &ge; 0.85</div></div>
+    <div class="kpi"><div class="v" id="k-age">&mdash;</div><div class="k">newest data</div></div>
+  </div>
+
+  <div class="stage">
+    <div>
+      <div class="map-tools" id="liveFilters"><label class="search" for="stationSearch">Find a station or line<input id="stationSearch" type="search" placeholder="Station name, stop ID or route" autocomplete="off"></label><label for="scoreFloor">Minimum score<select id="scoreFloor"><option value="0">All scores</option><option value="0.6">Elevated · 0.60+</option><option value="0.85">High · 0.85+</option></select></label><button class="ghost" id="resetFilters">Reset filters</button></div>
+      <p class="filter-summary" id="filterSummary" aria-live="polite">Filters apply to the current API snapshot.</p>
+      <div class="mapwrap">
+        <div id="map" role="application" aria-label="Map of New York City subway stations with current anomaly scores"></div>
+        <div class="maphint" id="maphint" role="button" tabindex="0" aria-label="Enable map panning" hidden><span>Tap to pan the map</span></div>
+      </div>
+
+      <div class="routefilter" id="routefilter" role="group" aria-label="Filter the map by subway line">
+        <span class="rflab">lines</span>
+      </div>
+
+      <div class="maplegend" id="maplegend">
+        <span class="ramp">
+          <span class="bar" id="rampbar"></span>
+          <span class="ticks"><span>0.0</span><span>0.60 alert</span><span>0.85</span><span>1.0</span></span>
+        </span>
+        <span class="sizes" id="sizekey"></span>
+        <span><i class="swatch"></i>station with no score in this window</span>
+      </div>
+      <p class="method-note">Scores describe deviation from a learned baseline. They are not calibrated probabilities or official MTA incident reports.</p>
+    </div>
+
+    <div class="rail">
+      <section class="station-detail" id="stationDetail" aria-label="Selected station observation" hidden></section>
+
+      <div class="card" id="railcard">
+        <h3 id="railtitle">Highest scores in window</h3>
+        <p class="note" id="railnote">Loading live scores…</p>
+        <ul id="anoms" role="group" aria-label="Ranked station observations"></ul>
+        <div id="replayrail" hidden></div>
+      </div>
+      <div class="card" id="healthcard">
+        <h3>Pipeline</h3>
+        <p class="note" id="healthnote">Checking…</p>
+        <p class="model-note" id="modelNote" hidden></p>
+      </div>
+    </div>
+  </div>
+
+  <h2 id="replayHeading">Frozen replay · inspect a recorded scenario</h2>
+  <p class="headline" id="headline">
+    <b>Measured on the frozen labelled replay</b> <span class="n">(216 rows, 16 labelled, 3 incidents, 6 stations &mdash; small by design)</span>:
+    recall@20 <b>1.00</b> vs <b>0.625</b> for the best of three baselines, <b>3/3</b> incidents caught,
+    <b>6.7&nbsp;min</b> average lead time &mdash;
+    <span class="caveat">at the highest false-alarm rate of the four (0.030 vs 0.000&ndash;0.010)</span>.
+    Full table below.
+  </p>
+  <div class="bar" aria-label="Replay controls">
+    <label class="ctl grow" for="inc">replay
+      <select id="inc"></select>
+    </label>
+    <button class="go" id="play" disabled>&#9654;&nbsp; Play incident</button>
+  </div>
+  <div class="replaybox">
+    <div class="serieskey">
+      <span><i style="background:#64ffda"></i>online model (River)</span>
+      <span><i style="background:#7f8b99"></i>rolling z-score</span>
+      <span><i style="background:#4fae86"></i>EWMA</span>
+      <span><i style="background:#c9a227"></i>fixed threshold</span>
+      <span><i style="background:#f85149;opacity:.35;height:9px"></i>labelled incident window</span>
+      <span><i style="background:var(--dim);height:0;border-top:2px dashed var(--dim)"></i>alert threshold 0.60</span>
+    </div>
+    <svg id="chart" viewBox="0 0 900 190" preserveAspectRatio="xMidYMid meet" role="img"
+         aria-label="Per-step peak anomaly score for the online model and three baselines across the 36-step replay"></svg>
+    <p class="cap" id="cap"></p>
+    <div class="replay-controls"><label for="timeline">Replay timeline</label><input id="timeline" type="range" min="0" max="0" value="0" disabled aria-describedby="replayHeading"><output id="replayTime" for="timeline">Artifact loading…</output></div>
+  </div>
+
+  <h2>Replay evaluation &mdash; every number below comes from the frozen artifact</h2>
+  <div class="scroll" tabindex="0" role="region" aria-label="Frozen replay comparison table">
+    <table id="evaltable">
+      <thead><tr>
+        <th>model</th><th>false-alarm rate</th><th>p@20</th><th>recall@20</th>
+        <th>incidents found</th><th>avg lead (min)</th><th>avg time-to-detect (min)</th><th>MRR</th>
+      </tr></thead>
+      <tbody id="evalbody"></tbody>
+    </table>
+  </div>
+  <p class="note" id="evalnote" style="margin-top:10px"></p>
+
+  <footer>
+    <p><b>What is live and what is not.</b> The map, the counters and the station list are read from
+       this deployment&rsquo;s own database, filled by the collector from the public MTA GTFS-Realtime
+       feeds. If the feeds are unreachable or the model has not accumulated enough history yet, this
+       page says so rather than showing anything invented. The replay section is <em>not</em> live: it
+       is a frozen artifact, shipped with this demo under <code>data/replay/</code> and produced by
+       the project repository's <code>scripts/run_replay_eval.py</code>. The same numbers are served
+       by <code>GET api/replay</code>; the page reads the static copy so the measured result is on
+       screen before the first API call returns.</p>
+    <p><b>Honesty about the evaluation.</b> 216 rows, 16 labelled positives, 3 incidents, 6 stations.
+       That is a sanity check on a representative labelled scenario, not a benchmark, and the incident
+       labels are not official MTA annotations. The online model wins on recall and on lead time and
+       loses on false alarms &mdash; both directions are in the table. The replay CSV&rsquo;s
+       <code>stop_id</code> column is synthetic, so station positions here are resolved from the real
+       MTA GTFS by station <em>name</em>. The regressor is linear, so during a sharp change it can
+       predict a negative headway; those values are printed as produced rather than clipped to zero.</p>
+    <p><b>Attribution.</b> Map data and standard raster tiles &copy;
+       <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, served under the
+       <a href="https://operations.osmfoundation.org/policies/tiles/">OpenStreetMap tile usage policy</a>.
+       Zoom is capped at16; only the visible viewport is requested, with normal browser caching and no offline/prefetch function.
+       Subway line geometry, station positions, the line colours (<code>route_color</code>), the
+       bullet text colours (<code>route_text_color</code>) and each station&rsquo;s list of lines are
+       all read from the MTA&rsquo;s public static GTFS feed &mdash; the version this build used is
+       printed in <code>static/data/basemap.json</code>. Nothing in the palette is hand-picked.
+       Map library: <a href="https://leafletjs.com">Leaflet</a> 1.9.4 (BSD-2-Clause), served from this
+       host. This page uses no analytics or browser storage. Map tile requests go to OpenStreetMap.</p>
+  </footer>
+</main>
+
+<script src="vendor/leaflet.js"></script>
+<script>
+(function(){
+"use strict";
+var $ = function(id){ return document.getElementById(id); };
+var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ------------------------------------------------------------- MTA bullets */
+/* route_id -> {n:short name, c:route_color, t:route_text_color, l:long name}.
+   Filled from static/data/basemap.json, which build/build_basemap.py copies
+   verbatim out of the MTA GTFS routes.txt — the official bullet palette, checked
+   against feed_version rather than transcribed by hand. The literals below are
+   the same values, kept only so the badges are right on the very first paint and
+   if basemap.json fails to load. */
+var ROUTES = {
+  A:{n:'A',c:'#0062CF',t:'#FFFFFF'}, C:{n:'C',c:'#0062CF',t:'#FFFFFF'}, E:{n:'E',c:'#0062CF',t:'#FFFFFF'},
+  B:{n:'B',c:'#EB6800',t:'#FFFFFF'}, D:{n:'D',c:'#EB6800',t:'#FFFFFF'}, F:{n:'F',c:'#EB6800',t:'#FFFFFF'},
+  FX:{n:'FX',c:'#EB6800',t:'#FFFFFF'}, M:{n:'M',c:'#EB6800',t:'#FFFFFF'},
+  G:{n:'G',c:'#799534',t:'#FFFFFF'}, J:{n:'J',c:'#8E5C33',t:'#FFFFFF'}, Z:{n:'Z',c:'#8E5C33',t:'#FFFFFF'},
+  L:{n:'L',c:'#7C858C',t:'#FFFFFF'},
+  N:{n:'N',c:'#F6BC26',t:'#000000'}, Q:{n:'Q',c:'#F6BC26',t:'#000000'},
+  R:{n:'R',c:'#F6BC26',t:'#000000'}, W:{n:'W',c:'#F6BC26',t:'#000000'},
+  GS:{n:'S',c:'#7C858C',t:'#FFFFFF'}, FS:{n:'S',c:'#7C858C',t:'#FFFFFF'}, H:{n:'S',c:'#7C858C',t:'#FFFFFF'},
+  '1':{n:'1',c:'#D82233',t:'#FFFFFF'}, '2':{n:'2',c:'#D82233',t:'#FFFFFF'}, '3':{n:'3',c:'#D82233',t:'#FFFFFF'},
+  '4':{n:'4',c:'#009952',t:'#FFFFFF'}, '5':{n:'5',c:'#009952',t:'#FFFFFF'}, '6':{n:'6',c:'#009952',t:'#FFFFFF'},
+  '6X':{n:'6X',c:'#009952',t:'#FFFFFF'},
+  '7':{n:'7',c:'#9A38A1',t:'#FFFFFF'}, '7X':{n:'7X',c:'#9A38A1',t:'#FFFFFF'},
+  SI:{n:'SIR',c:'#08179C',t:'#FFFFFF'}
+};
+var UNKNOWN_ROUTE = {n:'?',c:'#8b949e',t:'#ffffff'};
+function routeMeta(r){ return ROUTES[String(r == null ? '' : r).toUpperCase()] || UNKNOWN_ROUTE; }
+function routeColor(r){ return routeMeta(r).c; }
+/* The real thing is a circle with the line's letter in its own text colour —
+   which is black on the yellow Broadway lines and white everywhere else. Getting
+   that wrong is the first thing a New Yorker notices. */
+function bullet(r, small){
+  var m = routeMeta(r), n = m.n;
+  return '<span class="bul' + (small ? ' sm' : '') + (n.length > 1 ? ' w2' : '') +
+         '" style="background:' + m.c + ';color:' + m.t + '" title="' +
+         esc(n + (m.l ? ' — ' + m.l : '')) + '" aria-label="' + esc(n + ' train') + '">' +
+         esc(n) + '</span>';
+}
+function bullets(list, small){
+  if (!list || !list.length) return '';
+  var seen = {}, out = [];
+  list.forEach(function(r){
+    var n = routeMeta(r).n;
+    if (seen[n]) return;                 /* the three shuttles all display as S */
+    seen[n] = 1;
+    out.push(bullet(r, small));
+  });
+  return out.join('');
+}
+
+/* --------------------------------------------------------- score -> colour */
+/* One continuous ramp, interpolated in linear-light RGB so the mid-tones do not
+   go muddy. The two thresholds the page talks about (0.60 alert, 0.85 critical)
+   are anchor stops, so the gradient bar in the legend and the circles on the map
+   are generated by this one function and cannot drift apart. */
+var RAMP_DARK  = [[0,'#1f6f3d'],[.35,'#3fb950'],[.6,'#d8a01f'],[.85,'#f85149'],[1,'#ff3b30']];
+var RAMP_LIGHT = [[0,'#1a7f37'],[.35,'#2da44e'],[.6,'#bf8700'],[.85,'#cf222e'],[1,'#a40e26']];
+var LIGHT = false; // Portfolio workspace uses a consistent navy surface.
+function ramp(){ return LIGHT ? RAMP_LIGHT : RAMP_DARK; }
+function hex2lin(h){
+  var v = [1,3,5].map(function(i){ return parseInt(h.substr(i,2),16)/255; });
+  return v.map(function(c){ return Math.pow(c, 2.2); });
+}
+function lin2hex(v){
+  return '#' + v.map(function(c){
+    var n = Math.round(Math.max(0, Math.min(1, Math.pow(c, 1/2.2))) * 255);
+    return (n < 16 ? '0' : '') + n.toString(16);
+  }).join('');
+}
+var _ccache = {};
+function scoreColor(s){
+  s = Math.max(0, Math.min(1, Number(s) || 0));
+  var key = (LIGHT ? 'l' : 'd') + Math.round(s * 200);
+  if (_ccache[key]) return _ccache[key];
+  var st = ramp(), i = 0;
+  while (i < st.length - 2 && s > st[i+1][0]) i++;
+  var a = st[i], b = st[i+1];
+  var t = b[0] === a[0] ? 0 : (s - a[0]) / (b[0] - a[0]);
+  var ca = hex2lin(a[1]), cb = hex2lin(b[1]);
+  return (_ccache[key] = lin2hex([0,1,2].map(function(k){ return ca[k] + (cb[k]-ca[k]) * t; })));
+}
+function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g, function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; }); }
+function fmtInt(n){ return (n==null||isNaN(n)) ? '—' : Number(n).toLocaleString('en-US'); }
+function mmss(sec){
+  if (sec == null || isNaN(sec)) return '—';
+  var s = Math.round(sec);
+  /* The online regressor is linear, so mid-shock it can predict a negative
+     headway. That is shown as measured, not clipped — see the note in the footer. */
+  if (s < 0) return '\u2212' + mmss(-s);
+  var m = Math.floor(s / 60);
+  return m ? m + 'm' + String(s % 60).padStart(2, '0') + 's' : s + 's';
+}
+function ago(sec){
+  if (sec == null || isNaN(sec)) return '—';
+  if (sec < 90) return Math.round(sec) + 's ago';
+  if (sec < 5400) return Math.round(sec/60) + 'm ago';
+  return Math.round(sec/3600) + 'h ago';
+}
+
+/* ------------------------------------------------------------------ map */
+/* The system reaches Far Rockaway and Van Cortlandt Park. This box is centred on
+   the middle of the network rather than on Manhattan — centre it on Manhattan in a
+   panel this wide and a third of the map is New Jersey, which has no subway on it.
+   maxBounds still lets you pan out to the ends of every line. */
+var CORE_VIEW = L.latLngBounds([40.600, -74.045], [40.880, -73.735]);
+var COARSE = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+
+var map = L.map('map', {
+  center: CORE_VIEW.getCenter(),
+  zoom: 11,
+  minZoom: 9,
+  maxZoom: 16,                    /* bounded on purpose: fewer tiles asked of the CDN */
+  maxBounds: [[40.44, -74.35], [41.02, -73.62]],
+  maxBoundsViscosity: .85,
+  zoomSnap: .25,                  /* integer-only zoom wastes most of the panel */
+  zoomControl: true,
+  attributionControl: true,
+  preferCanvas: true,             /* hundreds of circles stay smooth */
+  scrollWheelZoom: false,         /* page scroll must not be hijacked */
+  /* On a phone a Leaflet map that takes one-finger drags eats the page scroll and
+     the reader is trapped. Dragging starts off and the shade below turns it on. */
+  dragging: !COARSE
+});
+map.fitBounds(CORE_VIEW, {animate:false});
+map.on('click', function(){ if (!COARSE && !map.scrollWheelZoom.enabled()) map.scrollWheelZoom.enable(); });
+map.on('mouseout', function(){ map.scrollWheelZoom.disable(); });
+
+if (COARSE){
+  var hint = $('maphint');
+  hint.hidden = false;
+  hint.classList.add('on');
+  hint.addEventListener('click', function(){
+    map.dragging.enable();
+    hint.classList.remove('on');
+  });
+}
+
+/* Standard OSM raster, requested only for the visible map. No prefetch/offline cache. */
+var ATTR_OSM = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+var ATTR_MTA = 'lines &amp; stations: <a href="https://www.mta.info/developers">MTA GTFS</a>';
+var OSM_DARKEN = 'invert(1) hue-rotate(192deg) brightness(.78) contrast(.95) saturate(.45)';
+var tileStat = {ok:0,err:0,provider:'osm'};
+document.documentElement.style.setProperty('--tilefilter',OSM_DARKEN);
+var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
+  maxZoom:16,updateWhenIdle:true,keepBuffer:1,crossOrigin:true,
+  referrerPolicy:'strict-origin-when-cross-origin',attribution:ATTR_OSM
+});
+tiles.on('tileload',function(){tileStat.ok++;});
+tiles.on('tileerror',function(){tileStat.err++;});
+tiles.addTo(map);
+map.attributionControl.addAttribution(ATTR_MTA);
+
+/* Reset control — after chasing one station across four boroughs there has to be
+   a way back that is not "reload the page". */
+var ResetView = L.Control.extend({
+  options: {position: 'topleft'},
+  onAdd: function(){
+    var b = L.DomUtil.create('button', 'mapbtn');
+    b.type = 'button';
+    b.textContent = 'Fit city';
+    b.title = 'Back to the default view';
+    L.DomEvent.disableClickPropagation(b);
+    L.DomEvent.on(b, 'click', function(){ map.fitBounds(CORE_VIEW); });
+    return b;
+  }
+});
+map.addControl(new ResetView());
+
+var caseP = map.createPane('linecase'); caseP.style.zIndex = 370;
+var linePane = map.createPane('lines');  linePane.style.zIndex = 380;
+var stopPane = map.createPane('stops');  stopPane.style.zIndex = 400;
+var livePane = map.createPane('scores'); livePane.style.zIndex = 450;
+
+var lineLayer   = L.layerGroup().addTo(map);
+var baseLayer   = L.layerGroup().addTo(map);
+var liveLayer   = L.layerGroup().addTo(map);
+var replayLayer = L.layerGroup();
+
+/* ----------------------------------------------------------- size scales */
+/* Everything on the map is sized by two functions, both of them keyed to the
+   current zoom. Fixed pixel radii are why zoomed-in transit maps turn into a
+   field of identical specks, and fixed line weights are why they turn into mush
+   when you zoom out. */
+function zf(){ return Math.max(.8, Math.min(1.85, .8 + (map.getZoom() - 11) * .17)); }
+/* Deliberately super-linear: a quiet station has to stay a dot or 475 of them
+   merge into one blob, and only a genuine anomaly should get big. Printed in the
+   legend so the reader can check the claim. */
+function radiusFor(s){ return (2.6 + Math.pow(Math.max(s, 0), 1.6) * 13) * zf(); }
+function baseRadius(){ return Math.max(1.6, 2.25 * zf()); }
+function lineWeight(){ var z = map.getZoom(); return z < 11.5 ? 1.9 : z < 13 ? 2.7 : z < 14.5 ? 3.8 : 5.2; }
+
+/* ------------------------------------------------ route filter machinery */
+/* Filtering is by the bullet a rider would look for, so the express variants the
+   GTFS lists separately (6X, 7X, FX) fold into the line they run on. */
+function filterKey(rid){
+  var n = routeMeta(rid).n;
+  return n === '6X' ? '6' : n === '7X' ? '7' : n === 'FX' ? 'F' : n;
+}
+var activeRoutes = {}, filtering = false;
+function routeVisible(rid){ return !filtering || !!activeRoutes[filterKey(rid)]; }
+function anyVisible(list){
+  if (!filtering) return true;
+  for (var i = 0; i < (list || []).length; i++) if (activeRoutes[filterKey(list[i])]) return true;
+  return false;
+}
+
+/* ------------------------------------------------- static base geometry */
+var BM = null;
+var lineShapes = [];    /* {rid, casing, poly} */
+var baseDots  = [];     /* {rid_list, marker} */
+var stationGrid = {};   /* 3-dp lat,lon cell -> [station,...] for live lookups */
+/* Exposed on purpose. `__mtaScanMap` in the console gives the render timings this
+   page claims in its own legend, plus the Leaflet map itself, so anything asserted
+   here can be checked rather than taken on trust. */
+var perf = (window.__mtaScanMap = {map: map});
+
+function gridKey(lat, lon){ return Math.round(lat * 1000) + ',' + Math.round(lon * 1000); }
+
+/* Live features carry the GTFS *platform* coordinate; base dots are the parent
+   station. They agree to a few metres in this feed, but matching on exact equality
+   would still be brittle, so this walks the nine surrounding ~110 m cells and takes
+   the nearest station within 250 m. */
+function stationNear(lat, lon){
+  var best = null, bestD = Infinity;
+  for (var dy = -1; dy <= 1; dy++) for (var dx = -1; dx <= 1; dx++){
+    var cell = stationGrid[(Math.round(lat*1000)+dy) + ',' + (Math.round(lon*1000)+dx)];
+    if (!cell) continue;
+    for (var i = 0; i < cell.length; i++){
+      var s = cell[i];
+      var d = Math.pow((s[1]-lat)*111320, 2) + Math.pow((s[2]-lon)*84500, 2);
+      if (d < bestD){ bestD = d; best = s; }
+    }
+  }
+  return bestD <= 250*250 ? best : null;
+}
+
+function stationPopupHtml(st){
+  return '<div class="pop-n">' + esc(st[0]) + '</div>' +
+         '<div class="pop-h" style="margin:6px 0 0">' + bullets(st[3]) + '</div>' +
+         '<p class="pop-why">No headway was scored here in the selected window. ' +
+         'The station is drawn from the MTA static GTFS so the network is complete ' +
+         'even where the model has nothing to say.</p>';
+}
+
+function drawBase(bm){
+  var t0 = performance.now();
+  lineLayer.clearLayers();
+  baseLayer.clearLayers();
+  lineShapes = [];
+  baseDots = [];
+  stationGrid = {};      /* rebuilt below — a theme redraw must not double it up */
+  var w = lineWeight();
+
+  bm.shapes.forEach(function(sh){
+    var rid = sh[0], col = routeColor(rid), pts = sh[1];
+    /* A dark casing under every line: without it the four trunk colours that share
+       a corridor bleed into one another and into the base map. */
+    var casing = L.polyline(pts, {pane:'linecase', color: LIGHT ? '#ffffff' : '#0b0f15',
+                                  weight: w + 2.4, opacity: .55, lineCap:'round',
+                                  lineJoin:'round', interactive:false});
+    var poly = L.polyline(pts, {pane:'lines', color: col, weight: w, opacity: .92,
+                                lineCap:'round', lineJoin:'round', interactive:false});
+    casing.addTo(lineLayer); poly.addTo(lineLayer);
+    lineShapes.push({rid: rid, casing: casing, poly: poly});
+  });
+
+  var r = baseRadius();
+  bm.stations.forEach(function(s){
+    var m = L.circleMarker([s[1], s[2]], {
+      pane:'stops', radius: r, weight: 0.9,
+      color: LIGHT ? '#5b6570' : '#c9d6e4', opacity: .5,
+      fillColor: LIGHT ? '#8b97a4' : '#8fa8c4', fillOpacity: .55
+    });
+    /* Content as a function, not a string: Leaflet evaluates it when the popup
+       actually opens. Building ~500 base + ~1000 live popup bodies up front on
+       every poll was the single most expensive thing this page did. */
+    m.bindPopup(function(){ return stationPopupHtml(s); }, {closeButton:true, autoPanPadding:[18,18]});
+    m.addTo(baseLayer);
+    /* `covered` = a live circle is already drawn on this station, so the dot under
+       it must stay invisible whatever the route filter later decides. */
+    baseDots.push({routes: s[3], m: m, st: s, covered: false});
+    var k = gridKey(s[1], s[2]);
+    (stationGrid[k] || (stationGrid[k] = [])).push(s);
+  });
+
+  perf.base_ms = Math.round((performance.now() - t0) * 10) / 10;
+  perf.lines = lineShapes.length;
+  perf.stations = baseDots.length;
+}
+
+/* Zoom changes both radii and line weights; doing it in one pass keeps the canvas
+   to a single redraw instead of one per marker. */
+function restyleForZoom(){
+  var t0 = performance.now();
+  var w = lineWeight(), r = baseRadius();
+  lineShapes.forEach(function(l){
+    l.poly.setStyle({weight: w});
+    l.casing.setStyle({weight: w + 2.4});
+  });
+  baseDots.forEach(function(d){ d.m.setRadius(r); });
+  liveMarkers.forEach(function(o){ o.m.setRadius(radiusFor(o.s)); });
+  perf.restyle_ms = Math.round((performance.now() - t0) * 10) / 10;
+}
+map.on('zoomend', restyleForZoom);
+
+/* Leaflet caches the container size and only re-measures on a window resize. The
+   container here changes size without one — the .stage grid collapses to a single
+   column at 960 px, the map's own height is a min(66vh, …) — and a stale cached
+   size shows up as tiles covering only part of the panel while markers sit
+   correctly on the empty remainder. Measured: container 644x468, Leaflet still
+   convinced it was 347x468. A ResizeObserver watches the element itself. */
+if (window.ResizeObserver){
+  new ResizeObserver(function(){
+    map.invalidateSize({debounceMoveend: true, pan: false});
+  }).observe(document.getElementById('map'));
+}
+window.addEventListener('load', function(){ map.invalidateSize({pan:false}); });
+
+/* One place decides whether an unscored station dot is visible, so the route
+   filter, the live redraw and a theme switch cannot fight each other over it. */
+function styleBaseDot(d){
+  if (mode === 'replay'){d.m.setStyle({opacity:.18,fillOpacity:.18});d.m.options.interactive=false;return;}
+  var on = !d.covered && anyVisible(d.routes);
+  d.m.setStyle({opacity: on ? .5 : (d.covered ? 0 : .04),
+                fillOpacity: on ? .55 : (d.covered ? 0 : .03)});
+  d.m.options.interactive = on;
+}
+
+function applyFilter(){
+  if (mode === 'replay') return;
+  var t0 = performance.now();
+  lineShapes.forEach(function(l){
+    var on = routeVisible(l.rid);
+    l.poly.setStyle({opacity: on ? .92 : .07});
+    l.casing.setStyle({opacity: on ? .55 : .04});
+  });
+  baseDots.forEach(function(d){ styleBaseDot(d); });
+  liveMarkers.forEach(function(o){
+    var on = livePointVisible(o.p, o.s);
+    o.m.setStyle(liveStyle(o.s, on));
+    o.m.options.interactive = on;
+  });
+  $('routefilter').classList.toggle('filtering', filtering);
+  drawList(liveItems || []);
+  updateFilterSummary();
+  perf.filter_ms = Math.round((performance.now() - t0) * 10) / 10;
+}
+
+function buildRouteFilter(bm){
+  var box = $('routefilter');
+  /* One button per bullet a rider would recognise, in the MTA's own
+     route_sort_order, and only for lines this map actually draws. */
+  var seen = {}, order = [];
+  bm.shapes.forEach(function(sh){
+    var k = filterKey(sh[0]);
+    if (seen[k]) { seen[k].ids.push(sh[0]); return; }
+    seen[k] = {key:k, ids:[sh[0]], o:(bm.routes[sh[0]] || {}).o || 999};
+    order.push(seen[k]);
+  });
+  order.sort(function(a,b){ return a.o - b.o; });
+
+  order.forEach(function(g){
+    var b = document.createElement('button');
+    b.type = 'button';
+    b.setAttribute('aria-pressed', 'false');
+    var names = g.ids.map(function(id){ return (bm.routes[id] || {}).l || id; });
+    b.title = g.key + ' — ' + names.join(' / ');
+    b.setAttribute('aria-label', 'Show only the ' + g.key + ' line');
+    b.innerHTML = bullet(g.ids[0]);
+    b.onclick = function(){
+      if (activeRoutes[g.key]) delete activeRoutes[g.key]; else activeRoutes[g.key] = 1;
+      b.setAttribute('aria-pressed', activeRoutes[g.key] ? 'true' : 'false');
+      filtering = Object.keys(activeRoutes).length > 0;
+      $('rfclear').hidden = !filtering;
+      applyFilter();
+    };
+    box.appendChild(b);
+  });
+
+  var clear = document.createElement('button');
+  clear.type = 'button';
+  clear.id = 'rfclear';
+  clear.className = 'rfclear';
+  clear.textContent = 'all lines';
+  clear.hidden = true;
+  clear.onclick = function(){
+    activeRoutes = {}; filtering = false; clear.hidden = true;
+    Array.prototype.forEach.call(box.querySelectorAll('button[aria-pressed]'), function(b){
+      b.setAttribute('aria-pressed', 'false');
+    });
+    applyFilter();
+  };
+  box.appendChild(clear);
+}
+
+/* The legend is generated from the same scoreColor()/radiusFor() the map uses, so
+   a change to either shows up in the key automatically. */
+function buildLegend(){
+  var stops = [];
+  for (var i = 0; i <= 20; i++) stops.push(scoreColor(i/20) + ' ' + (i*5) + '%');
+  $('rampbar').style.background = 'linear-gradient(90deg,' + stops.join(',') + ')';
+
+  /* zf() at the opening zoom of 11. The swatches are drawn through the same
+     expression radiusFor() uses, at that one reference zoom, so what the key
+     shows is the size the map actually draws in its default view — and the
+     caption says "at zoom 11" rather than quoting a formula the map then scales. */
+  var z0 = 0.8;
+  $('sizekey').innerHTML = [0.2, 0.6, 0.95].map(function(s){
+    var d = ((2.6 + Math.pow(s, 1.6) * 13) * z0 * 2).toFixed(1);
+    return '<span style="color:' + scoreColor(s) + '">' +
+           '<i style="width:' + d + 'px;height:' + d + 'px"></i>' + s.toFixed(2) + '</span>';
+  }).join('') + '<span class="formula">radius = 2.6 + 13&middot;s<sup>1.6</sup><br>at zoom 11, scaled with zoom</span>';
+
+  if (!COARSE && !$('zoomhint')){
+    var s = document.createElement('span');
+    s.id = 'zoomhint';
+    s.textContent = 'click the map to enable scroll zoom';
+    $('maplegend').appendChild(s);
+  }
+}
+
+/* The ?v= is the basemap file's own `version` field, not a timestamp — keep the
+   two in step. `cache:'force-cache'` is right for a file that never changes in
+   place, but it is also how a browser holding the v1 file keeps serving it after
+   a redeploy, and v1 has no `shapes` key, so the entire base layer silently
+   vanishes. Bumping the query is the fix; the guard below is the seatbelt. */
+fetch('data/basemap.json?v=3', {cache:'force-cache'})
+  .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+  .then(function(bm){
+    if (!bm || !bm.shapes || !bm.stations) throw new Error('basemap.json is older than schema v3');
+    BM = bm;
+    /* Adopt the feed's own palette and names over the built-in literals. */
+    if (bm.routes) Object.keys(bm.routes).forEach(function(k){ ROUTES[k] = bm.routes[k]; });
+    drawBase(bm);
+    buildRouteFilter(bm);
+    perf.feed_version = bm.feed_version;
+    if (window.console && console.info){
+      console.info('[mta-scan] base map: ' + perf.lines + ' polylines + ' + perf.stations +
+                   ' stations drawn in ' + perf.base_ms + ' ms (GTFS ' + bm.feed_version + ')');
+    }
+    /* Live scores may already have landed while this file was in flight. */
+    if (mode === 'live' && liveFeatures.length) drawLive(liveFeatures);
+  })
+  .catch(function(e){
+    /* The map still works — live circles carry their own coordinates — but a
+       silent catch here once hid a real bug for an afternoon, so it says so. */
+    if (window.console && console.warn) console.warn('[mta-scan] base map unavailable:', e);
+  });
+
+buildLegend();
+
+/* ------------------------------------------------------------ live data */
+/* One call per cycle: GET api/state. The service assembles counters, the map
+   FeatureCollection, the ranked anomaly list and its own health into a single
+   response precisely so the page does not need six round-trips before it can
+   show anything. Contract: demos/mta-scan/API.md. */
+var POLL_MS = 30000, timer = null, mode = 'live';
+var liveFeatures = [], liveItems = [];
+var lastPoll = 0, lastSnapshot = null, lastResponseAt = 0, pausedByUser = false, pollRevision = 0, pollController = null, selectedStation = null;
+function livePointVisible(p, score){
+  var query=$('stationSearch').value.trim().toLowerCase();
+  return routeVisible(p.route_id) && score>=Number($('scoreFloor').value) && (!query || [p.stop_name,p.stop_id,p.route_id].join(' ').toLowerCase().indexOf(query)>=0);
+}
+function updateFilterSummary(){
+  if(mode==='replay'){$('filterSummary').textContent='Live filters are paused while the frozen replay owns the map.';return;}
+  var visible=liveFeatures.filter(function(f){var p=f.properties||{};return livePointVisible(p,Number(p.anomaly_score)||0);}).length;
+  var list=liveItems.filter(function(p){return livePointVisible(p,Number(p.anomaly_score)||0);}).length;
+  $('filterSummary').textContent=visible+' of '+liveFeatures.length+' scored map observations · '+list+' of '+liveItems.length+' ranked entries match. Counters above remain window-wide.';
+}
+function modeLabel(){
+  $('mapMode').dataset.mode=mode;
+  $('mapMode').textContent=mode==='replay'?'MAP · FROZEN REPLAY':pausedByUser?'MAP · LIVE SNAPSHOT / UPDATES PAUSED':'MAP · LIVE SOURCE';
+  $('counterScope').textContent=mode==='replay'?'Counters above are the background live-source window, not the frozen replay.':'Counters describe the live-source window; filters below do not change these totals.';
+  $('map').setAttribute('aria-label',mode==='replay'?'Map of the frozen subway replay':'Map of current subway anomaly observations');
+  ['stationSearch','scoreFloor','resetFilters'].forEach(function(id){$(id).disabled=mode==='replay';});
+  $('routefilter').querySelectorAll('button').forEach(function(b){b.disabled=mode==='replay';});
+  updateFilterSummary();
+}
+function inspectStation(p,fromUser){
+  selectedStation={route:p.route_id,stop:p.stop_id};
+  var el=$('stationDetail');el.hidden=false;
+  el.innerHTML='<header><div><p class="eyebrow">Selected observation</p><h3>'+bullet(p.route_id,true)+' '+esc(p.stop_name||p.stop_id)+'</h3></div><button class="ghost" id="closeStation">Close</button></header><dl><div><dt>Anomaly score</dt><dd>'+Number(p.anomaly_score||0).toFixed(3)+'</dd></div><div><dt>Observed headway</dt><dd>'+esc(mmss(p.headway_sec))+'</dd></div><div><dt>Predicted headway</dt><dd>'+esc(mmss(p.predicted_headway_sec))+'</dd></div></dl><p>'+esc((p.reasons||[]).join(' · ')||'No explanation reported for this observation.')+'</p><p>Observed '+esc(p.observed_utc||'time not supplied')+' · '+esc(p.stop_id||'')+'</p>';
+  $('closeStation').onclick=function(){selectedStation=null;el.hidden=true;$('stationSearch').focus();};
+  if(fromUser)el.scrollIntoView({block:'nearest',behavior:'auto'});
+}
+function refreshSelected(){
+  if(!selectedStation||mode!=='live')return;
+  var match=liveFeatures.map(function(f){return f.properties||{};}).find(function(p){return p.route_id===selectedStation.route&&p.stop_id===selectedStation.stop;});
+  if(match)inspectStation(match);else{$('stationDetail').hidden=true;selectedStation=null;}
+}
+
+
+function setState(cls, text){
+  var p = $('statepill');
+  p.className = 'pill ' + (pausedByUser?'p-warm':cls);
+  $('statetext').textContent = pausedByUser ? 'updates paused' : text;
+}
+
+/* The rail is shared between the live list and the replay panel. Remember what
+   the live poll wanted to say so it can be restored when the replay ends. */
+var lastRail = ['note', 'Loading live scores…'];
+function railNote(cls, text){
+  lastRail = [cls, text];
+  if (mode !== 'live') return;
+  $('railnote').className = cls;
+  $('railnote').textContent = text;
+}
+
+function renderKpis(c){
+  $('k-stations').textContent = fmtInt(c && c.stations_reporting);
+  $('k-rows').textContent     = fmtInt(c && c.scored_rows);
+  $('k-anom').textContent     = fmtInt(c && c.anomalies);
+  $('k-high').textContent     = fmtInt(c && c.anomalies_high);
+  /* A zero painted amber or red reads as an alarm. Colour only when there is
+     something to be alarmed about. */
+  $('k-anom').parentNode.className = 'kpi' + ((c && c.anomalies)      ? ' warnbox' : '');
+  $('k-high').parentNode.className = 'kpi' + ((c && c.anomalies_high) ? ' badbox'  : '');
+}
+
+var liveMarkers = [];   /* {m, s, rid} — kept so zoom and filter can restyle in place */
+
+function liveStyle(s, visible){
+  var c = scoreColor(s);
+  if (visible === false) return {opacity:.05, fillOpacity:.03, color:c, fillColor:c};
+  return {
+    color: c, fillColor: c,
+    weight: s >= .6 ? 1.6 : .9,
+    opacity: s >= .6 ? 1 : .65,
+    /* Kept translucent on purpose. During a real disruption — and during the
+       model's cold start, when most stops legitimately tie at 1.00 — hundreds of
+       these overlap; an opaque fill turns that into one red shape, while a light
+       fill with a crisp ring still reads as individual stations. */
+    fillOpacity: .1 + Math.min(1, Math.max(0, s)) * .28
+  };
+}
+
+function livePopupHtml(p, s, st){
+  /* The feature carries the one route whose headway peaked here; the station's
+     full service comes from the GTFS base map when the two can be matched. */
+  var others = st ? (st[3] || []).filter(function(r){
+    return routeMeta(r).n !== routeMeta(p.route_id).n; }) : [];
+  var resid = (p.residual_sec == null) ? null
+    : (p.residual_sec > 0 ? '+' : '') + mmss(p.residual_sec);
+  return '<div class="pop-h">' + bullet(p.route_id) +
+           '<span class="pop-n">' + esc(p.stop_name || p.stop_id) + '</span></div>' +
+         (others.length ? '<div class="pop-h" style="margin:-1px 0 6px">' +
+             '<span style="font-size:11px;color:var(--dim)">also here</span>' +
+             bullets(others, true) + '</div>' : '') +
+         '<div class="pop-row"><span>anomaly score</span>' +
+           '<b class="pop-score" style="color:' + scoreColor(s) + '">' + s.toFixed(3) + '</b></div>' +
+         '<div class="pop-row"><span>headway now</span><b>' + mmss(p.headway_sec) + '</b></div>' +
+         '<div class="pop-row"><span>model predicted</span><b>' +
+           mmss(p.predicted_headway_sec) + '</b></div>' +
+         (resid ? '<div class="pop-row"><span>residual</span><b>' + resid + '</b></div>' : '') +
+         '<p class="pop-why">' +
+           (p.reasons && p.reasons.length ? esc(p.reasons.join(' · ')) + '<br>' : '') +
+           'observed ' + esc(p.observed_utc || '—') + '</p>';
+}
+
+function drawLive(features){
+  var t0 = performance.now();
+  liveLayer.clearLayers();
+  liveMarkers = [];
+  /* high scores drawn last so they sit on top of the quiet ones */
+  features = features.slice().sort(function(a,b){
+    return (a.properties.anomaly_score||0) - (b.properties.anomaly_score||0);
+  });
+  var covered = {};
+  features.forEach(function(f){
+    var c = f.geometry && f.geometry.coordinates, p = f.properties || {};
+    if (!c) return;
+    var s = Number(p.anomaly_score) || 0;
+    var lat = c[1], lon = c[0];
+    var st = stationNear(lat, lon);
+    if (st) covered[gridKey(st[1], st[2])] = 1;
+    var m = L.circleMarker([lat, lon], L.extend({pane:'scores', radius: radiusFor(s)},
+                                                liveStyle(s, livePointVisible(p, s))));
+    m.bindPopup(function(){ return livePopupHtml(p, s, st); },
+                {closeButton:true, autoPanPadding:[18,18]});
+    m.addTo(liveLayer);
+    m.options.interactive=livePointVisible(p,s);
+    m.on('click',function(){inspectStation(p,true);});
+    liveMarkers.push({m:m,s:s,rid:p.route_id,p:p});
+  });
+  /* A base dot underneath a scored circle is a second, wrong click target and a
+     grey ring around every anomaly. Hide the ones that are now represented. */
+  baseDots.forEach(function(d){
+    d.covered = !!covered[gridKey(d.st[1], d.st[2])];
+    styleBaseDot(d);
+  });
+  perf.live_ms = Math.round((performance.now() - t0) * 10) / 10;
+  perf.live_points = liveMarkers.length;
+  updateFilterSummary();
+  refreshSelected();
+}
+
+/* The service already ranks and trims this list, so it is rendered in the order
+   it arrives rather than re-sorted here. */
+function drawList(items){
+  var ul = $('anoms');
+  ul.innerHTML = '';
+  items=items.filter(function(p){return livePointVisible(p,Number(p.anomaly_score)||0);});
+  items.forEach(function(a){
+    var s = Number(a.anomaly_score) || 0;
+    var li = document.createElement('li');
+    li.tabIndex = 0;
+    li.setAttribute('role','button');
+    li.setAttribute('aria-label','Inspect '+(a.stop_name||a.stop_id)+' on route '+a.route_id);
+    li.innerHTML =
+      '<span class="st">' + bullet(a.route_id, true) + ' ' +
+        esc(a.stop_name || a.stop_id) + '</span>' +
+      '<span class="sc" style="color:' + scoreColor(s) + '">' + s.toFixed(2) + '</span>' +
+      '<span class="sub">headway ' + mmss(a.headway_sec) + ' &middot; predicted ' +
+        mmss(a.predicted_headway_sec) +
+        (a.reasons && a.reasons.length ? ' &middot; ' + esc(a.reasons[0]) : '') + '</span>';
+    var fly = function(){
+      if (mode !== 'live') backToLive();
+      if (a.lat != null && a.lon != null) map.setView([a.lat, a.lon], 14);
+      inspectStation(a,true);
+    };
+    li.onclick = fly;
+    li.onkeydown = function(e){ if (e.key==='Enter'||e.key===' '){ e.preventDefault(); fly(); } };
+    ul.appendChild(li);
+  });
+  if(!items.length){var li=document.createElement('li');li.textContent=liveItems.length?'No ranked stations match the selected filters.':'No ranked observations in this snapshot.';ul.appendChild(li);}
+  return items.length;
+}
+
+function renderPipeline(st){
+  var bits = [];
+  var lv = st.live || {}, sto = st.storage || {};
+  if (lv.feeds_total != null) bits.push(lv.feeds_ok + '/' + lv.feeds_total + ' GTFS-RT feeds answering');
+  if (lv.cycles != null) bits.push(fmtInt(lv.cycles) + ' collector cycles');
+  if (lv.poll_seconds != null) bits.push('polling every ' + Math.round(lv.poll_seconds) + 's');
+  /* Retention is shown because unbounded growth is the one thing that could take
+     the rest of the box down with it; the number should be visibly bounded. */
+  if (sto.rows != null) bits.push(fmtInt(sto.rows) + ' rows on disk');
+  if (sto.bytes_human) bits.push(sto.bytes_human + (sto.max_bytes_human ? ' of ' + sto.max_bytes_human + ' cap' : ''));
+  if (sto.retention_hours != null) bits.push(sto.retention_hours + ' h retention');
+  $('healthnote').className = 'note';
+  $('healthnote').textContent = bits.join(' · ') || 'no telemetry reported';
+  var model=st.model||{};$('modelNote').hidden=model.maturity!=='learning';$('modelNote').textContent=model.maturity_note||'The model is still collecting station history; tied scores may not support a useful ranking yet.';
+}
+
+function getJson(url, signal){
+  return fetch(url,{cache:'no-store',signal:signal}).then(function(r){ return r.ok ? r.json() : null; }).catch(function(){ return null; });
+}
+
+var STATE_PILL = { live:'p-live', warming_up:'p-warm', stale:'p-warm', paused:'p-warm' };
+var STATE_TEXT = { live:'live', warming_up:'warming up', stale:'stale', paused:'paused' };
+
+function pollLive(){
+  lastPoll = Date.now();
+  var request=++pollRevision;
+  if(pollController)pollController.abort();
+  pollController=new AbortController();var own=pollController;
+  var timeout=setTimeout(function(){own.abort();},15000);
+  $('refresh').disabled=true;$('refresh').textContent='Refreshing…';
+  var win = $('win').value;
+  getJson('api/state?window=' + encodeURIComponent(win) + '&top=30',own.signal).then(function(st){
+    if(request!==pollRevision)return;
+    lastResponseAt=Date.now();
+
+    if (!st || !st.live){
+      lastSnapshot=null;
+      $('freshness').textContent='Live API unavailable. No observations have been substituted.';
+      setState('p-off','live feed unreachable');
+      railNote('note bad',
+        'The API behind this page is not answering right now. Nothing on the map is being ' +
+        'substituted for it — the incident replay below is a frozen artifact and still works.');
+      $('healthnote').className = 'note bad';
+      $('healthnote').textContent = 'API unreachable.';
+      renderKpis(null);
+      $('k-age').textContent = '—';
+      liveLayer.clearLayers();
+      liveMarkers = [];
+      liveFeatures = [];liveItems=[];
+      if(mode==='live'){drawList([]);$('stationDetail').hidden=true;selectedStation=null;}
+      $('modelNote').hidden=true;modeLabel();
+      /* Unscored station dots hide themselves under the scored circle that covers
+         them. Clearing the scored layer without clearing those flags leaves an
+         empty map: no live circles and no stations either, which reads as "the
+         subway vanished" rather than "the API is down". */
+      baseDots.forEach(function(d){ d.covered = false; styleBaseDot(d); });
+      return;
+    }
+
+    lastSnapshot=st;
+    $('freshness').textContent=(mode==='replay'?'Background feed: ':'')+(st.live.feeds_ok==null?'—':st.live.feeds_ok)+'/'+(st.live.feeds_total==null?'—':st.live.feeds_total)+' feeds · latest observation '+ago(st.live.last_observed_age_sec)+' at refresh · response '+new Date(lastResponseAt).toLocaleTimeString();
+    renderKpis(st.counters);
+    $('k-age').textContent = ago(st.live.last_observed_age_sec);
+
+    liveFeatures = (st.map && st.map.features) ? st.map.features : [];
+    liveItems    = st.anomalies || [];
+    if (mode === 'live'){ drawLive(liveFeatures); drawList(liveItems); }
+
+    var s = st.live.state || 'live';
+    setState(STATE_PILL[s] || 'p-warm', STATE_TEXT[s] || s);
+
+    /* The API writes `note` for a visitor to read; when it is set it is the more
+       accurate explanation than anything this page could infer, so it wins. */
+    if (st.live.note){
+      railNote('note warn', st.live.note);
+    } else if (!liveItems.length){
+      railNote('note', 'No station is scoring above the noise floor in this window right now. ' +
+                       'That is a normal result, not an error — press Play incident to see what ' +
+                       'a flagged one looks like.');
+    } else {
+      var c = st.counters || {};
+      var note = 'Top ' + liveItems.length + ' of ' + fmtInt(c.stations_reporting) +
+                 ' stations reporting in this window. Click one to zoom.';
+      /* Early in a run every flagged station tends to sit at the ceiling score.
+         Stating it plainly is better than letting a visitor conclude the scale is
+         fake. Every number here comes straight from the API; no mechanism is claimed.
+
+         The trigger is the model's own maturity, NOT a cycle count. Each stop is
+         scored against its own rolling baseline, so what matters is headways per
+         route-stop, and that ratio climbs far more slowly than cycles do: a
+         measured cold start reached 60 cycles with a median of one headway per
+         stop and every top-200 score tied at 1.00. A `cycles < 60` trigger would
+         therefore have dropped this caveat while the list was still degenerate.
+
+         The tie count is computed from the rows actually on screen, not from
+         c.anomalies vs c.anomalies_high. Those are window-wide totals and they
+         drift apart (measured: 304 vs 292) while the visible top-30 was still
+         30 identical 1.00s — an equality test on them hides the caveat exactly
+         when the list in front of the reader is most degenerate. */
+      var mm = st.model || {};
+      var shown = liveItems.map(function(it){ return it.anomaly_score; });
+      var distinct = shown.filter(function(v, i){ return shown.indexOf(v) === i; }).length;
+      var tied = shown.length >= 3 && distinct <= Math.max(2, Math.floor(shown.length / 10));
+      if (mm.maturity === 'learning' && tied){
+        note += ' Note: ' +
+                (distinct === 1
+                   ? 'every one of these ' + shown.length + ' stations is on the same score'
+                   : 'these ' + shown.length + ' stations share only ' + distinct + ' distinct scores') +
+                '. Only ' + (mm.baseline_ready_pct != null ? mm.baseline_ready_pct : 0) +
+                '% of tracked stations have enough history for a baseline yet' +
+                (mm.mean_headways_per_route_stop != null
+                   ? ' (averaging ' + mm.mean_headways_per_route_stop + ' headways each)'
+                   : '') +
+                ', and each stop is scored against its own baseline — so the ranking is ' +
+                'mostly ties until those fill in. The measured replay below is unaffected.';
+      }
+      railNote('note', note);
+    }
+
+    renderPipeline(st);modeLabel();
+  }).finally(function(){clearTimeout(timeout);if(request===pollRevision){pollController=null;$('refresh').disabled=false;$('refresh').textContent='Refresh now';}});
+}
+
+function startPolling(){
+  stopPolling();
+  if(pausedByUser||document.hidden)return;
+  /* A tab can flip visible/hidden many times a minute. Without this guard every
+     flip fired a fresh round of API calls, turning a 30 s poll into a 6 s one. */
+  if (Date.now() - lastPoll >= POLL_MS) pollLive();
+  timer = setInterval(pollLive, POLL_MS);
+}
+function stopPolling(){ if (timer){ clearInterval(timer); timer = null; } }
+document.addEventListener('visibilitychange', function(){
+  if (document.hidden){stopPolling();stopReplay();}else startPolling();      /* be kind to a 4-core VPS */
+});
+$('win').onchange = function(){ pollLive(); };
+$('refresh').onclick=pollLive;
+$('pauseLive').onclick=function(){pausedByUser=!pausedByUser;this.setAttribute('aria-pressed',String(pausedByUser));this.textContent=pausedByUser?'Resume updates':'Pause updates';if(pausedByUser){stopPolling();setState('p-warm','updates paused');}else{pollLive();startPolling();}modeLabel();};
+$('stationSearch').addEventListener('input',applyFilter);$('scoreFloor').onchange=applyFilter;
+$('resetFilters').onclick=function(){$('stationSearch').value='';$('scoreFloor').value='0';if($('rfclear'))$('rfclear').click();else applyFilter();};
+document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!$('stationDetail').hidden){$('closeStation').click();}});
+$('maphint').addEventListener('keydown',function(event){if(event.key==='Enter'||event.key===' '){event.preventDefault();this.click();}});
+window.addEventListener('pagehide',function(){stopPolling();stopReplay();pollRevision++;if(pollController)pollController.abort();});
+
+
+/* ---------------------------------------------------------- replay data */
+var RP = null, incIdx = 0, playTimer = null, cursor = -1;
+
+/* The SVG is drawn in CSS pixels of the current container width rather than a
+   fixed 900-unit box: at 375 px a 900-unit viewBox would shrink every label to
+   under 4 px and the chart would be unreadable on a phone. */
+var VBW = 900, VBH = 190;
+function chartGeom(){
+  return {x0:34, x1:VBW-16, y0:14, y1:VBH-40, n:(RP ? RP.steps.length : 36)};
+}
+function syncViewBox(){
+  var w = Math.round($('chart').getBoundingClientRect().width) || 900;
+  VBW = Math.max(320, Math.min(900, w));
+  VBH = VBW < 560 ? 170 : 190;
+  $('chart').setAttribute('viewBox', '0 0 ' + VBW + ' ' + VBH);
+}
+function sx(i){ var g=chartGeom(); return g.x0 + (g.x1-g.x0) * (i/(g.n-1)); }
+function sy(v){ var g=chartGeom(); return g.y1 - (g.y1-g.y0) * Math.max(0, Math.min(1, v)); }
+
+function drawChart(){
+  if (!RP) return;
+  syncViewBox();
+  var narrow = VBW < 560;
+  var g = chartGeom(), svg = $('chart'), out = [];
+  /* incident windows */
+  RP.incidents.forEach(function(inc){
+    var a = sx(inc.first_step), b = sx(inc.last_step);
+    out.push('<rect x="'+a.toFixed(1)+'" y="'+g.y0+'" width="'+Math.max(2,b-a).toFixed(1)+
+             '" height="'+(g.y1-g.y0)+'" fill="#f85149" opacity=".12"></rect>');
+    out.push('<text x="'+((a+b)/2).toFixed(1)+'" y="'+(g.y0+11)+'" fill="currentColor" opacity=".55" ' +
+             'font-size="9.5" text-anchor="middle">'+esc(inc.routes.join('/'))+'</text>');
+  });
+  /* axes */
+  [0,.5,1].forEach(function(v){
+    out.push('<line x1="'+g.x0+'" x2="'+g.x1+'" y1="'+sy(v).toFixed(1)+'" y2="'+sy(v).toFixed(1)+
+             '" stroke="currentColor" opacity=".16"></line>');
+    out.push('<text x="'+(g.x0-7)+'" y="'+(sy(v)+3.5).toFixed(1)+'" fill="currentColor" opacity=".55" ' +
+             'font-size="10" text-anchor="end">'+v.toFixed(1)+'</text>');
+  });
+  out.push('<line x1="'+g.x0+'" x2="'+g.x1+'" y1="'+sy(.6).toFixed(1)+'" y2="'+sy(.6).toFixed(1)+
+           '" stroke="currentColor" opacity=".5" stroke-dasharray="4 4"></line>');
+  /* on a phone this label would sit on top of the lines; the key above says it too */
+  if (!narrow){
+    out.push('<text x="'+(g.x1)+'" y="'+(sy(.6)-5).toFixed(1)+'" fill="currentColor" opacity=".55" ' +
+             'font-size="9.5" text-anchor="end">alert threshold 0.60</text>');
+  }
+
+  var series = [
+    ['peak_fixed',  '#c9a227', 1.4],
+    ['peak_ewma',   '#4fae86', 1.4],
+    ['peak_zscore', '#7f8b99', 1.4],
+    ['peak',        '#64ffda', 2.4]
+  ];
+  series.forEach(function(s){
+    var d = RP.steps.map(function(st,i){
+      return (i?'L':'M') + sx(i).toFixed(1) + ' ' + sy(st[s[0]]).toFixed(1);
+    }).join(' ');
+    out.push('<path d="'+d+'" fill="none" stroke="'+s[1]+'" stroke-width="'+s[2]+
+             '" stroke-linejoin="round" stroke-linecap="round"></path>');
+  });
+
+  /* x labels: first, middle, last timestamps */
+  (narrow ? [0, g.n-1] : [0, Math.floor(g.n/2), g.n-1]).forEach(function(i){
+    var t = RP.steps[i].ts.slice(11,16) + 'Z';
+    out.push('<text x="'+sx(i).toFixed(1)+'" y="'+(g.y1+15)+'" fill="currentColor" opacity=".55" ' +
+             'font-size="10" text-anchor="'+(i===0?'start':i===g.n-1?'end':'middle')+'">'+t+'</text>');
+  });
+  out.push('<text x="0" y="'+(g.y1+33)+'" fill="currentColor" opacity=".55" font-size="10">' +
+           (narrow ? '36 steps &times; 5 min &middot; 6 stations &middot; y = peak score'
+                   : '36 steps &times; 5 min, 6 stations, replayed sequentially &mdash; ' +
+                     'y = highest anomaly score that step') + '</text>');
+  out.push('<g id="cursor"></g>');
+  svg.innerHTML = out.join('');
+}
+
+function moveCursor(i){
+  var g = chartGeom(), c = document.getElementById('cursor');
+  if (!c) return;
+  if (i < 0){ c.innerHTML = ''; return; }
+  var x = sx(i).toFixed(1), st = RP.steps[i];
+  c.innerHTML = '<line x1="'+x+'" x2="'+x+'" y1="'+g.y0+'" y2="'+g.y1+
+                '" stroke="currentColor" opacity=".6" stroke-width="1"></line>' +
+                '<circle cx="'+x+'" cy="'+sy(st.peak).toFixed(1)+'" r="4" fill="#64ffda" ' +
+                'style="stroke:var(--panel)" stroke-width="1.5"></circle>';
+}
+
+function drawReplayStep(i){
+  var st = RP.steps[i];
+  replayLayer.clearLayers();
+  st.stations.forEach(function(s){
+    var sc = s.score, c = scoreColor(sc);
+    L.circleMarker([s.lat, s.lon], {
+      pane:'scores',
+      /* only six stations here, so they can be drawn larger than the live layer */
+      radius: (5 + Math.pow(Math.max(sc, 0), 1.3) * 19) * Math.max(.85, Math.min(1.5, zf())),
+      color: c, weight: 1.8, opacity: 1,
+      fillColor: c, fillOpacity: sc >= .6 ? .5 : .2
+    }).bindTooltip(bullet(s.route, true) + ' ' + esc(s.name) + ' · ' + sc.toFixed(2),
+                   {direction:'top', permanent: sc >= .6}).addTo(replayLayer);
+  });
+  moveCursor(i);
+  cursor = i;
+  $('timeline').value=i;$('timeline').setAttribute('aria-valuetext',st.ts+'; peak score '+st.peak);$('replayTime').textContent=st.ts.slice(0,10)+' · '+st.ts.slice(11,16)+' UTC';
+  renderReplayRail(st);
+
+  var worst = st.stations.slice().sort(function(a,b){ return b.score - a.score; })[0];
+  var when = st.ts.slice(11,16) + ' UTC';
+  var tag = st.incident_id
+    ? '<b style="color:var(--bad)">' + esc(st.incident_title || st.incident_id) + '</b>'
+    : '<span>no labelled incident active</span>';
+  $('cap').innerHTML =
+    when + ' &middot; ' + tag + '<br>' +
+    'peak: <b>' + esc(worst.name) + '</b> (' + esc(worst.route) + ') score <b style="color:' +
+      scoreColor(worst.score) + '">' + worst.score.toFixed(2) + '</b>' +
+    ' &middot; headway ' + mmss(worst.headway_sec) + ' vs predicted ' + mmss(worst.predicted_sec) +
+    (worst.reasons && worst.reasons.length ? '<br>reasons: ' + esc(worst.reasons.join(', ')) : '');
+}
+
+/* While the replay owns the map, the rail explains the replay instead of showing a
+   live list the map is no longer drawing. */
+function renderReplayRail(st){
+  /* the header follows the step, not the dropdown, so scrubbing stays truthful */
+  var inc = null;
+  RP.incidents.forEach(function(x){ if (x.id === st.incident_id) inc = x; });
+  var ranked = st.stations.slice().sort(function(a,b){ return b.score - a.score; });
+  var head = inc
+    ? '<b style="color:var(--fg)">' + esc(inc.title) + '</b><br>' +
+      'route ' + esc(inc.routes.join(', ')) + ' &middot; peak score ' +
+      Number(inc.peak_score).toFixed(2) + ' &middot; first crossed 0.60 <b>' +
+      Math.abs(inc.detection_delay_min) + ' min ' +
+      (inc.detection_delay_min <= 0 ? 'before' : 'after') + '</b> the labelled window opened'
+    : '<b style="color:var(--fg)">' + esc(st.ts.slice(11,16)) + ' UTC</b><br>' +
+      'No labelled incident at this step &mdash; this is what the six stations look like ' +
+      'under normal service.';
+  var html =
+    '<p class="note" style="margin-bottom:8px">' + head + '</p>' +
+    '<ul style="list-style:none;margin:0;padding:0">' +
+    ranked.map(function(s){
+      return '<li style="display:grid;grid-template-columns:1fr auto;gap:1px 10px;' +
+             'padding:6px 2px;border-top:1px solid var(--line)">' +
+             '<span class="st">' + bullet(s.route, true) + ' ' + esc(s.name) + '</span>' +
+             '<span class="sc" style="color:' + scoreColor(s.score) + '">' + s.score.toFixed(2) + '</span>' +
+             '<span class="sub" style="grid-column:1/-1">headway ' + mmss(s.headway_sec) +
+               ' &middot; predicted ' + mmss(s.predicted_sec) +
+               (s.label ? ' &middot; <span style="color:var(--bad)">labelled incident</span>' : '') +
+             '</span></li>';
+    }).join('') + '</ul>';
+  $('replayrail').innerHTML = html;
+}
+
+var replayBounds = null;
+function enterReplay(){
+  if (mode === 'replay') return;
+  mode = 'replay';
+  $('stationDetail').hidden=true;modeLabel();
+  map.removeLayer(liveLayer);
+  replayLayer.addTo(map);
+  /* The replay owns the map for six stations; leaving 475 live-mode dots under it
+     invites clicking one and getting a live popup during an offline replay. */
+  baseDots.forEach(function(d){
+    d.m.setStyle({opacity:.18, fillOpacity:.18});
+    d.m.options.interactive = false;
+  });
+  $('backlive').hidden = false;
+  $('railtitle').textContent = 'Incident replay (offline artifact)';
+  $('railnote').hidden = true;
+  $('anoms').hidden = true;
+  $('replayrail').hidden = false;
+  if (!replayBounds && RP){
+    replayBounds = L.latLngBounds(RP.steps[0].stations.map(function(s){ return [s.lat, s.lon]; })).pad(0.3);
+  }
+  if (replayBounds) map.fitBounds(replayBounds, {animate:false});
+}
+function backToLive(){
+  mode = 'live';
+  stopReplay();
+  map.removeLayer(replayLayer);
+  liveLayer.addTo(map);
+  $('backlive').hidden = true;
+  $('railtitle').textContent = 'Highest scores in window';
+  $('replayrail').hidden = true;
+  $('railnote').hidden = false;
+  $('anoms').hidden = false;
+  railNote(lastRail[0], lastRail[1]);
+  moveCursor(-1);
+  $('cap').innerHTML = 'Replay stopped. The map is showing live scores again.';
+  drawLive(liveFeatures);      /* styleBaseDot() restores the dots for live mode */
+  drawList(liveItems);modeLabel();
+  map.fitBounds(CORE_VIEW, {animate:false});
+}
+function stopReplay(){
+  if (playTimer){ clearInterval(playTimer); playTimer = null; }
+  $('play').innerHTML = '&#9654;&nbsp; Play incident';
+  $('play').disabled = false;
+}
+
+function playIncident(){
+  if (!RP) return;
+  if (playTimer){ stopReplay(); return; }
+  enterReplay();
+  var inc = RP.incidents[incIdx];
+  /* three quiet steps of run-up so the rise is visible — but never step into a
+     neighbouring incident's window, which would mislabel what is on screen. */
+  var from = Math.max(0, inc.first_step - 3);
+  while (from < inc.first_step && RP.steps[from].incident_id &&
+         RP.steps[from].incident_id !== inc.id) from++;
+  var to = inc.last_step;
+  var i = from;
+  $('play').innerHTML = '&#9632;&nbsp; Stop';
+  drawReplayStep(i);
+  playTimer = setInterval(function(){
+    i++;
+    if (i > to){
+      stopReplay();
+      $('cap').innerHTML += '<br><b>Replay finished.</b> Pick another incident, drag across the ' +
+        'chart to scrub, or press <b>Back to live</b>.';
+      return;
+    }
+    drawReplayStep(i);
+  }, REDUCED ? 900 : 550);
+}
+
+$('timeline').oninput=function(){if(!RP)return;enterReplay();stopReplay();drawReplayStep(Number(this.value));};
+$('play').onclick = playIncident;
+$('backlive').onclick = backToLive;
+$('inc').onchange = function(){
+  incIdx = Number(this.value) || 0;
+  if (mode === 'replay'){ stopReplay(); playIncident(); }
+};
+
+/* scrub the chart with pointer / keyboard */
+function scrubAt(clientX){
+  if (!RP) return;
+  var svg = $('chart'), r = svg.getBoundingClientRect(), g = chartGeom();
+  var vx = (clientX - r.left) / r.width * VBW;
+  var i = Math.round((vx - g.x0) / (g.x1 - g.x0) * (g.n - 1));
+  i = Math.max(0, Math.min(g.n - 1, i));
+  if (mode !== 'replay') enterReplay();
+  stopReplay();
+  drawReplayStep(i);
+}
+var resizeT = null;
+window.addEventListener('resize', function(){
+  clearTimeout(resizeT);
+  resizeT = setTimeout(function(){
+    var keep = cursor;
+    drawChart();
+    if (keep >= 0) moveCursor(keep);
+  }, 180);
+});
+
+$('chart').addEventListener('pointerdown', function(e){ scrubAt(e.clientX); });
+$('chart').addEventListener('pointermove', function(e){ if (e.buttons === 1) scrubAt(e.clientX); });
+
+/* -------------------------------------------------------- eval + boot */
+/* Everything below is read from static/data/replay.json, baked by
+   build/build_replay.py from the same artifacts GET /api/replay serves. Static
+   on purpose: the replay is frozen, so the page can show a measured result on
+   first paint and keep showing it even when the live service is down. */
+
+function renderEval(RP){
+  var body = $('evalbody'), m = RP.metrics, ds = RP.dataset;
+  body.innerHTML = '';
+  var far = RP.order.map(function(k){ return m[k].false_alarm_rate; });
+  var r20 = RP.order.map(function(k){ return m[k].recall_at_k['r@20']; });
+  var maxR20 = Math.max.apply(null, r20), maxFar = Math.max.apply(null, far);
+  var biggestTie = 0;
+
+  RP.order.forEach(function(key, i){
+    var x = m[key];
+    if (!x) return;
+    if (x.ties && x.ties.largest_tie > biggestTie) biggestTie = x.ties.largest_tie;
+    var tr = document.createElement('tr');
+    if (key === 'online_model') tr.className = 'me';
+    tr.innerHTML =
+      '<td>' + esc(RP.labels[key] || key) + '</td>' +
+      '<td' + (far[i] === maxFar ? ' class="worst"' : '') + '>' + x.false_alarm_rate.toFixed(3) + '</td>' +
+      '<td>' + x.precision_at_k['p@20'].toFixed(3) + '</td>' +
+      '<td' + (r20[i] === maxR20 ? ' class="best"' : '') + '>' + x.recall_at_k['r@20'].toFixed(3) + '</td>' +
+      '<td>' + x.detected_incidents + ' / ' + x.total_incidents + '</td>' +
+      '<td>' + x.average_lead_time_min.toFixed(1) + '</td>' +
+      '<td>' + x.average_time_to_detect_min.toFixed(1) + '</td>' +
+      '<td>' + x.mean_reciprocal_rank.toFixed(3) + '</td>';
+    body.appendChild(tr);
+  });
+
+  $('evalnote').innerHTML =
+    'Dataset: <code>' + esc(RP.dataset_path) + '</code> &mdash; <b>' + ds.rows + ' rows</b>, ' +
+    ds.positive_rows + ' labelled positive, ' + ds.routes + ' routes, ' + ds.stops + ' stations, ' +
+    ds.incidents + ' incidents. Alert threshold 0.60. Green marks the best recall@20, amber the ' +
+    'worst false-alarm rate &mdash; both are the online model, which is the whole trade-off. ' +
+    (biggestTie > 1
+      ? 'Ranking metrics are tie-aware (averaged across equal-score blocks); the baselines produce ' +
+        'large ties &mdash; up to ' + biggestTie + ' rows on one score &mdash; so ignoring that ' +
+        'would flatter them. '
+      : '') +
+    'A sample this small cannot separate models with confidence: it is a sanity evaluation, not a ' +
+    'benchmark, and the incident labels are not official MTA annotations.';
+}
+
+/* The strip at the top is generated from the same file, so it cannot drift away
+   from the table below it. The HTML holds the same numbers as a no-JS fallback. */
+function renderHeadline(RP){
+  var m = RP.metrics, ds = RP.dataset, on = m.online_model;
+  var baselines = RP.order.filter(function(k){ return k !== 'online_model'; });
+  var bestBaseR20 = Math.max.apply(null, baselines.map(function(k){ return m[k].recall_at_k['r@20']; }));
+  var fars = RP.order.map(function(k){ return m[k].false_alarm_rate; });
+  var worstFar = Math.max.apply(null, fars);
+  var otherFars = baselines.map(function(k){ return m[k].false_alarm_rate; });
+
+  $('headline').innerHTML =
+    '<b>Measured on the frozen labelled replay</b> <span class="n">(' + ds.rows + ' rows, ' +
+      ds.positive_rows + ' labelled, ' + ds.incidents + ' incidents, ' + ds.stops +
+      ' stations &mdash; small by design)</span>: recall@20 <b>' +
+      on.recall_at_k['r@20'].toFixed(2) + '</b> vs <b>' + bestBaseR20.toFixed(3) +
+      '</b> for the best of three baselines, <b>' + on.detected_incidents + '/' +
+      on.total_incidents + '</b> incidents caught, <b>' +
+      on.average_lead_time_min.toFixed(1) + '&nbsp;min</b> average lead time &mdash; ' +
+    '<span class="caveat">' +
+      (on.false_alarm_rate === worstFar ? 'at the highest false-alarm rate of the four' : 'false-alarm rate') +
+      ' (' + on.false_alarm_rate.toFixed(3) + ' vs ' +
+      Math.min.apply(null, otherFars).toFixed(3) + '&ndash;' +
+      Math.max.apply(null, otherFars).toFixed(3) + ')</span>. Full table below.';
+}
+
+fetch('data/replay.json')
+  .then(function(r){ return r.ok ? r.json() : Promise.reject(r.status); })
+  .then(function(d){
+    RP = d;
+    $('timeline').max=Math.max(0,d.steps.length-1);$('timeline').disabled=!d.steps.length;
+    $('replayTime').textContent=d.steps.length?d.steps[0].ts.slice(0,10)+' · recorded timeline':'No replay steps';
+    d.incidents.forEach(function(inc, i){
+      var o = document.createElement('option');
+      o.value = i;
+      /* short label from the incident slug — the full sentence would make the
+         <select> wider than a phone; it is shown in full in the rail instead */
+      var short = inc.id.replace(/-/g, ' ');
+      o.textContent = (i+1) + '. ' + short.charAt(0).toUpperCase() + short.slice(1) +
+                      ' (' + inc.routes.join('/') + ')';
+      o.title = inc.title;
+      $('inc').appendChild(o);
+    });
+    $('play').disabled=!d.incidents.length;
+    renderHeadline(d);
+    renderEval(d);
+    drawChart();
+    $('cap').innerHTML =
+      'Three labelled incidents, shaded. The teal line is the online model; it crosses 0.60 before ' +
+      'each window opens. Press <b>Play incident</b>, or drag across the chart to scrub.';
+  })
+  .catch(function(){
+    $('cap').innerHTML = '<span style="color:var(--bad)">Replay artifact failed to load ' +
+      '(<code>data/replay.json</code>). Nothing is being substituted for it.</span>';
+    $('evalnote').innerHTML = '<span style="color:var(--bad)">Evaluation table unavailable: ' +
+      'the frozen artifact did not load.</span>';
+    $('play').disabled = true;
+    $('timeline').disabled=true;$('replayTime').textContent='Artifact unavailable';
+  });
+
+startPolling();
+})();
+</script>
+</body>
+</html>

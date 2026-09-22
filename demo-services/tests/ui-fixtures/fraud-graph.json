@@ -1,0 +1,212 @@
+{
+  "source": "local service calls using bundled synthetic examples; not production requests",
+  "examples": {
+    "examples": [
+      {
+        "id": "routine",
+        "title": "Routine domestic payment",
+        "blurb": "ACC_0336 has paid ACC_0002 before, the amount sits near its usual size, same country, low-risk channel. Nothing in the graph objects.",
+        "tx": {
+          "sender_id": "ACC_0336",
+          "receiver_id": "ACC_0002",
+          "amount": 287.5,
+          "currency": "USD",
+          "channel": "ach",
+          "country_from": "US",
+          "country_to": "US"
+        }
+      },
+      {
+        "id": "spike",
+        "title": "Sudden spike to a new counterparty",
+        "blurb": "Same sender as above \u2014 but 68x its typical amount, by wire, abroad, to an account it has never paid. The signal is amount_z and is_new_pair, and neither exists without transaction history.",
+        "tx": {
+          "sender_id": "ACC_0336",
+          "receiver_id": "ACC_0301",
+          "amount": 19500.0,
+          "currency": "USD",
+          "channel": "wire",
+          "country_from": "US",
+          "country_to": "SG"
+        }
+      },
+      {
+        "id": "ring",
+        "title": "Transfer inside the cash-out ring",
+        "blurb": "Both parties sit in the planted ring, so the graph already holds a reverse edge and shared counterparties between them. That structure is invisible to any per-transaction rule.",
+        "tx": {
+          "sender_id": "RING_004",
+          "receiver_id": "RING_009",
+          "amount": 28400.0,
+          "currency": "USD",
+          "channel": "crypto",
+          "country_from": "CY",
+          "country_to": "AE"
+        }
+      }
+    ],
+    "graph": {
+      "nodes_total": 363,
+      "edges_total": 3581,
+      "events_total": 4000,
+      "alerts_total": 10,
+      "high_risk_last_hour": 0
+    },
+    "model": {
+      "path": "edge_model.pt",
+      "architecture": "EdgeMLP 14 -> 42 -> 21 -> 1, ReLU, CPU inference",
+      "training_data": "synthetic stream, labels from a rule (not real fraud outcomes)",
+      "blend": "final = max(heuristic, 0.85*heuristic + 0.15*model)"
+    },
+    "limits": {
+      "max_nodes": 20000,
+      "seed_events": 4000,
+      "reseed_after": 150
+    }
+  },
+  "responses": [
+    {
+      "id": "routine",
+      "request": {
+        "sender_id": "ACC_0336",
+        "receiver_id": "ACC_0002",
+        "amount": 287.5,
+        "currency": "USD",
+        "channel": "ach",
+        "country_from": "US",
+        "country_to": "US"
+      },
+      "response": {
+        "tx_id": "WEB-225917552330",
+        "risk_score": 0.360203,
+        "risk_band": "low",
+        "model_score": 0.212439,
+        "heuristic_score": 0.360203,
+        "reasons": [
+          "Amount is far above sender baseline",
+          "High-risk payment channel",
+          "Flow asymmetry suggests mule behavior"
+        ],
+        "top_features": {
+          "log_amount": 0.4926,
+          "receiver_in_degree": 0.35,
+          "channel_risk": 0.35,
+          "sender_out_degree": 0.225,
+          "amount_z": 0.2173,
+          "sender_receiver_flow_ratio": 0.088
+        },
+        "processed_at_utc": "2026-09-22T22:59:17Z",
+        "sender_id": "ACC_0336",
+        "receiver_id": "ACC_0002",
+        "amount": 287.5,
+        "timestamp_utc": "2026-09-22T22:59:17.552344+00:00",
+        "graph": {
+          "nodes_total": 363,
+          "edges_total": 3581,
+          "events_total": 4001,
+          "alerts_total": 10,
+          "high_risk_last_hour": 0,
+          "rebuilds": 0,
+          "visitor_events": 1,
+          "reseed_after": 150
+        }
+      }
+    },
+    {
+      "id": "spike",
+      "request": {
+        "sender_id": "ACC_0336",
+        "receiver_id": "ACC_0301",
+        "amount": 19500.0,
+        "currency": "USD",
+        "channel": "wire",
+        "country_from": "US",
+        "country_to": "SG"
+      },
+      "response": {
+        "tx_id": "WEB-225917553155",
+        "risk_score": 0.787961,
+        "risk_band": "high",
+        "model_score": 0.086213,
+        "heuristic_score": 0.787961,
+        "reasons": [
+          "Amount is far above sender baseline",
+          "First-time relationship between sender and receiver",
+          "Cross-border payment path",
+          "High-risk payment channel"
+        ],
+        "top_features": {
+          "amount_z": 1.2,
+          "is_new_pair": 1.0,
+          "cross_border": 1.0,
+          "log_amount": 0.859,
+          "channel_risk": 0.62,
+          "receiver_in_degree": 0.25
+        },
+        "processed_at_utc": "2026-09-22T22:59:17Z",
+        "sender_id": "ACC_0336",
+        "receiver_id": "ACC_0301",
+        "amount": 19500.0,
+        "timestamp_utc": "2026-09-22T22:59:17.553165+00:00",
+        "graph": {
+          "nodes_total": 363,
+          "edges_total": 3582,
+          "events_total": 4002,
+          "alerts_total": 10,
+          "high_risk_last_hour": 0,
+          "rebuilds": 0,
+          "visitor_events": 2,
+          "reseed_after": 150
+        }
+      }
+    },
+    {
+      "id": "ring",
+      "request": {
+        "sender_id": "RING_004",
+        "receiver_id": "RING_009",
+        "amount": 28400.0,
+        "currency": "USD",
+        "channel": "crypto",
+        "country_from": "CY",
+        "country_to": "AE"
+      },
+      "response": {
+        "tx_id": "WEB-225917553966",
+        "risk_score": 0.814082,
+        "risk_band": "high",
+        "model_score": 0.974359,
+        "heuristic_score": 0.785798,
+        "reasons": [
+          "Bidirectional circular transfer pattern detected",
+          "High-risk payment channel",
+          "Cross-border payment path",
+          "Amount is far above sender baseline"
+        ],
+        "top_features": {
+          "has_reverse_edge": 1.0,
+          "cross_border": 1.0,
+          "shared_counterparties": 1.0,
+          "channel_risk": 0.92,
+          "log_amount": 0.8917,
+          "amount_z": 0.4885
+        },
+        "processed_at_utc": "2026-09-22T22:59:17Z",
+        "sender_id": "RING_004",
+        "receiver_id": "RING_009",
+        "amount": 28400.0,
+        "timestamp_utc": "2026-09-22T22:59:17.553973+00:00",
+        "graph": {
+          "nodes_total": 363,
+          "edges_total": 3582,
+          "events_total": 4003,
+          "alerts_total": 10,
+          "high_risk_last_hour": 0,
+          "rebuilds": 0,
+          "visitor_events": 3,
+          "reseed_after": 150
+        }
+      }
+    }
+  ]
+}

@@ -1,3 +1,6 @@
 * text=auto
 *.pdf binary
 *.png binary
+*.pt binary
+# Preserve the reviewed adapter/vendor/data bytes recorded in SOURCE_MANIFEST.
+demo-services/** -text

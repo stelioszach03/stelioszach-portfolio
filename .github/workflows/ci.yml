@@ -29,3 +29,45 @@ jobs:
         run: npm test
       - name: Build static site
         run: npm run build
+
+  demo-unit:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: demo-services
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Install locked UI test dependencies
+        run: npm ci
+      - name: Test synthetic SMT and fraud interfaces
+        run: npm test
+      - name: Test CPU worker cancellation and source integrity
+        run: npm run test:python
+      - name: Parse browser scripts without executing them
+        run: npm run test:syntax
+
+  demo-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: demo-services
+    steps:
+      - name: Check out source
+        uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+      - name: Set up Node.js
+        uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4
+        with:
+          node-version: '24'
+      - name: Install locked UI test dependencies
+        run: npm ci
+      - name: Install Chromium only
+        run: npx playwright install --with-deps chromium
+      - name: Test DeID and MTA with local synthetic fixtures
+        run: npm run test:browser

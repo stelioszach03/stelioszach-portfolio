@@ -1,0 +1,17 @@
+# Runtime dependencies, pinned. Installed on the server.
+#
+# Deliberately NOT here, and why:
+#   torch        the dl_shadow autoencoder is gone. On linux/x86_64 a plain
+#                `pip install torch` pulls the CUDA build and ~1 GB of nvidia-*
+#                wheels for a model whose output never reached the UI.
+#   pandas       replaced by an incremental feature builder (mtascan/features.py)
+#                proven equivalent in tests/test_features_equivalence.py. Only
+#                the offline replay tooling needs it; see requirements-dev.txt.
+#   SQLAlchemy   the store is one file and nine columns; stdlib sqlite3 is enough.
+#   psycopg      no Postgres, no TimescaleDB, no second daemon to supervise.
+#   loguru       stdlib logging goes straight to the journal.
+fastapi==0.141.1
+uvicorn[standard]==0.42.0
+httpx==0.28.1
+river==0.25.0
+gtfs-realtime-bindings==2.2.0

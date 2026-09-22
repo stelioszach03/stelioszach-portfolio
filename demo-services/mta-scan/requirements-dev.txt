@@ -1,0 +1,7 @@
+-r requirements.txt
+
+# Verification only — never installed on the server.
+# pandas is here solely so tests/test_features_equivalence.py can compare the
+# streaming feature builder against the original repo's pandas implementation.
+pandas==2.3.3
+pytest==8.4.2

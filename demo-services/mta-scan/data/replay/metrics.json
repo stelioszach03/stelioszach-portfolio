@@ -1,0 +1,114 @@
+{
+  "online_model": {
+    "threshold": 0.6,
+    "rows": 216,
+    "positives": 16,
+    "false_alarm_rate": 0.03,
+    "mean_reciprocal_rank": 0.18648692650136978,
+    "precision_at_k": {
+      "p@5": 0.8571428571428571,
+      "p@10": 0.8,
+      "p@20": 0.8
+    },
+    "recall_at_k": {
+      "r@5": 0.26785714285714285,
+      "r@10": 0.5,
+      "r@20": 1.0
+    },
+    "ties": {
+      "distinct_scores": 190,
+      "tied_blocks": 7,
+      "rows_in_ties": 33,
+      "largest_tie": 7
+    },
+    "incident_detection_rate": 1.0,
+    "detected_incidents": 3,
+    "total_incidents": 3,
+    "average_lead_time_min": 6.666666666666667,
+    "average_time_to_detect_min": 0.0
+  },
+  "zscore_baseline": {
+    "threshold": 0.6,
+    "rows": 216,
+    "positives": 16,
+    "false_alarm_rate": 0.01,
+    "mean_reciprocal_rank": 0.15771247288078785,
+    "precision_at_k": {
+      "p@5": 0.8,
+      "p@10": 0.8,
+      "p@20": 0.5
+    },
+    "recall_at_k": {
+      "r@5": 0.25,
+      "r@10": 0.5,
+      "r@20": 0.625
+    },
+    "ties": {
+      "distinct_scores": 62,
+      "tied_blocks": 11,
+      "rows_in_ties": 165,
+      "largest_tie": 81
+    },
+    "incident_detection_rate": 1.0,
+    "detected_incidents": 3,
+    "total_incidents": 3,
+    "average_lead_time_min": 5.0,
+    "average_time_to_detect_min": 5.0
+  },
+  "ewma_baseline": {
+    "threshold": 0.6,
+    "rows": 216,
+    "positives": 16,
+    "false_alarm_rate": 0.005,
+    "mean_reciprocal_rank": 0.18054119196489415,
+    "precision_at_k": {
+      "p@5": 0.8,
+      "p@10": 0.7,
+      "p@20": 0.5
+    },
+    "recall_at_k": {
+      "r@5": 0.25,
+      "r@10": 0.4375,
+      "r@20": 0.625
+    },
+    "ties": {
+      "distinct_scores": 36,
+      "tied_blocks": 1,
+      "rows_in_ties": 181,
+      "largest_tie": 181
+    },
+    "incident_detection_rate": 1.0,
+    "detected_incidents": 3,
+    "total_incidents": 3,
+    "average_lead_time_min": 2.5,
+    "average_time_to_detect_min": 5.0
+  },
+  "threshold_baseline": {
+    "threshold": 0.6,
+    "rows": 216,
+    "positives": 16,
+    "false_alarm_rate": 0.0,
+    "mean_reciprocal_rank": 0.17764720113632287,
+    "precision_at_k": {
+      "p@5": 1.0,
+      "p@10": 0.8076923076923077,
+      "p@20": 0.4230769230769231
+    },
+    "recall_at_k": {
+      "r@5": 0.3125,
+      "r@10": 0.5048076923076923,
+      "r@20": 0.5288461538461539
+    },
+    "ties": {
+      "distinct_scores": 9,
+      "tied_blocks": 1,
+      "rows_in_ties": 208,
+      "largest_tie": 208
+    },
+    "incident_detection_rate": 0.3333333333333333,
+    "detected_incidents": 1,
+    "total_incidents": 3,
+    "average_lead_time_min": 0.0,
+    "average_time_to_detect_min": 5.0
+  }
+}

@@ -30,3 +30,12 @@ public/assets/mri-8x-reconstruction.png
 Linked repositories and services retain their own licences. Refer to their
 source repositories and the thesis references for upstream methods and data
 attribution. No new licence to those materials is implied by linking them.
+
+Published demo adapters
+-----------------------
+
+The demo-services directory preserves each upstream project's MIT notice and
+Leaflet's licence. Public transit data, provider tiles and research documents
+retain their own rights. See demo-services/NOTICE and demo-services/mta-scan/data/SOURCES.md for
+provenance. The bundled fraud model is synthetic-rule-trained; it is not a
+third-party pretrained research prior or a validated fraud detector.

@@ -1,0 +1,14 @@
+# smt-verify — fully pinned. Exactly the set verified locally on 2026-08-07.
+# Install with:  pip install --require-hashes=false -r requirements.txt
+annotated-types==0.8.0
+anyio==4.14.2
+click==8.4.2
+fastapi==0.115.6
+h11==0.16.0
+idna==3.18
+pydantic==2.10.4
+pydantic_core==2.27.2
+starlette==0.41.3
+typing_extensions==4.16.0
+uvicorn==0.32.1
+z3-solver==4.13.4.0

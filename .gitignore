@@ -3,3 +3,13 @@ node_modules/
 .DS_Store
 
 build-manifest.json
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.env
+.env.*
+demo-services/**/var/
+*.sqlite
+*.sqlite3
+*.db
