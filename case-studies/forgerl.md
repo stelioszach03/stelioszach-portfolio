@@ -1,51 +1,54 @@
-# ForgeRL — inspectable model-call decisions for Python repair
+# ForgeRL / ForgeBench — inspectable routing for coding agents
 
-[Open the workbench](https://stelioszach.com/demos/forgerl/) · [Source](https://github.com/stelioszach03/forgerl) · [Experiment protocol](https://github.com/stelioszach03/forgerl/blob/main/docs/METHODOLOGY.md) · [Recorded comparisons](https://stelioszach.com/demos/forgerl/#experiments)
+[Evidence dashboard](https://stelioszach.com/demos/forgerl/) · [Source](https://github.com/stelioszach03/forgerl) · [v0.2 protocol](https://github.com/stelioszach03/forgerl/blob/main/docs/forgebench/PROTOCOL.md) · [Recorded comparisons](https://stelioszach.com/demos/forgerl/bench.html#comparison)
 
-ForgeRL is a bounded repair-agent workbench built around a specific question: can visible test feedback help a controller allocate a small number of model calls? A user selects an authored Python regression task and can inspect the candidate patch, test outcomes, decision trace, token usage and estimated cost.
+ForgeRL studies a concrete systems question: how should a bounded coding agent allocate model calls after visible test feedback? ForgeBench supplies authored repository tasks, controlled routing comparisons and a public dashboard connecting every recorded outcome to its prompts, edits, tests and accounting.
 
 ## Contribution
 
-The implementation combines a task catalog, model-driven repair loop, finite fitted-Q controller, isolated executor, durable queue and spending ledger, and a browser inspector. The configured hosted models are IBM Granite 4.0 H Small and OpenAI GPT-OSS 120B through Runpod. Their weights remain frozen; learning applies to the controller's routing actions. This is not language-model fine-tuning or a new foundation model.
+I built the multi-file repair harness, task catalog, finite fitted-Q router, isolated executor, durable spending ledger and read-only evidence dashboard. The research system and public application are separate: an operator starts budgeted experiments; visitors inspect stored artifacts without starting inference or submitting code.
 
-The catalog contains 24 authored tasks across separate training, validation and test families. Public checks guide the repair. Held-out checks assess a final candidate without exposing their inputs or expected outputs to the model or public UI. Passing those finite checks does not establish general correctness.
+ForgeBench v0.2 contains **50 authored scenarios across 10 miniature Python repository families**. The 30 training, 10 validation and 10 held-out test scenarios have disjoint families. Tasks cover bug fixing, multi-file changes, feature implementation, refactoring, failing tests and linked multi-requirement scenarios. Each has an explicit success criterion, visible failing reproduction, hidden checks and a reference implementation. All 50 fixtures have been checked in the isolated Docker executor; fixture verification is separate from model performance.
+
+The controlled research profile uses **GPT-OSS 20B and GPT-OSS 120B through OpenRouter**, pinned to the CoreWeave FP4 provider with automatic fallback disabled. These are configured research treatments, not a claim that every published task was evaluated on both models. Actual models, provider configuration and completed coverage are recorded with each study. Language-model weights remain unchanged; learning applies to the routing controller.
 
 ## Quick walkthrough
 
-1. Open a recorded run in **Workbench**. Confirm whether it is recorded evidence or a fresh live run.
-2. Compare **Public tests** with **Held-out tests**. A visible pass can still fail held-out checks.
-3. Read **Patch**, **Tests** and **Trace** to connect the selected action, generated edit and observed outcome. Export the patch or JSON trace explicitly.
-4. Open **Experiments** to compare the recorded policies on matched tasks, including failed runs, coverage and limitations.
-5. When the service reports live inference available, choose a curated task and available policy to start a new run. The public interface does not accept arbitrary source uploads or repository URLs.
+1. Read the **Results** table and success-versus-cost chart. Check actual coverage before comparing policies; missing values remain blank.
+2. Open **Tasks & traces** and filter by task category or split. Inspect the task criterion, visible checks and linked source files.
+3. Choose an available recorded run. Follow its **Trajectory**: prompts, supplied context, model responses, patches, sandbox calls, errors, retries, switches, rollbacks and final grading.
+4. Compare **Patch**, **Test outcomes**, **Final files** and **All metrics**. A visible pass can still fail hidden checks.
+5. Open the full run JSON or patch artifact. A task without a published run is explicitly unevaluated; the interface never fabricates an execution.
 
 ## Engineering decisions
 
 | Decision | Reason | Source to inspect |
 | --- | --- | --- |
-| Separate the generated candidate from trusted expected outputs | Candidate code cannot read the reference answer through the test interface | [`forgerl/sandbox.py`](https://github.com/stelioszach03/forgerl/blob/main/forgerl/sandbox.py) |
-| Execute candidates in constrained, network-isolated rootless containers through an executor boundary | Keep generated code away from the web process, provider key and ordinary host privileges | [`forgerl/sandbox.py`](https://github.com/stelioszach03/forgerl/blob/main/forgerl/sandbox.py) |
-| Reserve inference cost durably before a provider call | Process restarts and unknown billing outcomes must not silently reset the allowance | [`forgerl/store.py`](https://github.com/stelioszach03/forgerl/blob/main/forgerl/store.py) |
-| Fit finite Q-values from observed training transitions | Separate a learned routing policy from frozen language-model inference; keep unsupported states explicit | [`forgerl/controller.py`](https://github.com/stelioszach03/forgerl/blob/main/forgerl/controller.py) |
-| Record decisions, patches, test outcomes and provider accounting | Make an apparently successful repair inspectable and preserve failure evidence | [`forgerl/orchestrator.py`](https://github.com/stelioszach03/forgerl/blob/main/forgerl/orchestrator.py) |
-| Keep missing measurements blank and mark unavailable inference | An empty result or exhausted allowance must not look like a measured success | [`static/app.js`](https://github.com/stelioszach03/forgerl/blob/main/static/app.js) |
+| Keep research execution separate from the public API | Visitors can inspect evidence without consuming an inference budget | [`forgerl/bench/api.py`](https://github.com/stelioszach03/forgerl/blob/main/forgerl/bench/api.py) |
+| Execute candidate modules in constrained, network-isolated rootless containers | Keep generated code away from the web process, provider credentials and ordinary host privileges | [`forgerl/bench/sandbox.py`](https://github.com/stelioszach03/forgerl/blob/main/forgerl/bench/sandbox.py) |
+| Reserve cost durably before a provider call | Restarts and unknown billing outcomes must not reset the shared allowance | [`forgerl/store.py`](https://github.com/stelioszach03/forgerl/blob/main/forgerl/store.py) |
+| Fit Q-values on training transitions and freeze the controller before evaluation | Separate learned routing from unchanged model weights and expose unsupported-state fallback | [`forgerl/bench/router.py`](https://github.com/stelioszach03/forgerl/blob/main/forgerl/bench/router.py) |
+| Record prompts, candidates, decisions and actual execution outcomes | Make both successful and unsuccessful repairs inspectable | [`forgerl/bench/engine.py`](https://github.com/stelioszach03/forgerl/blob/main/forgerl/bench/engine.py) |
+| Retain partial coverage, null measurements and failed requests | Incomplete evidence must not look like an evaluated success | [`static/bench.js`](https://github.com/stelioszach03/forgerl/blob/main/static/bench.js) |
 
-The public application uses FastAPI, SQLite/WAL and a dependency-free HTML/CSS/JavaScript interface. The web service and executor run on the portfolio VPS; hosted inference is a separate, explicitly budgeted provider dependency. A working single VPS is not a highly available deployment, and container constraints are not a guarantee that arbitrary hostile code is safe.
+The public application uses FastAPI, a sealed read-only SQLite archive and a dependency-free HTML/CSS/JavaScript interface on the portfolio VPS. The private research ledger uses SQLite/WAL under a separate runtime identity. Inference is a separate, explicitly budgeted hosted dependency. No continuously rented GPU is required to serve recorded experiments.
 
 ## Evaluation design
 
-The initial protocol compares fixed-fast, deliberate-only, heuristic and adaptive policies with an equal three-call cap. Fixed baselines also stop when their visible tests pass. Training, validation and test defect families are disjoint; prospective evaluation uses fresh provider calls rather than recycling training branches.
+Five policies share the same maximum of six model calls and ten routing decisions: **strong-only**, **cheap-only**, **cheap-to-strong on failure**, **hand-written routing** and **adaptive ForgeRL routing**. Available actions are retry, repair, escalate, rollback and stop. All policies stop when visible checks pass or their bounds are exhausted. Hidden checks run only after routing ends and never feed another repair decision.
 
-The predeclared pilot requests three seeds. The production artifact is selected by the protocol before evaluation, rather than chosen afterward for the best outcome. Six unique held-out tasks from two families are repeated across the seeds, so repeated episodes are not independent new tasks. Missing coverage, failed provider calls and unsuccessful patches remain visible in the recorded artifacts.
+The dashboard reports task success, hidden-test pass rate, cost, tokens, latency, orchestrated tool calls, attempts, visible regressions, success after repair and escalation frequency. A reference-scope edit proxy is explicitly distinguished from proven unnecessary edits. Recorded failure labels describe observable events, such as a repeated candidate or a visible pass followed by hidden failure; they do not infer a model's private reasoning.
 
-Consult the live **Experiments** view and repository protocol for the actual completed coverage, results and provenance. This case study does not assert a policy win, solve rate or cost reduction before those artifacts support it. Provider-reported token counts underpin conservative cost estimates; estimates and retained billing reservations are not provider invoices.
+Study artifacts preserve the predeclared configuration, task and controller hashes, provider settings, actual coverage and missing runs. Repeated seeds are not independent tasks. Reported usage charges and conservative reservations are distinguished; neither is a claim about GPU time or credit-purchase fees. Consult the dashboard and versioned artifacts for completed results: this case study asserts no pending solve rate, cost reduction or general policy advantage.
+
+The [v0.1 single-module pilot](https://stelioszach.com/demos/forgerl/index.html#experiments) remains archived as a separate experiment. Its results are not pooled with the v0.2 repository benchmark.
 
 ## Boundaries
 
-- This is an authored Python regression suite, not SWE-bench, arbitrary GitHub repair or demonstrated general autonomous software engineering.
-- The finite controller has sparse state coverage. Unsupported states can fall back to the documented heuristic, and that selection source is recorded.
-- Hidden test success is a finite evaluation outcome, not a correctness proof or evidence of clinical, financial or security suitability.
-- Provider seeds are requested settings; hosted generation is not guaranteed to be bitwise reproducible.
-- The small pilot cannot establish broad policy superiority, even if a point estimate favors one controller.
-- Live requests stop when the finite serving allowance is unavailable. Recorded evidence remains accessible without pretending to be fresh inference.
+- These are authored miniature repositories, not SWE-bench, arbitrary GitHub issue repair or demonstrated general autonomous software engineering. The multi-requirement category does not establish real-world long-horizon capability.
+- Hidden checks are withheld from model context during an evaluation. Their reproducible definitions exist in the source release, so this is not a contamination-resistant private benchmark.
+- Sparse controller states can require a declared static fallback. Model endpoints and requested seeds do not guarantee bitwise reproducibility or a fixed checkpoint revision.
+- Test success is a finite evaluation outcome, not proof of general correctness. Related variants and the small number of held-out families limit statistical generalization.
+- A single VPS is not a highly available deployment, and container constraints do not establish that arbitrary hostile code is safe.
 
-Failed hypotheses and unsuccessful patches belong in the same evidence record as successful repairs.
+Successful patches, negative outcomes and incomplete experiments belong in the same evidence record.

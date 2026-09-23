@@ -76,10 +76,10 @@ test("research and product claims retain their scope instead of publication or s
   assert.match(html, /no prospective scanner study or clinical validation/i);
   const coreIds = [...html.matchAll(/<article id="([^"]+)" class="case-study"/g)].map((m) => m[1]);
   assert.deepEqual(coreIds, ["mri", "forgerl", "asklepios", "mta-scan"]);
-  assert.match(html, /24 authored tasks/);
+  assert.match(html, /50 scenarios · 10 repository families/);
   assert.match(html, /The language models are not fine-tuned/);
-  assert.match(html, /not SWE-bench or general repository repair/);
-  assert.match(html, /No general policy advantage is claimed/);
+  assert.match(html, /authored miniature repositories, not evidence of general repository repair or long-horizon autonomy/);
+  assert.match(html, /no general policy advantage is claimed/i);
   assert.match(html, /constructed scenarios/);
   assert.match(html, /not official MTA incident ground truth/);
   assert.match(html, /failed controller and selection hypotheses/);
