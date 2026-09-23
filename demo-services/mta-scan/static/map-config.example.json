@@ -1,0 +1,4 @@
+{
+  "publicToken": "",
+  "note": "Copy to map-config.json and set a public pk token with styles:tiles only, restricted to the deployment origin. Never use an sk token. Without configuration the map uses OpenStreetMap."
+}

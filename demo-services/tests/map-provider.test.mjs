@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import { compileFunction } from 'node:vm';
+const source = readFileSync(new URL('../mta-scan/static/map-provider.js', import.meta.url), 'utf8');
+const providerModule = { exports: {} };
+compileFunction(source, ['module', 'exports'], { filename: 'map-provider.js' })(providerModule, providerModule.exports);
+const provider = providerModule.exports;
+const publicToken='pk.synthetic.fixture';
+test('refuses secret and malformed tokens without exposing them',()=>{for(const v of [null,{}, {publicToken:'sk.synthetic.fixture'},{publicToken:'https://evil.invalid'},{publicToken:'pk.bad.token?evil=1'}])assert.equal(provider.configuration(v),null);});
+test('uses only fixed Mapbox styles,512tiles,zoomoffset and explicit retina',()=>{const d=provider.descriptor({publicToken},'night',true);assert.equal(d.tileSize,512);assert.equal(d.zoomOffset,-1);assert.match(d.url,/dark-v11\/tiles\/512\/\{z\}\/\{x\}\/\{y\}@2x\?access_token=pk\.synthetic\.fixture$/);assert.equal(provider.descriptor({publicToken},'https://evil.invalid',false),null);assert.match(provider.descriptor({publicToken},'streets',false).url,/streets-v12/);});
+test('export preserves actual selected observations and their source/window scope',()=>{const f={geometry:{coordinates:[-73.9,40.7]},properties:{stop_name:'<script>',anomaly_score:.8}};const s=provider.visibleSnapshot({generated_utc:'2026-09-22T00:00:00Z',counters:{stations_reporting:9}},[f],{min_score:.6});assert.equal(s.exported_map_observations,1);assert.equal(s.window_counters.stations_reporting,9);assert.deepEqual(s.observations,[f]);assert.equal(s.filters.min_score,.6);assert.match(s.score_interpretation,/not calibrated/);});

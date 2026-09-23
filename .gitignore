@@ -13,3 +13,8 @@ demo-services/**/var/
 *.sqlite
 *.sqlite3
 *.db
+# Deployment-only map configuration and credentials are never public source.
+map-config.json
+mapbox-session.json
+mapbox-public.json
+mapbox-token-receipt.json

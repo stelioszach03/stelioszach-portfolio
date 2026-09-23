@@ -25,3 +25,9 @@ demo inference path, not a claim of real-world fraud-detection accuracy.
 No third-party pretrained research model or private dataset is bundled.
 
 The website's thesis, CV and research-image exclusions remain unchanged.
+
+The unmodified Mapbox attribution logo retains Mapbox copyright/trademark
+rights and is not covered by the MIT grant. Its source and attribution terms
+are preserved in mta-scan/static/vendor/NOTICE.mapbox-logo.txt.
+Deployment-only map-config.json and access tokens are not published; only the
+blank map-config.example.json template is part of this source tree.

@@ -11,6 +11,15 @@ Inspectable runtime adapters for the four [live portfolio demos](https://stelios
 
 Use fabricated examples only. The text demo does not guarantee anonymization. Fraud scores are not fraud probabilities, and successive graph runs change their shared synthetic history. The subway replay is a small sanity evaluation, not a benchmark or official MTA incident annotation.
 
+## Workspace controls
+
+- The constraint workspace keeps structured inputs and actual solver responses inspectable; recorded outcomes are not generated benchmark claims.
+- The transaction workspace separates current graph-derived features, scoring explanations and selected in-memory run snapshots. Sequential scoring changes synthetic history, so comparing two runs is not a controlled counterfactual.
+- The de-identification workspace exposes detections, transformation policies and review filters. Edits invalidate stale results; the output still requires human review.
+- The subway workspace separates live observations, window statistics and frozen replay. Search/score/route filters narrow map observations, while window-wide totals stay labelled. An explicit export preserves the successful snapshot's window; it does not export tile credentials. Mobile map panning can be enabled and locked again to return control to page scrolling.
+
+The optional subway Mapbox setup is deployment-only: copy `mta-scan/static/map-config.example.json` to `map-config.json` and configure an origin-restricted public token for the required tile scope. Never use a secret token. The blank template is published; runtime configuration is excluded. Without valid configuration, the map uses OpenStreetMap. Map style selection changes the basemap, not the underlying observations or model. Provider attribution and the Mapbox logo remain visible when applicable. Browser tile requests go to the active provider.
+
 ## Run locally
 
 Use Python 3.11 or later and a **separate virtual environment for each service**. Runtime dependency sets differ; do not combine them into one environment. For example, from this directory:
@@ -23,6 +32,8 @@ python3 -m venv .venv
 ```
 
 Open `http://127.0.0.1:8000/`. The other services expose the same ASGI entry point, `service:app`, from their own directories. Run one at a time or choose different ports. Production nginx/systemd configuration and runtime state are deliberately excluded; this is not a turnkey public-deployment package.
+
+Reverse-proxy routing matters: when serving a demo beneath `/demos/<name>/`, its service prefix must take precedence over generic image/font extension rules. In nginx, a prefix location marked `^~` prevents a broader regex location from intercepting vendored SVG or other static assets. Otherwise the adapter can return an asset successfully while the public URL returns404. Configure the actual upstream and path rewriting for your deployment; production configuration and credentials are not included here.
 
 Additional setup:
 
@@ -55,6 +66,29 @@ npm run test:browser
 It starts an embedded loopback server on an ephemeral port, supplies synthetic API responses, and aborts all nonlocal browser requests, including map tiles. It checks input/result isolation, text-safe rendering, Unicode spans, state changes and mobile fit using real Chromium. CI installs Chromium with its Linux system dependencies in a separate bounded job. No deployed API or model is used.
 
 These checks do not install spaCy, PyTorch, River or Z3; train models; call live MTA feeds; or run full ASGI/model integration. Those heavier service acceptance steps remain separate. The browser suite is bounded regression coverage, not a complete accessibility certification or physical-device test.
+
+## Optional service-contract checks
+
+These tests are kept in `service-tests/`, outside minimal CI discovery. Use separate environments: both adapters use a vendored package named `app`, so importing both in one process would not be an isolated test.
+
+DeID's four contract checks use the regex path without installing spaCy weights or running application startup:
+
+```sh
+python3 -m venv deid/.venv
+deid/.venv/bin/python -m pip install -r service-tests/requirements-deid.txt
+deid/.venv/bin/python -m unittest discover -s service-tests -p test_deid_review_backend.py
+```
+
+Fraud's ASGI and neighborhood checks require its CPU runtime dependencies but do not train a model or call a deployed service:
+
+```sh
+python3 -m venv fraud-graph/.venv
+fraud-graph/.venv/bin/python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.4.1
+fraud-graph/.venv/bin/python -m pip install -r service-tests/requirements-fraud.txt
+fraud-graph/.venv/bin/python -m unittest discover -s service-tests -p 'test_fraud*.py'
+```
+
+The neighborhood fixture checks actual bounded graph edges and snapshot/reset timing. These optional service checks are distinct from model-quality evaluation or production acceptance.
 
 ## Data, provenance and licensing
 

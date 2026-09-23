@@ -11,7 +11,7 @@ WHAT THIS SERVICE DELIBERATELY DOES NOT DO
   all of those; none are deployed here, so there is no place for submitted text
   to land.
 * No persistence of request bodies. Text lives in one request handler's memory
-  and is gone when the response is written.
+  until inference finishes; a disconnected request may finish in its worker.
 * The hash salt is generated at process start with `secrets.token_hex` and never
   written down. Restarting the service makes every previously returned hash
   unlinkable — which is the correct property for a public toy, and the wrong one
@@ -37,7 +37,8 @@ from pydantic import BaseModel, Field
 HERE = Path(__file__).resolve().parent
 sys.path.insert(0, str(HERE / "vendor"))
 
-from app.deid.engine import POLICY_MAP, DeidEngine  # noqa: E402
+from app.deid.engine import POLICY_MAP, DeidEngine, _canonical_label  # noqa: E402
+from app.deid.policies import hash_value, mask_value, redact_value  # noqa: E402
 from app.deid.recognizers import detect_entities  # noqa: E402
 
 MAX_TEXT_CHARS = int(os.getenv("DEID_MAX_TEXT_SIZE", "6000"))
@@ -149,14 +150,41 @@ def _analyse(text: str, mode: str) -> dict:
     engine = ENGINES[mode]
     result = engine.deidentify(text)
 
-    # detect_entities is re-run only to recover the detector provenance
-    # (spaCy vs regex) and the matched surface form, which deidentify() drops.
+    # Return the already-applied replacement so a browser can review/remove a
+    # detected span without learning the ephemeral salt or reimplementing policy.
     by_span = {(e.start, e.end): e for e in detect_entities(text)}
+    cursor = 0
+    rebuilt = []
     for item in result["entities"]:
-        start, end = item["span"]
+        span = item.get("span")
+        if (not isinstance(span, (list, tuple)) or len(span) != 2
+                or any(type(value) is not int for value in span)):
+            raise ValueError("Invalid review span metadata")
+        start, end = span
+        if not 0 <= cursor <= start < end <= len(text):
+            raise ValueError("Overlapping or invalid review spans")
+        if not isinstance(item.get("label"), str):
+            raise ValueError("Invalid review label metadata")
+        value = text[start:end]
+        label = _canonical_label(item["label"])
+        action = item.get("action")
+        if action == "mask":
+            replacement = mask_value(value)
+        elif action == "redact":
+            replacement = redact_value(label)
+        elif action == "hash":
+            replacement = hash_value(value, engine.salt, label)
+        else:
+            raise ValueError("Unsupported review transformation")
         source = by_span.get((start, end))
         item["detector"] = source.detector if source else "unknown"
-        item["surface"] = text[start:end]
+        item["surface"] = value
+        item["replacement"] = replacement
+        rebuilt.extend((text[cursor:start], replacement))
+        cursor = end
+    rebuilt.append(text[cursor:])
+    if "".join(rebuilt) != result["result_text"]:
+        raise ValueError("Review replacements do not match the transformed output")
     return result
 
 

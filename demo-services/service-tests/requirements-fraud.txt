@@ -1,0 +1,3 @@
+# Optional ASGI/graph tests. Install the CPU torch wheel first on Linux.
+-r ../fraud-graph/requirements.txt
+httpx==0.28.1

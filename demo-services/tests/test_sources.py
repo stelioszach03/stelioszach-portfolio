@@ -12,7 +12,7 @@ SERVICES = ("deid", "fraud-graph", "mta-scan", "smt-verify")
 class SourceChecks(unittest.TestCase):
     def test_runtime_python_parses(self):
         count = 0
-        for service in SERVICES:
+        for service in (*SERVICES, "service-tests"):
             for path in (ROOT / service).rglob("*.py"):
                 if any(part.startswith(".") or part == "__pycache__" for part in path.relative_to(ROOT).parts):
                     continue

@@ -19,6 +19,7 @@
 <meta name="twitter:description" content="Eight live MTA GTFS-Realtime feeds land every ~30 seconds. An online streaming model learns each station's normal train spacing as the data arrives — no labels, no offline training run.">
 <meta name="twitter:image" content="https://stelioszach.com/og.png">
 <link rel="stylesheet" href="vendor/leaflet.css">
+
 <style>
   :root{
     --bg:#0d1117; --panel:#161b22; --panel2:#1b2230; --line:#2b323c; --fg:#e6edf3; --dim:#9aa7b4;
@@ -268,22 +269,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
 </style>
+<link rel="stylesheet" href="workspace.css?v=2">
 </head>
 <body>
 <a class="skip" href="#workspace">Skip to subway workspace</a>
 <header class="portfolio-header"><div><a class="portfolio-brand" href="https://stelioszach.com"><span>SZ</span> MTA Scan</a><nav aria-label="Demo navigation"><a class="source-link" href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection">Source code ↗</a><a href="https://stelioszach.com">← Portfolio</a></nav></div></header>
 <main class="wrap" id="workspace">
 
-  <p class="eyebrow">Streaming systems / Subway signals</p><h1>Read the network.</h1>
-  <p class="lede">Live MTA GTFS-Realtime observations, streaming model scores and a separate frozen replay.</p>
-  <p class="src"><a href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection">Implementation ↗</a> · River PARegressor + HalfSpaceTrees + ADWIN · CPU inference</p>
+  <div class="workspace-title"><div><p class="eyebrow">New York City / Transit observability</p><h1>Subway signal desk</h1></div><a class="toolbar-source" href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan">View deployed source ↗</a></div>
+  <p class="lede">Inspect live station observations, narrow the network and compare recorded incidents.</p>
+  
 
   <!-- Rewritten from static/data/replay.json on load so it can never drift from the
        table at the bottom of the page; these values are the no-JS fallback. -->
 
 
   <div class="source-band"><strong class="mode-label" id="mapMode" data-mode="live">MAP · LIVE SOURCE</strong><span class="source-meta" id="freshness" aria-live="polite">Waiting for the first API snapshot…</span></div>
-  <div class="bar">
+  <details class="responsive-controls" id="windowControls" open><summary>Window &amp; refresh controls</summary><div class="bar">
     <span class="pill p-wait" id="statepill"><span class="dot"></span><span id="statetext">connecting…</span></span>
     <label class="ctl" for="win">window
       <select id="win">
@@ -293,28 +295,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
         <option value="6h">6 hours</option>
       </select>
     </label>
-    <button class="ghost" id="refresh">Refresh now</button>
+    <button class="ghost" id="refresh">Refresh</button>
     <button class="ghost" id="pauseLive" aria-pressed="false">Pause updates</button>
     <span class="sep"></span>
-    <a class="source-meta" href="#replayHeading">Explore recorded replay ↓</a>
+    <a class="source-meta replay-jump" href="#replayHeading">Recorded replay ↓</a>
     <button class="ghost" id="backlive" hidden>Back to live</button>
-  </div>
-
-  <p class="source-meta" id="counterScope">Counters describe the live-source window; replay has separate measurements.</p>
-  <div class="kpis" id="kpis">
-    <div class="kpi"><div class="v" id="k-stations">&mdash;</div><div class="k">stations scored</div></div>
-    <div class="kpi"><div class="v" id="k-rows">&mdash;</div><div class="k">rows scored</div></div>
-    <div class="kpi warnbox"><div class="v" id="k-anom">&mdash;</div><div class="k">anomalies &ge; 0.60</div></div>
-    <div class="kpi badbox"><div class="v" id="k-high">&mdash;</div><div class="k">critical &ge; 0.85</div></div>
-    <div class="kpi"><div class="v" id="k-age">&mdash;</div><div class="k">newest data</div></div>
-  </div>
+  </div></details>
 
   <div class="stage">
     <div>
-      <div class="map-tools" id="liveFilters"><label class="search" for="stationSearch">Find a station or line<input id="stationSearch" type="search" placeholder="Station name, stop ID or route" autocomplete="off"></label><label for="scoreFloor">Minimum score<select id="scoreFloor"><option value="0">All scores</option><option value="0.6">Elevated · 0.60+</option><option value="0.85">High · 0.85+</option></select></label><button class="ghost" id="resetFilters">Reset filters</button></div>
-      <p class="filter-summary" id="filterSummary" aria-live="polite">Filters apply to the current API snapshot.</p>
-      <div class="mapwrap">
+      <details class="responsive-controls" id="mapFilters" open><summary>Search &amp; filter stations</summary><div class="map-tools" id="liveFilters"><label class="search" for="stationSearch">Find a station or line<input id="stationSearch" type="search" placeholder="Station name, stop ID or route" autocomplete="off"></label><label for="scoreFloor">Minimum score<select id="scoreFloor"><option value="0">All scores</option><option value="0.6">Elevated · 0.60+</option><option value="0.85">High · 0.85+</option></select></label><button class="ghost" id="resetFilters">Reset filters</button></div>
+      </details><p class="filter-summary" id="filterSummary" aria-live="polite">Filters apply to the current API snapshot.</p>
+      <div class="map-toolbar"><div class="map-style-control"><label for="mapStyle">Map style</label><select id="mapStyle" disabled><option value="night">Night</option><option value="streets">Streets</option></select></div><span id="mapProviderStatus" role="status">Loading map…</span><button class="ghost" id="fitFiltered">Fit observations</button><button class="ghost" id="exportSnapshot" disabled>Export snapshot</button></div><div class="mapwrap">
         <div id="map" role="application" aria-label="Map of New York City subway stations with current anomaly scores"></div>
+        <a class="mapbox-logo" id="mapboxLogo" href="https://www.mapbox.com/" aria-label="Mapbox" hidden><img src="vendor/mapbox-logo.svg" alt="Mapbox" width="88" height="23"></a>
+        <button id="lockMap" class="ghost pan-lock" hidden>Lock panning</button>
         <div class="maphint" id="maphint" role="button" tabindex="0" aria-label="Enable map panning" hidden><span>Tap to pan the map</span></div>
       </div>
 
@@ -334,10 +329,20 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
     </div>
 
     <div class="rail">
+      <section class="window-stats" aria-label="Window statistics">  <p class="source-meta" id="counterScope">Counters describe the live-source window; replay has separate measurements.</p>
+  <div class="kpis" id="kpis">
+    <div class="kpi"><div class="v" id="k-stations">&mdash;</div><div class="k">stops scored</div></div>
+    <div class="kpi"><div class="v" id="k-rows">&mdash;</div><div class="k">rows scored</div></div>
+    <div class="kpi warnbox"><div class="v" id="k-anom">&mdash;</div><div class="k">anomalies &ge; 0.60</div></div>
+    <div class="kpi badbox"><div class="v" id="k-high">&mdash;</div><div class="k">high score &ge; 0.85</div></div>
+    <div class="kpi"><div class="v" id="k-age">&mdash;</div><div class="k">newest data</div></div>
+  </div>
+
+</section>
       <section class="station-detail" id="stationDetail" aria-label="Selected station observation" hidden></section>
 
       <div class="card" id="railcard">
-        <h3 id="railtitle">Highest scores in window</h3>
+        <h3 id="railtitle">Observation queue</h3>
         <p class="note" id="railnote">Loading live scores…</p>
         <ul id="anoms" role="group" aria-label="Ranked station observations"></ul>
         <div id="replayrail" hidden></div>
@@ -379,7 +384,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
     <div class="replay-controls"><label for="timeline">Replay timeline</label><input id="timeline" type="range" min="0" max="0" value="0" disabled aria-describedby="replayHeading"><output id="replayTime" for="timeline">Artifact loading…</output></div>
   </div>
 
-  <h2>Replay evaluation &mdash; every number below comes from the frozen artifact</h2>
+  <details class="method-details"><summary>Evaluation &amp; method notes <span>Inspect the measured trade-offs</span></summary><h2>Replay evaluation &mdash; every number below comes from the frozen artifact</h2>
   <div class="scroll" tabindex="0" role="region" aria-label="Frozen replay comparison table">
     <table id="evaltable">
       <thead><tr>
@@ -407,25 +412,21 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
        <code>stop_id</code> column is synthetic, so station positions here are resolved from the real
        MTA GTFS by station <em>name</em>. The regressor is linear, so during a sharp change it can
        predict a negative headway; those values are printed as produced rather than clipped to zero.</p>
-    <p><b>Attribution.</b> Map data and standard raster tiles &copy;
-       <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors, served under the
-       <a href="https://operations.osmfoundation.org/policies/tiles/">OpenStreetMap tile usage policy</a>.
-       Zoom is capped at16; only the visible viewport is requested, with normal browser caching and no offline/prefetch function.
-       Subway line geometry, station positions, the line colours (<code>route_color</code>), the
-       bullet text colours (<code>route_text_color</code>) and each station&rsquo;s list of lines are
-       all read from the MTA&rsquo;s public static GTFS feed &mdash; the version this build used is
-       printed in <code>static/data/basemap.json</code>. Nothing in the palette is hand-picked.
-       Map library: <a href="https://leafletjs.com">Leaflet</a> 1.9.4 (BSD-2-Clause), served from this
-       host. This page uses no analytics or browser storage. Map tile requests go to OpenStreetMap.</p>
+    <p><b>Attribution.</b> Cartography &copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> and &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. <a href="https://apps.mapbox.com/feedback/">Improve this map</a>. OpenStreetMap provides fallback tiles when the configured Mapbox map is unavailable. Only visible tiles are requested, with normal browser caching; no offline download or prefetch. Subway lines, station positions and route colours come from the public MTA GTFS feed, whose version is recorded in <code>static/data/basemap.json</code>. Leaflet 1.9.4 is served locally. Map requests reach the selected provider; this page uses no analytics or browser storage.</p>
   </footer>
+</details>
 </main>
 
 <script src="vendor/leaflet.js"></script>
+<script src="map-provider.js?v=2"></script>
 <script>
 (function(){
 "use strict";
 var $ = function(id){ return document.getElementById(id); };
 var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+var mobileLayout=window.matchMedia('(max-width:800px)');
+function arrangeControls(){['windowControls','mapFilters'].forEach(function(id){$(id).open=!mobileLayout.matches;});}
+arrangeControls();mobileLayout.addEventListener('change',arrangeControls);
 
 /* ------------------------------------------------------------- MTA bullets */
 /* route_id -> {n:short name, c:route_color, t:route_text_color, l:long name}.
@@ -542,6 +543,8 @@ var map = L.map('map', {
   zoomSnap: .25,                  /* integer-only zoom wastes most of the panel */
   zoomControl: true,
   attributionControl: true,
+  fadeAnimation: !REDUCED,
+  zoomAnimation: !REDUCED,
   preferCanvas: true,             /* hundreds of circles stay smooth */
   scrollWheelZoom: false,         /* page scroll must not be hijacked */
   /* On a phone a Leaflet map that takes one-finger drags eats the page scroll and
@@ -559,23 +562,39 @@ if (COARSE){
   hint.addEventListener('click', function(){
     map.dragging.enable();
     hint.classList.remove('on');
+    $('lockMap').hidden=false;
   });
+  $('lockMap').onclick=function(){map.dragging.disable();hint.classList.add('on');this.hidden=true;hint.focus();};
 }
 
-/* Standard OSM raster, requested only for the visible map. No prefetch/offline cache. */
+/* A deployment-only public token enables Mapbox. Never accept an sk token. */
 var ATTR_OSM = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 var ATTR_MTA = 'lines &amp; stations: <a href="https://www.mta.info/developers">MTA GTFS</a>';
+var ATTR_MAPBOX = '<a href="https://www.mapbox.com/about/maps/">&copy; Mapbox</a> · '+ATTR_OSM+' · <a href="https://apps.mapbox.com/feedback/">Improve this map</a>';
 var OSM_DARKEN = 'invert(1) hue-rotate(192deg) brightness(.78) contrast(.95) saturate(.45)';
-var tileStat = {ok:0,err:0,provider:'osm'};
-document.documentElement.style.setProperty('--tilefilter',OSM_DARKEN);
-var tiles = L.tileLayer('https://tile.openstreetmap.org/{z}/{x}/{y}.png',{
-  maxZoom:16,updateWhenIdle:true,keepBuffer:1,crossOrigin:true,
-  referrerPolicy:'strict-origin-when-cross-origin',attribution:ATTR_OSM
-});
-tiles.on('tileload',function(){tileStat.ok++;});
-tiles.on('tileerror',function(){tileStat.err++;});
-tiles.addTo(map);
+var tileStat = {ok:0,err:0,provider:'loading'}, tiles=null, mapConfig=null, mapGeneration=0;
+function installTiles(style,reason){
+  var descriptor=window.MtaMapProvider.descriptor(mapConfig,style,window.devicePixelRatio>1);
+  var usingMapbox=!!descriptor, generation=++mapGeneration, loaded=0, failed=0;
+  if(tiles){tiles.off();map.removeLayer(tiles);}
+  tileStat={ok:0,err:0,provider:usingMapbox?'mapbox':'osm'};
+  document.documentElement.style.setProperty('--tilefilter',usingMapbox?'none':OSM_DARKEN);
+  $('mapStyle').disabled=!usingMapbox;
+  $('mapboxLogo').hidden=!usingMapbox;
+  $('mapProviderStatus').textContent=usingMapbox?'Mapbox · '+(style==='streets'?'Streets':'Night'):(reason?'OpenStreetMap · fallback':'OpenStreetMap');
+  $('mapProviderStatus').title=reason||'Only visible map tiles are requested.';
+  var options={maxZoom:16,updateWhenIdle:true,keepBuffer:1,crossOrigin:true,referrerPolicy:'strict-origin-when-cross-origin',attribution:usingMapbox?ATTR_MAPBOX:ATTR_OSM};
+  if(descriptor){options.tileSize=descriptor.tileSize;options.zoomOffset=descriptor.zoomOffset;}
+  tiles=L.tileLayer(descriptor?descriptor.url:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',options);
+  tiles.on('tileload',function(){if(generation!==mapGeneration)return;loaded++;tileStat.ok++;});
+  tiles.on('tileerror',function(){if(generation!==mapGeneration)return;failed++;tileStat.err++;if(usingMapbox&&failed>=3){mapConfig=null;installTiles('night','Mapbox tiles unavailable; live observations remain visible.');}});
+  tiles.addTo(map);
+}
+var configController=new AbortController(),configTimeout=setTimeout(function(){configController.abort();},4000);
+fetch('map-config.json',{cache:'no-store',signal:configController.signal}).then(function(r){if(!r.ok)throw new Error('No public map configuration');return r.json();}).then(function(config){mapConfig=window.MtaMapProvider.configuration(config);installTiles('night',mapConfig?null:'No valid public map configuration.');}).catch(function(){installTiles('night','Map configuration unavailable.');}).finally(function(){clearTimeout(configTimeout);});
+$('mapStyle').onchange=function(){installTiles(this.value);};
 map.attributionControl.addAttribution(ATTR_MTA);
+map.on('moveend',function(){var c=map.getCenter();document.querySelectorAll('.leaflet-control-attribution a[href^="https://apps.mapbox.com/feedback/"]').forEach(function(a){a.href='https://apps.mapbox.com/feedback/#/'+c.lng.toFixed(5)+'/'+c.lat.toFixed(5)+'/'+map.getZoom();});});
 
 /* Reset control — after chasing one station across four boroughs there has to be
    a way back that is not "reload the page". */
@@ -612,7 +631,7 @@ function zf(){ return Math.max(.8, Math.min(1.85, .8 + (map.getZoom() - 11) * .1
 /* Deliberately super-linear: a quiet station has to stay a dot or 475 of them
    merge into one blob, and only a genuine anomaly should get big. Printed in the
    legend so the reader can check the claim. */
-function radiusFor(s){ return (2.6 + Math.pow(Math.max(s, 0), 1.6) * 13) * zf(); }
+function radiusFor(s){ return (1.8 + Math.pow(Math.max(s, 0), 1.6) * 4.8) * zf(); }
 function baseRadius(){ return Math.max(1.6, 2.25 * zf()); }
 function lineWeight(){ var z = map.getZoom(); return z < 11.5 ? 1.9 : z < 13 ? 2.7 : z < 14.5 ? 3.8 : 5.2; }
 
@@ -883,7 +902,7 @@ buildLegend();
    show anything. Contract: demos/mta-scan/API.md. */
 var POLL_MS = 30000, timer = null, mode = 'live';
 var liveFeatures = [], liveItems = [];
-var lastPoll = 0, lastSnapshot = null, lastResponseAt = 0, pausedByUser = false, pollRevision = 0, pollController = null, selectedStation = null;
+var lastPoll = 0, lastSnapshot = null, lastSnapshotWindow=null, lastResponseAt = 0, pausedByUser = false, pollRevision = 0, pollController = null, selectedStation = null;
 function livePointVisible(p, score){
   var query=$('stationSearch').value.trim().toLowerCase();
   return routeVisible(p.route_id) && score>=Number($('scoreFloor').value) && (!query || [p.stop_name,p.stop_id,p.route_id].join(' ').toLowerCase().indexOf(query)>=0);
@@ -902,6 +921,8 @@ function modeLabel(){
   ['stationSearch','scoreFloor','resetFilters'].forEach(function(id){$(id).disabled=mode==='replay';});
   $('routefilter').querySelectorAll('button').forEach(function(b){b.disabled=mode==='replay';});
   updateFilterSummary();
+  $('exportSnapshot').disabled=mode!=='live'||!lastSnapshot||!liveFeatures.length;
+  $('fitFiltered').disabled=mode!=='live';
 }
 function inspectStation(p,fromUser){
   selectedStation={route:p.route_id,stop:p.stop_id};
@@ -1112,7 +1133,7 @@ function pollLive(){
       return;
     }
 
-    lastSnapshot=st;
+    lastSnapshot=st;lastSnapshotWindow=win;
     $('freshness').textContent=(mode==='replay'?'Background feed: ':'')+(st.live.feeds_ok==null?'—':st.live.feeds_ok)+'/'+(st.live.feeds_total==null?'—':st.live.feeds_total)+' feeds · latest observation '+ago(st.live.last_observed_age_sec)+' at refresh · response '+new Date(lastResponseAt).toLocaleTimeString();
     renderKpis(st.counters);
     $('k-age').textContent = ago(st.live.last_observed_age_sec);
@@ -1191,6 +1212,8 @@ document.addEventListener('visibilitychange', function(){
 $('win').onchange = function(){ pollLive(); };
 $('refresh').onclick=pollLive;
 $('pauseLive').onclick=function(){pausedByUser=!pausedByUser;this.setAttribute('aria-pressed',String(pausedByUser));this.textContent=pausedByUser?'Resume updates':'Pause updates';if(pausedByUser){stopPolling();setState('p-warm','updates paused');}else{pollLive();startPolling();}modeLabel();};
+$('fitFiltered').onclick=function(){var points=liveFeatures.filter(function(f){return livePointVisible(f.properties||{},Number((f.properties||{}).anomaly_score)||0);}).map(function(f){var c=f.geometry.coordinates;return [c[1],c[0]];});if(points.length)map.fitBounds(L.latLngBounds(points),{padding:[28,28],maxZoom:14,animate:!REDUCED});else $('mapProviderStatus').textContent='No observations match these filters.';};
+$('exportSnapshot').onclick=function(){if(mode!=='live'||!lastSnapshot)return;var features=liveFeatures.filter(function(f){return livePointVisible(f.properties||{},Number((f.properties||{}).anomaly_score)||0);});var payload=window.MtaMapProvider.visibleSnapshot(lastSnapshot,features,{window:lastSnapshotWindow,search:$('stationSearch').value,min_score:Number($('scoreFloor').value),routes:Object.keys(activeRoutes)});var blob=new Blob([JSON.stringify(payload,null,2)+'\n'],{type:'application/json'});var url=URL.createObjectURL(blob),a=document.createElement('a');a.href=url;a.download='mta-observations.json';document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(url);},1000);};
 $('stationSearch').addEventListener('input',applyFilter);$('scoreFloor').onchange=applyFilter;
 $('resetFilters').onclick=function(){$('stationSearch').value='';$('scoreFloor').value='0';if($('rfclear'))$('rfclear').click();else applyFilter();};
 document.addEventListener('keydown',function(event){if(event.key==='Escape'&&!$('stationDetail').hidden){$('closeStation').click();}});

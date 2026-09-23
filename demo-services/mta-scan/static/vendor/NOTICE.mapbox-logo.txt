@@ -1,0 +1,3 @@
+Mapbox logo, unmodified, from https://api.mapbox.com/mapbox-gl-js/v3.30.0/mapbox-gl.css (v3.30.0).
+Copyright Mapbox. The logo is a Mapbox trademark and is included solely as required map attribution. It is not covered by this repository's MIT licence.
+Attribution guidance: https://docs.mapbox.com/help/dive-deeper/attribution/

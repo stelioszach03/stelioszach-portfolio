@@ -77,7 +77,7 @@
         "country_to": "US"
       },
       "response": {
-        "tx_id": "WEB-225917552330",
+        "tx_id": "WEB-235203671972",
         "risk_score": 0.360203,
         "risk_band": "low",
         "model_score": 0.212439,
@@ -95,11 +95,281 @@
           "amount_z": 0.2173,
           "sender_receiver_flow_ratio": 0.088
         },
-        "processed_at_utc": "2026-09-22T22:59:17Z",
+        "processed_at_utc": "2026-09-22T23:52:03Z",
         "sender_id": "ACC_0336",
         "receiver_id": "ACC_0002",
         "amount": 287.5,
-        "timestamp_utc": "2026-09-22T22:59:17.552344+00:00",
+        "timestamp_utc": "2026-09-22T23:52:03.671988+00:00",
+        "neighborhood": {
+          "snapshot": "after_transaction_before_reseed",
+          "nodes": [
+            {
+              "id": "ACC_0336",
+              "role": "sender",
+              "in_degree": 9,
+              "out_degree": 9
+            },
+            {
+              "id": "ACC_0002",
+              "role": "receiver",
+              "in_degree": 14,
+              "out_degree": 10
+            },
+            {
+              "id": "ACC_0164",
+              "role": "neighbor",
+              "in_degree": 8,
+              "out_degree": 13
+            },
+            {
+              "id": "ACC_0199",
+              "role": "neighbor",
+              "in_degree": 9,
+              "out_degree": 17
+            },
+            {
+              "id": "ACC_0232",
+              "role": "neighbor",
+              "in_degree": 7,
+              "out_degree": 9
+            },
+            {
+              "id": "ACC_0010",
+              "role": "neighbor",
+              "in_degree": 10,
+              "out_degree": 8
+            },
+            {
+              "id": "ACC_0014",
+              "role": "neighbor",
+              "in_degree": 10,
+              "out_degree": 6
+            },
+            {
+              "id": "ACC_0021",
+              "role": "neighbor",
+              "in_degree": 11,
+              "out_degree": 11
+            },
+            {
+              "id": "ACC_0023",
+              "role": "neighbor",
+              "in_degree": 8,
+              "out_degree": 11
+            },
+            {
+              "id": "ACC_0050",
+              "role": "neighbor",
+              "in_degree": 10,
+              "out_degree": 9
+            },
+            {
+              "id": "ACC_0059",
+              "role": "neighbor",
+              "in_degree": 13,
+              "out_degree": 8
+            },
+            {
+              "id": "ACC_0073",
+              "role": "neighbor",
+              "in_degree": 19,
+              "out_degree": 9
+            },
+            {
+              "id": "ACC_0101",
+              "role": "neighbor",
+              "in_degree": 6,
+              "out_degree": 7
+            },
+            {
+              "id": "ACC_0106",
+              "role": "neighbor",
+              "in_degree": 8,
+              "out_degree": 7
+            },
+            {
+              "id": "ACC_0111",
+              "role": "neighbor",
+              "in_degree": 9,
+              "out_degree": 10
+            },
+            {
+              "id": "ACC_0114",
+              "role": "neighbor",
+              "in_degree": 6,
+              "out_degree": 12
+            },
+            {
+              "id": "ACC_0119",
+              "role": "neighbor",
+              "in_degree": 6,
+              "out_degree": 11
+            },
+            {
+              "id": "ACC_0124",
+              "role": "neighbor",
+              "in_degree": 9,
+              "out_degree": 8
+            }
+          ],
+          "edges": [
+            {
+              "source": "ACC_0336",
+              "target": "ACC_0002",
+              "count": 3,
+              "submitted_pair": true
+            },
+            {
+              "source": "ACC_0164",
+              "target": "ACC_0002",
+              "count": 2,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0164",
+              "target": "ACC_0232",
+              "count": 2,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0002",
+              "target": "ACC_0073",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0002",
+              "target": "ACC_0106",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0002",
+              "target": "ACC_0124",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0002",
+              "target": "ACC_0232",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0010",
+              "target": "ACC_0336",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0014",
+              "target": "ACC_0002",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0021",
+              "target": "ACC_0336",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0023",
+              "target": "ACC_0002",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0050",
+              "target": "ACC_0002",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0050",
+              "target": "ACC_0101",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0059",
+              "target": "ACC_0002",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0073",
+              "target": "ACC_0010",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0073",
+              "target": "ACC_0014",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0111",
+              "target": "ACC_0336",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0114",
+              "target": "ACC_0002",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0114",
+              "target": "ACC_0111",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0119",
+              "target": "ACC_0002",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0199",
+              "target": "ACC_0336",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0232",
+              "target": "ACC_0002",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0232",
+              "target": "ACC_0119",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0336",
+              "target": "ACC_0101",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0336",
+              "target": "ACC_0199",
+              "count": 1,
+              "submitted_pair": false
+            }
+          ],
+          "truncated": true,
+          "node_limit": 18,
+          "edge_limit": 36,
+          "selection": "focus accounts plus one-hop neighbors ranked by link transaction count"
+        },
+        "graph_reset_after_snapshot": false,
         "graph": {
           "nodes_total": 363,
           "edges_total": 3581,
@@ -124,7 +394,7 @@
         "country_to": "SG"
       },
       "response": {
-        "tx_id": "WEB-225917553155",
+        "tx_id": "WEB-235203672735",
         "risk_score": 0.787961,
         "risk_band": "high",
         "model_score": 0.086213,
@@ -143,11 +413,281 @@
           "channel_risk": 0.62,
           "receiver_in_degree": 0.25
         },
-        "processed_at_utc": "2026-09-22T22:59:17Z",
+        "processed_at_utc": "2026-09-22T23:52:03Z",
         "sender_id": "ACC_0336",
         "receiver_id": "ACC_0301",
         "amount": 19500.0,
-        "timestamp_utc": "2026-09-22T22:59:17.553165+00:00",
+        "timestamp_utc": "2026-09-22T23:52:03.672741+00:00",
+        "neighborhood": {
+          "snapshot": "after_transaction_before_reseed",
+          "nodes": [
+            {
+              "id": "ACC_0336",
+              "role": "sender",
+              "in_degree": 9,
+              "out_degree": 10
+            },
+            {
+              "id": "ACC_0301",
+              "role": "receiver",
+              "in_degree": 11,
+              "out_degree": 11
+            },
+            {
+              "id": "ACC_0002",
+              "role": "neighbor",
+              "in_degree": 14,
+              "out_degree": 10
+            },
+            {
+              "id": "ACC_0193",
+              "role": "neighbor",
+              "in_degree": 7,
+              "out_degree": 8
+            },
+            {
+              "id": "ACC_0199",
+              "role": "neighbor",
+              "in_degree": 9,
+              "out_degree": 17
+            },
+            {
+              "id": "ACC_0010",
+              "role": "neighbor",
+              "in_degree": 10,
+              "out_degree": 8
+            },
+            {
+              "id": "ACC_0014",
+              "role": "neighbor",
+              "in_degree": 10,
+              "out_degree": 6
+            },
+            {
+              "id": "ACC_0018",
+              "role": "neighbor",
+              "in_degree": 15,
+              "out_degree": 11
+            },
+            {
+              "id": "ACC_0020",
+              "role": "neighbor",
+              "in_degree": 15,
+              "out_degree": 7
+            },
+            {
+              "id": "ACC_0021",
+              "role": "neighbor",
+              "in_degree": 11,
+              "out_degree": 11
+            },
+            {
+              "id": "ACC_0101",
+              "role": "neighbor",
+              "in_degree": 6,
+              "out_degree": 7
+            },
+            {
+              "id": "ACC_0104",
+              "role": "neighbor",
+              "in_degree": 10,
+              "out_degree": 14
+            },
+            {
+              "id": "ACC_0111",
+              "role": "neighbor",
+              "in_degree": 9,
+              "out_degree": 10
+            },
+            {
+              "id": "ACC_0129",
+              "role": "neighbor",
+              "in_degree": 9,
+              "out_degree": 7
+            },
+            {
+              "id": "ACC_0139",
+              "role": "neighbor",
+              "in_degree": 6,
+              "out_degree": 8
+            },
+            {
+              "id": "ACC_0154",
+              "role": "neighbor",
+              "in_degree": 11,
+              "out_degree": 13
+            },
+            {
+              "id": "ACC_0156",
+              "role": "neighbor",
+              "in_degree": 12,
+              "out_degree": 14
+            },
+            {
+              "id": "ACC_0158",
+              "role": "neighbor",
+              "in_degree": 9,
+              "out_degree": 14
+            }
+          ],
+          "edges": [
+            {
+              "source": "ACC_0336",
+              "target": "ACC_0301",
+              "count": 1,
+              "submitted_pair": true
+            },
+            {
+              "source": "ACC_0336",
+              "target": "ACC_0002",
+              "count": 3,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0010",
+              "target": "ACC_0158",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0010",
+              "target": "ACC_0336",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0014",
+              "target": "ACC_0002",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0018",
+              "target": "ACC_0111",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0018",
+              "target": "ACC_0199",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0018",
+              "target": "ACC_0301",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0020",
+              "target": "ACC_0156",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0021",
+              "target": "ACC_0336",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0101",
+              "target": "ACC_0158",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0111",
+              "target": "ACC_0336",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0158",
+              "target": "ACC_0301",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0193",
+              "target": "ACC_0336",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0199",
+              "target": "ACC_0336",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0301",
+              "target": "ACC_0014",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0301",
+              "target": "ACC_0020",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0301",
+              "target": "ACC_0104",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0301",
+              "target": "ACC_0139",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0301",
+              "target": "ACC_0154",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0301",
+              "target": "ACC_0156",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0301",
+              "target": "ACC_0193",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0336",
+              "target": "ACC_0101",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0336",
+              "target": "ACC_0129",
+              "count": 1,
+              "submitted_pair": false
+            },
+            {
+              "source": "ACC_0336",
+              "target": "ACC_0199",
+              "count": 1,
+              "submitted_pair": false
+            }
+          ],
+          "truncated": true,
+          "node_limit": 18,
+          "edge_limit": 36,
+          "selection": "focus accounts plus one-hop neighbors ranked by link transaction count"
+        },
+        "graph_reset_after_snapshot": false,
         "graph": {
           "nodes_total": 363,
           "edges_total": 3582,
@@ -172,7 +712,7 @@
         "country_to": "AE"
       },
       "response": {
-        "tx_id": "WEB-225917553966",
+        "tx_id": "WEB-235203673468",
         "risk_score": 0.814082,
         "risk_band": "high",
         "model_score": 0.974359,
@@ -191,11 +731,323 @@
           "log_amount": 0.8917,
           "amount_z": 0.4885
         },
-        "processed_at_utc": "2026-09-22T22:59:17Z",
+        "processed_at_utc": "2026-09-22T23:52:03Z",
         "sender_id": "RING_004",
         "receiver_id": "RING_009",
         "amount": 28400.0,
-        "timestamp_utc": "2026-09-22T22:59:17.553973+00:00",
+        "timestamp_utc": "2026-09-22T23:52:03.673472+00:00",
+        "neighborhood": {
+          "snapshot": "after_transaction_before_reseed",
+          "nodes": [
+            {
+              "id": "RING_004",
+              "role": "sender",
+              "in_degree": 12,
+              "out_degree": 13
+            },
+            {
+              "id": "RING_009",
+              "role": "receiver",
+              "in_degree": 13,
+              "out_degree": 12
+            },
+            {
+              "id": "RING_011",
+              "role": "neighbor",
+              "in_degree": 13,
+              "out_degree": 13
+            },
+            {
+              "id": "RING_010",
+              "role": "neighbor",
+              "in_degree": 12,
+              "out_degree": 11
+            },
+            {
+              "id": "RING_005",
+              "role": "neighbor",
+              "in_degree": 12,
+              "out_degree": 12
+            },
+            {
+              "id": "RING_001",
+              "role": "neighbor",
+              "in_degree": 11,
+              "out_degree": 12
+            },
+            {
+              "id": "RING_007",
+              "role": "neighbor",
+              "in_degree": 13,
+              "out_degree": 11
+            },
+            {
+              "id": "RING_012",
+              "role": "neighbor",
+              "in_degree": 13,
+              "out_degree": 12
+            },
+            {
+              "id": "RING_014",
+              "role": "neighbor",
+              "in_degree": 13,
+              "out_degree": 13
+            },
+            {
+              "id": "RING_002",
+              "role": "neighbor",
+              "in_degree": 13,
+              "out_degree": 13
+            },
+            {
+              "id": "RING_003",
+              "role": "neighbor",
+              "in_degree": 12,
+              "out_degree": 13
+            },
+            {
+              "id": "RING_013",
+              "role": "neighbor",
+              "in_degree": 13,
+              "out_degree": 12
+            },
+            {
+              "id": "RING_006",
+              "role": "neighbor",
+              "in_degree": 10,
+              "out_degree": 12
+            },
+            {
+              "id": "RING_008",
+              "role": "neighbor",
+              "in_degree": 11,
+              "out_degree": 12
+            }
+          ],
+          "edges": [
+            {
+              "source": "RING_004",
+              "target": "RING_009",
+              "count": 4,
+              "submitted_pair": true
+            },
+            {
+              "source": "RING_005",
+              "target": "RING_003",
+              "count": 9,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_002",
+              "target": "RING_003",
+              "count": 7,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_003",
+              "target": "RING_014",
+              "count": 7,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_005",
+              "target": "RING_007",
+              "count": 7,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_014",
+              "target": "RING_003",
+              "count": 7,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_002",
+              "target": "RING_013",
+              "count": 6,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_003",
+              "target": "RING_002",
+              "count": 6,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_003",
+              "target": "RING_005",
+              "count": 6,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_004",
+              "target": "RING_005",
+              "count": 6,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_006",
+              "target": "RING_010",
+              "count": 6,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_007",
+              "target": "RING_012",
+              "count": 6,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_014",
+              "target": "RING_002",
+              "count": 6,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_001",
+              "target": "RING_014",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_002",
+              "target": "RING_011",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_003",
+              "target": "RING_001",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_003",
+              "target": "RING_010",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_003",
+              "target": "RING_011",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_004",
+              "target": "RING_007",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_004",
+              "target": "RING_010",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_005",
+              "target": "RING_013",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_006",
+              "target": "RING_014",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_007",
+              "target": "RING_013",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_008",
+              "target": "RING_004",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_009",
+              "target": "RING_011",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_012",
+              "target": "RING_002",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_012",
+              "target": "RING_003",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_012",
+              "target": "RING_004",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_013",
+              "target": "RING_005",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_014",
+              "target": "RING_001",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_014",
+              "target": "RING_011",
+              "count": 5,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_001",
+              "target": "RING_004",
+              "count": 4,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_001",
+              "target": "RING_007",
+              "count": 4,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_002",
+              "target": "RING_006",
+              "count": 4,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_003",
+              "target": "RING_006",
+              "count": 4,
+              "submitted_pair": false
+            },
+            {
+              "source": "RING_003",
+              "target": "RING_007",
+              "count": 4,
+              "submitted_pair": false
+            }
+          ],
+          "truncated": true,
+          "node_limit": 18,
+          "edge_limit": 36,
+          "selection": "focus accounts plus one-hop neighbors ranked by link transaction count"
+        },
+        "graph_reset_after_snapshot": false,
         "graph": {
           "nodes_total": 363,
           "edges_total": 3582,

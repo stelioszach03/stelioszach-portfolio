@@ -200,6 +200,43 @@ async def graph_summary() -> dict:
     return await _serialized_snapshot(_graph_snapshot)
 
 
+def _neighborhood_snapshot(sender: str, receiver: str) -> dict:
+    """Small deterministic one-hop sample; called only while the score slot is held."""
+    graph = store.graph
+    focus = list(dict.fromkeys([sender, receiver]))
+    candidates: set[str] = set()
+    for account in focus:
+        if account in graph:
+            candidates.update(graph.successors(account))
+            candidates.update(graph.predecessors(account))
+    candidates.difference_update(focus)
+
+    def link_count(account: str) -> int:
+        return sum(int((graph.get_edge_data(a, account) or {}).get("count", 0))
+                   + int((graph.get_edge_data(account, a) or {}).get("count", 0)) for a in focus)
+
+    neighbors = sorted(candidates, key=lambda n: (-link_count(n), n))[:18-len(focus)]
+    included = [n for n in focus + neighbors if n in graph]
+    nodes = [{"id": n, "role": "both" if n == sender == receiver else
+              "sender" if n == sender else "receiver" if n == receiver else "neighbor",
+              "in_degree": int(graph.in_degree(n)), "out_degree": int(graph.out_degree(n))}
+             for n in included]
+    edges = []
+    # Check only the bounded induced node set, never walk every edge in the store.
+    for source in included:
+        for target in included:
+            data = graph.get_edge_data(source, target)
+            if data is not None:
+                edges.append({"source": source, "target": target,
+                              "count": int(data.get("count", 0)),
+                              "submitted_pair": source == sender and target == receiver})
+    edges.sort(key=lambda e: (not e["submitted_pair"], -e["count"], e["source"], e["target"]))
+    return {"snapshot": "after_transaction_before_reseed", "nodes": nodes, "edges": edges[:36],
+            "truncated": len(candidates) > len(neighbors) or len(edges) > 36,
+            "node_limit": 18, "edge_limit": 36,
+            "selection": "focus accounts plus one-hop neighbors ranked by link transaction count"}
+
+
 def _score(req: ScoreRequest) -> dict:
     global _rebuilds, _visitor_events
     event = TxEvent(
@@ -214,9 +251,12 @@ def _score(req: ScoreRequest) -> dict:
         timestamp_utc=datetime.now(timezone.utc),
     )
     payload = scorer.score(event)
+    payload["neighborhood"] = _neighborhood_snapshot(req.sender_id, req.receiver_id)
+    payload["graph_reset_after_snapshot"] = False
 
     _visitor_events += 1
     if _visitor_events >= RESEED_AFTER or store.graph.number_of_nodes() > MAX_NODES:
+        payload["graph_reset_after_snapshot"] = True
         _seed_graph()
         _rebuilds += 1
         _visitor_events = 0
