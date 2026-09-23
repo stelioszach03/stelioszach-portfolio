@@ -1,10 +1,12 @@
 # AsklepiosMed — Paphos Medical Association
 
-**Head Engineer · Pro bono**
+**Former Head Engineer · June 2022–July 2026 · Pro bono**
 
 [Public website](https://asklepiosmed.org/) · [Portfolio overview](https://stelioszach.com/#asklepios)
 
-I developed and donated AsklepiosMed to support the Paphos Medical Association's member services and everyday administrative work. The project combines a public website, a member portal, secretariat workflows and a separate engineering view.
+I worked as Head Engineer for the Paphos Medical Association from June 2022 to July 2026, pro bono, and developed and donated AsklepiosMed to support its member services and administrative work. My role ended in July 2026.
+
+The project has continued to evolve. The sections below describe its current capabilities and architecture, including development after my tenure. The platform now combines a public website, a member portal, secretariat workflows and a separate engineering view.
 
 This is a public engineering case study. Application source, operational configuration and member records remain private.
 
@@ -12,7 +14,7 @@ This is a public engineering case study. Application source, operational configu
 
 A professional association needs to publish information, support its members, organise events and handle sensitive requests without turning each workflow into a separate manual process. Those tasks also require different access boundaries: members should see their own records, the secretariat should manage its assigned work, and engineering access should not automatically reveal confidential case content.
 
-## What I built
+## Current project capabilities
 
 | Area                          | Implemented workflows                                                                                                             |
 | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |

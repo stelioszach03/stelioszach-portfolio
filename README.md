@@ -56,7 +56,7 @@ The CV and thesis are served as PDF documents. The sitemap lists the portfolio a
 - The BSc was completed in June 2026; the thesis manuscript is dated September 2026. These are separate dates.
 - The MRI figure comes from the accompanying reconstruction experiments. The case study includes the unmodified full figure. Numerical results are reported in the thesis and concern retrospective research, not clinical validation.
 - World-model research is explicitly ongoing and unpublished. The portfolio does not claim a peer-reviewed publication or general performance superiority.
-- The Paphos Medical Association role is current and pro bono. The public case study does not expose member data or private application source.
+- The Paphos Medical Association role was pro bono, June 2022–July 2026. The public case study separates that former role from the platform’s subsequent development and does not expose member data or private application source.
 - Demos link their own source repositories and describe their data and evaluation limits. Their backend implementations are maintained separately.
 
 The thesis PDF is a public copy with the student registry identifier redacted; its academic content is unchanged. Public documents and research imagery are not covered by the code licence below.
