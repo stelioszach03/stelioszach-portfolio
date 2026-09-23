@@ -1,4 +1,4 @@
 {
   "publicToken": "",
-  "note": "Copy to map-config.json and set a public pk token with styles:tiles only, restricted to the deployment origin. Never use an sk token. Without configuration the map uses OpenStreetMap."
+  "note": "Deployment-only public pk token with styles:read, fonts:read and styles:tiles, restricted to the production origin. Never use an sk token or commit the runtime config. Native Mapbox GL is primary; unsupported WebGL/provider failures use an explicitly labelled Leaflet fallback."
 }

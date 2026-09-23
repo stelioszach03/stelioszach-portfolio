@@ -211,3 +211,19 @@ test("build versions CSS/JS by content and hashes the final HTML without changin
     original,
   );
 });
+
+
+test("primary branding uses the byte-exact original ICO, touch icon and embedded logo frame", async () => {
+  const originals = {
+    "favicon.ico": "658c0aee6f5fb450e14051f626f9f3f1b9e107ba51a767bbbe7ee89b5c52900c",
+    "apple-touch-icon.png": "17f05e49a50010468ebf93b2ef38454ca1d8c3079bd6b15b5d5d6839e6bcbdc8",
+    "assets/personal-logo.png": "1537a439d4dacf0aab2d2bff3ae34d1169440de6db9284d5c216105bf74db31d"
+  };
+  for (const [asset, expected] of Object.entries(originals)) {
+    assert.equal(createHash("sha256").update(await readFile(new URL(asset, publicRoot))).digest("hex"), expected, asset);
+  }
+  assert.match(html, /rel="icon" href="\/favicon\.ico\?v=658c0aee6f5f"/);
+  assert.match(html, /rel="apple-touch-icon" href="\/apple-touch-icon\.png\?v=17f05e49a500"/);
+  assert.match(html, /class="personal-logo" src="\/assets\/personal-logo\.png\?v=1537a439d4da"/);
+  assert.doesNotMatch(html, /href="\/assets\/favicon\.svg"/);
+});

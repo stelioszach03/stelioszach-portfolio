@@ -18,7 +18,7 @@ Use fabricated examples only. The text demo does not guarantee anonymization. Fr
 - The de-identification workspace exposes detections, transformation policies and review filters. Edits invalidate stale results; the output still requires human review.
 - The subway workspace separates live observations, window statistics and frozen replay. Search/score/route filters narrow map observations, while window-wide totals stay labelled. An explicit export preserves the successful snapshot's window; it does not export tile credentials. Mobile map panning can be enabled and locked again to return control to page scrolling.
 
-The optional subway Mapbox setup is deployment-only: copy `mta-scan/static/map-config.example.json` to `map-config.json` and configure an origin-restricted public token for the required tile scope. Never use a secret token. The blank template is published; runtime configuration is excluded. Without valid configuration, the map uses OpenStreetMap. Map style selection changes the basemap, not the underlying observations or model. Provider attribution and the Mapbox logo remain visible when applicable. Browser tile requests go to the active provider.
+The optional subway Mapbox setup is deployment-only: copy `mta-scan/static/map-config.example.json` to `map-config.json` and configure an origin-restricted public token with `styles:read`, `fonts:read` and `styles:tiles`. Never use a secret token. The blank template is published; runtime configuration is excluded. Without valid configuration, the map uses OpenStreetMap. The native Mapbox GL renderer uses the self-hosted CSP build and worker. If vector rendering is unavailable, the workspace can use its labelled Leaflet fallback. Map style selection changes the basemap, not the underlying observations or model. Provider attribution and the Mapbox logo remain visible when applicable. Map resources and SDK usage requests reach the active provider under its terms; provider SDK caching or usage storage is separate from the application.
 
 ## Run locally
 
@@ -56,14 +56,14 @@ npm run test:syntax
 
 The cancellation tests verify that a cancelled request cannot release a still-running worker's serialization slot and that worker failures release it correctly. Source checks parse Python/JSON and verify the exact included synthetic checkpoint. The Node syntax check parses inline browser scripts and vendored JavaScript without executing browser code. The dev-only jsdom suite exercises the SMT and fraud interfaces with recorded synthetic API fixtures, including request locking, error handling, retry behavior and input/output safety.
 
-The DeID/MTA browser suite is separate:
+The DeID/MTA browser suites are separate:
 
 ```sh
 npx playwright install chromium
 npm run test:browser
 ```
 
-It starts an embedded loopback server on an ephemeral port, supplies synthetic API responses, and aborts all nonlocal browser requests, including map tiles. It checks input/result isolation, text-safe rendering, Unicode spans, state changes and mobile fit using real Chromium. CI installs Chromium with its Linux system dependencies in a separate bounded job. No deployed API or model is used.
+The suites use local static assets and synthetic API responses. External map/style/tile/usage requests are blocked or fulfilled with local fixtures; no deployed API, billing request or model is used. They check input/result isolation, text-safe rendering, Unicode spans, state changes and mobile fit using Chromium. Native-map coverage runs the real Mapbox GL SDK with software WebGL and intercepted fixtures. The earlier raster-map suite remains explicit fallback coverage, rather than being presented as a native renderer test. CI installs Chromium with its Linux system dependencies in a separate bounded job.
 
 These checks do not install spaCy, PyTorch, River or Z3; train models; call live MTA feeds; or run full ASGI/model integration. Those heavier service acceptance steps remain separate. The browser suite is bounded regression coverage, not a complete accessibility certification or physical-device test.
 

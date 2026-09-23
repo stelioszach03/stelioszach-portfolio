@@ -45,7 +45,7 @@ for(const name of ['smt-verify','fraud-graph']){
  });
  test(`${name}: errors preserve input, do not create results and render hostile messages as text`,async()=>{
   const hostile='<img src=x onerror="globalThis.compromised=true">';const ui=await setup(name,{post:()=>({httpStatus:422,body:{detail:[{loc:['body','candidate'],msg:hostile}]}})});
-  try{const before=ui.$(name==='smt-verify'?'candidate':'amount').value;await run(ui);assert.equal(ui.$(name==='smt-verify'?'candidate':'amount').value,before);assert.equal(ui.$('copy').disabled,true);assert.match(ui.$('error').textContent,/img/);assert.equal(ui.d.querySelector('img'),null);assert.equal(ui.w.compromised,undefined);}finally{ui.close();}
+  try{const before=ui.$(name==='smt-verify'?'candidate':'amount').value;await run(ui);assert.equal(ui.$(name==='smt-verify'?'candidate':'amount').value,before);assert.equal(ui.$('copy').disabled,true);assert.match(ui.$('error').textContent,/img/);assert.equal(ui.d.querySelector('main img'),null);assert.equal(ui.w.compromised,undefined);}finally{ui.close();}
  });
 }
 
@@ -59,13 +59,13 @@ test('SMT: returned witness loads matching problem without issuing a new request
 test('SMT: arbitrary variable names, API text and history never become executable markup',async()=>{
  const data=fixture('smt-verify');const name='x\"><img src=x onerror="globalThis.compromised=true">';const ex=data.examples.examples[0];ex.title=name;ex.candidate.assignment={[name]:1};ex.problem.variables=[{name,domain:'int'}];ex.problem.constraints=[];
  const response={...data.responses[0].response,explanation:name,certified_assignment:{[name]:1},unsat_core:[{constraint_id:name,constraint_text:name}]};
- const ui=await setup('smt-verify',{data,post:()=>clone(response)});try{assert.equal(ui.$('assignment').querySelector('label').textContent,name);assert.equal(ui.d.querySelector('img'),null);await run(ui);assert.ok(ui.$('out').textContent.includes(name));assert.equal(ui.d.querySelector('img'),null);assert.equal(ui.w.compromised,undefined);}finally{ui.close();}
+ const ui=await setup('smt-verify',{data,post:()=>clone(response)});try{assert.equal(ui.$('assignment').querySelector('label').textContent,name);assert.equal(ui.d.querySelector('main img'),null);await run(ui);assert.ok(ui.$('out').textContent.includes(name));assert.equal(ui.d.querySelector('main img'),null);assert.equal(ui.w.compromised,undefined);}finally{ui.close();}
 });
 test('SMT: busy requests lock edits and prevent duplicate submission',async()=>{
  let resolve;const data=fixture('smt-verify');const ui=await setup('smt-verify',{post:()=>new Promise(r=>resolve=r)});try{ui.$('go').click();await until(()=>ui.calls.length===1);assert.equal(ui.$('problem').disabled,true);assert.equal(ui.$('preset').disabled,true);ui.$('go').click();assert.equal(ui.calls.length,1);resolve(clone(data.responses[0].response));await until(()=>!ui.$('go').disabled);assert.equal(ui.$('problem').disabled,false);}finally{ui.close();}
 });
 test('Fraud: displays actual feature values and state-aware comparisons without importance bars or probability claims',async()=>{
- const data=fixture('fraud-graph');const ui=await setup('fraud-graph',{post:(_,n)=>clone(data.responses[Math.min(n-1,2)].response)});try{await run(ui);await run(ui);assert.match(ui.$('out').textContent,/not a controlled counterfactual/);assert.match(ui.$('out').textContent,/not comparable units or model importance/);assert.match(ui.$('out').textContent,/not a probability/);assert.equal(ui.$('out').querySelector('.bar'),null);assert.ok(ui.$('out').textContent.includes(data.responses[1].response.risk_score.toFixed(3)));input(ui,'sender_id','\"><img src=x onerror="globalThis.compromised=true">');await run(ui);assert.equal(ui.d.querySelector('img'),null);assert.equal(ui.w.compromised,undefined);}finally{ui.close();}
+ const data=fixture('fraud-graph');const ui=await setup('fraud-graph',{post:(_,n)=>clone(data.responses[Math.min(n-1,2)].response)});try{await run(ui);await run(ui);assert.match(ui.$('out').textContent,/not a controlled counterfactual/);assert.match(ui.$('out').textContent,/not comparable units or model importance/);assert.match(ui.$('out').textContent,/not a probability/);assert.equal(ui.$('out').querySelector('.bar'),null);assert.ok(ui.$('out').textContent.includes(data.responses[1].response.risk_score.toFixed(3)));input(ui,'sender_id','\"><img src=x onerror="globalThis.compromised=true">');await run(ui);assert.equal(ui.d.querySelector('main img'),null);assert.equal(ui.w.compromised,undefined);}finally{ui.close();}
 });
 test('Fraud: network failure is uncertain, never automatically retried or added to history',async()=>{
  const ui=await setup('fraud-graph',{post:()=>{throw new Error('Connection interrupted');}});try{await run(ui);await tick();assert.equal(ui.calls.length,1);assert.match(ui.$('status').textContent,/may already have recorded/);assert.equal(ui.$('copy').disabled,true);}finally{ui.close();}
@@ -92,7 +92,7 @@ test('Fraud network draws only actual bounded graph edges; account inspection an
 });
 test('Fraud malicious graph IDs remain inert SVG titles/text and option labels',async()=>{
  const data=fixture('fraud-graph');const n=data.responses[0].response.neighborhood;const old=n.nodes[0].id;const hostile='\"><img src=x onerror="globalThis.compromised=true">';n.nodes[0].id=hostile;for(const edge of n.edges){if(edge.source===old)edge.source=hostile;if(edge.target===old)edge.target=hostile;}
- const ui=await setup('fraud-graph',{data});try{await run(ui);assert.equal(ui.d.querySelector('img'),null);assert.equal(ui.w.compromised,undefined);assert.ok(ui.$('graph-node').options[0].textContent.includes(hostile));}finally{ui.close();}
+ const ui=await setup('fraud-graph',{data});try{await run(ui);assert.equal(ui.d.querySelector('main img'),null);assert.equal(ui.w.compromised,undefined);assert.ok(ui.$('graph-node').options[0].textContent.includes(hostile));}finally{ui.close();}
 });
 test('Leaving during a suite prevents further requests and discards its late response',async()=>{
  const data=fixture('smt-verify');let finish;const ui=await setup('smt-verify',{post:()=>new Promise(r=>finish=r)});try{ui.$('suite-run').click();await until(()=>ui.calls.length===1);ui.w.dispatchEvent(new ui.w.Event('pagehide'));finish(clone(data.responses[0].response));await until(()=>!ui.$('suite-run').disabled);assert.equal(ui.calls.length,1);assert.equal(ui.$('out').textContent,'');assert.equal(ui.$('copy').disabled,true);assert.equal(ui.$('suite-rows').querySelectorAll('[data-state="matched"]').length,0);}finally{ui.close();}

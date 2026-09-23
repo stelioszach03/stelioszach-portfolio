@@ -15,13 +15,19 @@ class HeadMetadata(HTMLParser):
     def __init__(self, html):
         super().__init__()
         self.icons = []
+        self.touch_icons = []
+        self.images = []
         self.meta = {}
-        self.feed(html.split("</head>", 1)[0])
+        self.feed(html)
 
     def handle_starttag(self, tag, attributes):
         attrs = dict(attributes)
         if tag == "link" and "icon" in attrs.get("rel", "").split():
             self.icons.append(attrs.get("href"))
+        if tag == "link" and "apple-touch-icon" in attrs.get("rel", "").split():
+            self.touch_icons.append(attrs.get("href"))
+        if tag == "img":
+            self.images.append(attrs.get("src"))
         if tag == "meta":
             key = attrs.get("property") or attrs.get("name")
             if key:
@@ -29,12 +35,15 @@ class HeadMetadata(HTMLParser):
 
 
 class SourceChecks(unittest.TestCase):
-    def test_demo_favicons_resolve_to_the_published_portfolio_asset(self):
-        self.assertTrue((ROOT.parent / "public/assets/favicon.svg").is_file())
+    def test_demo_brand_assets_resolve_to_published_originals(self):
+        for asset in ("favicon.ico", "apple-touch-icon.png", "assets/personal-logo.png"):
+            self.assertTrue((ROOT.parent / "public" / asset).is_file())
         for service in SERVICES:
             with self.subTest(service=service):
                 head = HeadMetadata((ROOT / service / "static/index.html").read_text())
-                self.assertEqual(head.icons, ["/assets/favicon.svg"])
+                self.assertEqual(head.icons, ["/favicon.ico?v=658c0aee6f5f"])
+                self.assertEqual(head.touch_icons, ["/apple-touch-icon.png?v=17f05e49a500"])
+                self.assertIn("/assets/personal-logo.png?v=1537a439d4da", head.images)
 
     def test_local_social_images_exist_and_mta_uses_a_text_summary_card(self):
         for service in SERVICES:

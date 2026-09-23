@@ -30,7 +30,8 @@
       property="og:image:alt"
       content="Retrospective MRI reconstruction examples from the BSc study"
     />
-    <link rel="icon" href="/assets/favicon.svg" type="image/svg+xml" />
+    <link rel="icon" href="/favicon.ico?v=658c0aee6f5f" type="image/x-icon" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=17f05e49a500" sizes="180x180" />
     <link rel="stylesheet" href="/assets/site.css" />
     <script src="/assets/site.js" defer></script>
   </head>
@@ -41,7 +42,7 @@
         class="wordmark"
         href="#intro"
         aria-label="Stelios Zacharioudakis, home"
-        >Stelios Zacharioudakis</a
+        ><img class="personal-logo" src="/assets/personal-logo.png?v=1537a439d4da" alt="" width="32" height="32" /><span>Stelios Zacharioudakis</span></a
       >
       <button
         class="menu-toggle"
@@ -100,13 +101,10 @@
                   <svg aria-hidden="true" viewBox="0 0 24 24">
                     <path d="M12 4v16m-6-6 6 6 6-6" /></svg
                 ></a>
-                <a
-                  class="button button-quiet"
-                  href="mailto:stelios@stelioszach.com"
+                <a class="button button-quiet" href="#demos"
                   ><svg aria-hidden="true" viewBox="0 0 24 24">
-                    <rect x="3" y="5" width="18" height="14" rx="2" />
-                    <path d="m3 7 9 6 9-6" /></svg
-                  >Say hi</a
+                    <path d="m9 5 10 7-10 7z" /></svg
+                  >Try a live demo</a
                 >
               </div>
               <div class="hero-links">
@@ -428,17 +426,18 @@
                 >
               </h3>
               <p>
-                Edit a candidate answer and let Z3 check whether it satisfies a
-                structured problem.
+                Edit constraints, run the five-case verification suite and reuse
+                a returned witness to test a corrected answer.
               </p>
               <p class="demo-limit">
-                Live solver verification. The paid language-model generation
-                step is not exposed.
+                Live Z3 verification with inspectable outcomes. Language-model
+                generation is outside this demo’s workflow.
               </p>
+              <details class="demo-walkthrough"><summary>Quick walkthrough</summary><p>Run the example suite, inspect the false-UNSAT case, then use its returned witness and verify again.</p></details>
             </div>
             <a
               class="source-link"
-              href="https://github.com/stelioszach03/llm-smt-verifiable-reasoning"
+              href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/smt-verify"
               aria-label="Source code for constraint verifier"
               >Source
               <svg aria-hidden="true" viewBox="0 0 24 24">
@@ -454,17 +453,18 @@
                 >
               </h3>
               <p>
-                Inspect how entity detection and explicit policies transform a
-                fabricated document.
+                Review detected entities, correct missed or unwanted redactions,
+                and export the transformed text with your review decisions.
               </p>
               <p class="demo-limit">
-                English-language demonstration. Detection can miss identifiers;
-                output requires review.
+                English NER and explicit transformation policies. Human review
+                supports correction; it does not guarantee anonymity.
               </p>
+              <details class="demo-walkthrough"><summary>Quick walkthrough</summary><p>Analyse a supplied document. Review a detected span, redact a missed selection, then export your decisions.</p><p><a href="https://github.com/stelioszach03/stelioszach-portfolio/blob/main/case-studies/deid-review.md">Read the engineering decisions and test evidence <span aria-hidden="true">↗</span></a></p></details>
             </div>
             <a
               class="source-link"
-              href="https://github.com/stelioszach03/deid-privacy-studio"
+              href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/deid"
               aria-label="Source code for text de-identification"
               >Source
               <svg aria-hidden="true" viewBox="0 0 24 24">
@@ -481,17 +481,18 @@
                 >
               </h3>
               <p>
-                See how transaction history becomes features, scores and
-                explanations.
+                Score a synthetic transfer, inspect its actual graph neighborhood
+                and compare successive runs with their feature evidence.
               </p>
               <p class="demo-limit">
                 Synthetic graph and rule-derived training labels. Not validated
                 fraud-detection performance.
               </p>
+              <details class="demo-walkthrough"><summary>Quick walkthrough</summary><p>Score a supplied transaction, inspect a neighboring account, then compare a second run. Each request changes the shared graph.</p></details>
             </div>
             <a
               class="source-link"
-              href="https://github.com/stelioszach03/graph-fraud-command-center"
+              href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/fraud-graph"
               aria-label="Source code for transaction graph explorer"
               >Source
               <svg aria-hidden="true" viewBox="0 0 24 24">
@@ -508,17 +509,18 @@
                 >
               </h3>
               <p>
-                Explore live public feed data alongside a separate, frozen
-                incident replay.
+                Explore live subway observations on a Mapbox vector map, filter
+                the network and inspect separate recorded incident replays.
               </p>
               <p class="demo-limit">
-                A small replay sanity check, not a benchmark. Improved recall
-                comes with more false alarms.
+                The small labelled replay reports both recall and false alarms.
+                Model scores are separate from official incident reports.
               </p>
+              <details class="demo-walkthrough"><summary>Quick walkthrough</summary><p>Filter a subway line, inspect a station and export its current snapshot. Use the separate replay timeline to examine a recorded incident.</p></details>
             </div>
             <a
               class="source-link"
-              href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection"
+              href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan"
               aria-label="Source code for NYC subway anomaly monitor"
               >Source
               <svg aria-hidden="true" viewBox="0 0 24 24">

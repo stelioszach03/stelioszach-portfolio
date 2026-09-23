@@ -1,0 +1,33 @@
+{
+  "version": "3.30.0",
+  "artifacts": [
+    {
+      "file": "mapbox-gl-csp.js",
+      "version": "3.30.0",
+      "url": "https://api.mapbox.com/mapbox-gl-js/v3.30.0/mapbox-gl-csp.js",
+      "bytes": 1783678,
+      "sha256": "8f683ae78b26a50fee3e8faeae525334228c692bc79c1c2c5c2a3b55c4c7b984"
+    },
+    {
+      "file": "mapbox-gl-csp-worker.js",
+      "version": "3.30.0",
+      "url": "https://api.mapbox.com/mapbox-gl-js/v3.30.0/mapbox-gl-csp-worker.js",
+      "bytes": 973417,
+      "sha256": "ead3640bb31fe08d16a0518a2c9e0992a89316e3d11b04e12ac095db4ade0bc3"
+    },
+    {
+      "file": "mapbox-gl.css",
+      "version": "3.30.0",
+      "url": "https://api.mapbox.com/mapbox-gl-js/v3.30.0/mapbox-gl.css",
+      "bytes": 48946,
+      "sha256": "6c82f3cfaa1d7bff8f6387dc3436fb5b8994f5faab20eeb417438037c361a9a7"
+    },
+    {
+      "file": "mapbox-gl-LICENSE.txt",
+      "version": "3.30.0",
+      "url": "https://registry.npmjs.org/mapbox-gl/-/mapbox-gl-3.30.0.tgz",
+      "sha256": "c24eff481bf098c82fda9949b2d982589df8b36db11fffa49653d4afe1903998",
+      "bytes": 5727
+    }
+  ]
+}

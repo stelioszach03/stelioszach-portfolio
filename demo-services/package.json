@@ -4,10 +4,10 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --test tests/*.test.mjs",
+    "test": "node --test tests/*.test.mjs mta-scan/tests/map-renderer.test.cjs",
     "test:syntax": "node tests/check-ui-syntax.mjs",
     "test:python": "python3 -m unittest discover -s tests -p 'test_*.py'",
-    "test:browser": "node --test --test-concurrency=1 tests/ui/*.test.mjs"
+    "test:browser": "node --test --test-concurrency=1 tests/ui/*.test.mjs mta-scan/tests/map-native-browser.test.mjs"
   },
   "devDependencies": {
     "jsdom": "29.1.1",

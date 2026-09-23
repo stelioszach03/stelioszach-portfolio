@@ -1163,3 +1163,17 @@ p + p {
     font-size: 26pt;
   }
 }
+
+/* Original personal monogram; the source pixels and colors are unchanged. */
+.wordmark { display: inline-flex; align-items: center; gap: 10px; }
+.personal-logo { display: block; width: 32px; height: 32px; object-fit: contain; flex-shrink: 0; }
+@media (max-width: 900px) { .personal-logo { width: 28px; height: 28px; } .wordmark { gap: 8px; } }
+@media (max-width: 370px) { .personal-logo { width: 26px; height: 26px; } }
+
+/* Short operating paths keep each demo easy to inspect without adding panels. */
+.demo-walkthrough { margin-top: 13px; max-width: 740px; }
+.demo-walkthrough summary { color: var(--accent); cursor: pointer; font-size: 12px; min-height: 32px; padding: 5px 0; }
+.demo-walkthrough summary:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+.demo-walkthrough p { font-size: 13px; line-height: 1.75; margin: 6px 0 0; }
+.demo-walkthrough[open] { padding-bottom: 4px; }
+@media (max-width: 600px) { .demo-walkthrough summary { min-height: 44px; padding: 12px 0; } }

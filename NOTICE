@@ -39,3 +39,13 @@ Leaflet's licence. Public transit data, provider tiles and research documents
 retain their own rights. See demo-services/NOTICE and demo-services/mta-scan/data/SOURCES.md for
 provenance. The bundled fraud model is synthetic-rule-trained; it is not a
 third-party pretrained research prior or a validated fraud detector.
+
+Original personal branding
+--------------------------
+
+public/favicon.ico and public/apple-touch-icon.png are unchanged original
+personal SZ branding assets from the earlier portfolio. The 256px PNG embedded
+in that ICO is used, without redrawing, recoloring or resampling, as
+public/assets/personal-logo.png for headers. These personal branding assets
+are excluded from the MIT source-code grant and retain their original rights.
+Stock React icons and the illustrated avatar are not used as the personal logo.

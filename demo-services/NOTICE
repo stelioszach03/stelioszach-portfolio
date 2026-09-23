@@ -31,3 +31,8 @@ rights and is not covered by the MIT grant. Its source and attribution terms
 are preserved in mta-scan/static/vendor/NOTICE.mapbox-logo.txt.
 Deployment-only map-config.json and access tokens are not published; only the
 blank map-config.example.json template is part of this source tree.
+
+Native Mapbox GL JS is a separately licensed vendor dependency, not MIT project
+code. Its unmodified licence and official-source/version/hash provenance are
+retained beside the self-hosted CSP build, worker and stylesheet. The website
+source-code grant does not relicense the SDK, its trademarks or provider data.

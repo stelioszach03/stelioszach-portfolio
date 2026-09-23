@@ -17,5 +17,6 @@
   function visibleSnapshot(snapshot,features,filters){
     return {schema_version:1,source:'MTA GTFS-Realtime observations; experimental model scores',generated_utc:snapshot.generated_utc||null,live:snapshot.live||null,window_counters:snapshot.counters||null,filters:filters,exported_map_observations:features.length,observations:features.map(function(f){return {geometry:f.geometry,properties:f.properties};}),score_interpretation:'Deviation scores are not calibrated probabilities or official incident reports.'};
   }
-  return {configuration:configuration,descriptor:descriptor,visibleSnapshot:visibleSnapshot};
+  function vectorStyle(style){return Object.prototype.hasOwnProperty.call(styles,style)?'mapbox://styles/mapbox/'+styles[style]:null;}
+  return {configuration:configuration,descriptor:descriptor,vectorStyle:vectorStyle,visibleSnapshot:visibleSnapshot};
 });

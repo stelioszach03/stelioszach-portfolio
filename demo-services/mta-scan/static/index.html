@@ -5,7 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>MTA Scan · Subway signal workspace</title>
 
-<link rel="icon" href="/assets/favicon.svg" sizes="any">
+<link rel="icon" href="/favicon.ico?v=658c0aee6f5f" type="image/x-icon" sizes="any">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png?v=17f05e49a500" sizes="180x180">
 <meta name="description" content="Eight live MTA GTFS-Realtime feeds land every ~30 seconds. An online streaming model learns each station's normal train spacing as the data arrives — no labels, no offline training run.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://stelioszach.com/demos/mta-scan/">
@@ -15,6 +16,7 @@
 <meta name="twitter:title" content="mta-scan — anomaly detection on live NYC subway feeds">
 <meta name="twitter:description" content="Eight live MTA GTFS-Realtime feeds land every ~30 seconds. An online streaming model learns each station's normal train spacing as the data arrives — no labels, no offline training run.">
 <link rel="stylesheet" href="vendor/leaflet.css">
+<link rel="stylesheet" href="vendor/mapbox-gl.css?v=3.30.0">
 
 <style>
   :root{
@@ -264,12 +266,15 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 @media(max-width:600px){.portfolio-header>div{padding:15px 17px}.portfolio-header nav{gap:14px}.portfolio-header .source-link{display:none}.wrap{padding:23px 17px 40px}.lede{font-size:13px}.src{font-size:11px}.source-band{margin:16px 0}.source-meta{font-size:11px;line-height:1.6}.bar .sep{display:none}.bar .ctl.grow{flex-basis:100%}.bar .ctl.grow select{max-width:100%}.bar .go,.bar .ghost{flex-grow:1}.kpis{grid-template-columns:repeat(3,1fr);row-gap:17px;padding:14px 0}.kpi{padding:0 10px}.kpi .v{font-size:21px}.kpi:nth-child(3){border-right:0}.kpi:nth-child(4){padding-left:0}.kpi .k{font-size:9px}.map-tools{flex-wrap:wrap;gap:8px}.map-tools .search{flex-basis:100%}.map-tools label:not(.search){flex:1}.map-tools .ghost{font-size:12px}.rail{display:flex;gap:10px}.card+.card{border-top:1px solid var(--line);padding-top:18px}#map{height:min(68svh,540px);min-height:390px}.station-detail dl{grid-template-columns:1fr 1fr}.maplegend .sizes{display:none}.replay-controls{gap:6px}.replay-controls label{width:100%}.replay-controls output{font-size:10px;min-width:auto}.maplegend{font-size:10px}.map-tools .ghost{min-height:40px}.headline{font-size:12px}footer{font-size:12px}}
 @media(prefers-reduced-motion:reduce){*,*:before,*:after{animation:none!important;transition:none!important;scroll-behavior:auto!important}}
 
+
+/* Native controls retain the same accessible, navy map workspace. */
+.mapboxgl-map{font:inherit}.mapboxgl-ctrl-group{background:#112240;box-shadow:none;border:1px solid #233554}.mapboxgl-ctrl-group button{width:44px;height:44px}.mapboxgl-ctrl-icon{filter:invert(1)}.mapboxgl-ctrl-attrib{background:rgba(10,25,47,.94);color:#a8b2d1}.mapboxgl-ctrl-attrib a{color:#64ffda}.mapboxgl-ctrl-attrib-button{filter:invert(1)}.mapboxgl-ctrl-bottom-left{z-index:2}.mapboxgl-popup-content{background:#112240;color:#ccd6f6;border:1px solid #233554;border-radius:6px;padding:15px;font:13px/1.5 inherit}.mapboxgl-popup-close-button{color:#ccd6f6;width:44px;height:44px;font-size:20px}.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip{border-top-color:#112240}.mta-tooltip .mapboxgl-popup-content{padding:5px 8px;font-size:12px}.mapboxgl-ctrl.mapbtn{padding:0 10px;min-height:44px;border:1px solid #233554;border-radius:4px;background:#112240;color:#ccd6f6;cursor:pointer}.portfolio-brand img{display:block;object-fit:contain;flex-shrink:0}
 </style>
 <link rel="stylesheet" href="workspace.css?v=2">
 </head>
 <body>
 <a class="skip" href="#workspace">Skip to subway workspace</a>
-<header class="portfolio-header"><div><a class="portfolio-brand" href="https://stelioszach.com"><span>SZ</span> MTA Scan</a><nav aria-label="Demo navigation"><a class="source-link" href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection">Source code ↗</a><a href="https://stelioszach.com">← Portfolio</a></nav></div></header>
+<header class="portfolio-header"><div><a class="portfolio-brand" href="https://stelioszach.com"><img src="/assets/personal-logo.png?v=1537a439d4da" alt="" width="32" height="32"> MTA Scan</a><nav aria-label="Demo navigation"><a class="source-link" href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection">Source code ↗</a><a href="https://stelioszach.com">← Portfolio</a></nav></div></header>
 <main class="wrap" id="workspace">
 
   <div class="workspace-title"><div><p class="eyebrow">New York City / Transit observability</p><h1>Subway signal desk</h1></div><a class="toolbar-source" href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan">View deployed source ↗</a></div>
@@ -408,15 +413,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
        <code>stop_id</code> column is synthetic, so station positions here are resolved from the real
        MTA GTFS by station <em>name</em>. The regressor is linear, so during a sharp change it can
        predict a negative headway; those values are printed as produced rather than clipped to zero.</p>
-    <p><b>Attribution.</b> Cartography &copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> and &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. <a href="https://apps.mapbox.com/feedback/">Improve this map</a>. OpenStreetMap provides fallback tiles when the configured Mapbox map is unavailable. Only visible tiles are requested, with normal browser caching; no offline download or prefetch. Subway lines, station positions and route colours come from the public MTA GTFS feed, whose version is recorded in <code>static/data/basemap.json</code>. Leaflet 1.9.4 is served locally. Map requests reach the selected provider; this page uses no analytics or browser storage.</p>
+    <p><b>Attribution.</b> Cartography &copy; <a href="https://www.mapbox.com/about/maps/">Mapbox</a> and &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors. <a href="https://apps.mapbox.com/feedback/">Improve this map</a>. OpenStreetMap provides fallback tiles when the configured Mapbox map is unavailable. Map resources are requested for the current view, with normal SDK/browser caching; the application offers no offline download. Subway lines, station positions and route colours come from the public MTA GTFS feed, whose version is recorded in <code>static/data/basemap.json</code>. Mapbox GL JS 3.30.0 renders the primary vector map and native data layers; Leaflet 1.9.4 is an explicit fallback when WebGL or vector resources are unavailable. Both are served locally. Map requests and SDK usage requests reach the provider under its terms. The application does not add analytics; provider SDK caching or usage storage is separate.</p>
   </footer>
 </details>
 </main>
 
 <script src="vendor/leaflet.js"></script>
-<script src="map-provider.js?v=2"></script>
+<script src="vendor/mapbox-gl-csp.js?v=3.30.0"></script>
+<script src="map-provider.js?v=3"></script>
+<script src="map-renderer.js?v=1"></script>
 <script>
-(function(){
+(async function(){
 "use strict";
 var $ = function(id){ return document.getElementById(id); };
 var REDUCED = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -526,6 +533,17 @@ function ago(sec){
    the middle of the network rather than on Manhattan — centre it on Manhattan in a
    panel this wide and a third of the map is New Jersey, which has no subway on it.
    maxBounds still lets you pan out to the ends of every line. */
+var mapConfig=null,configController=new AbortController();
+var configTimeout=setTimeout(function(){configController.abort();},4000);
+try{var configResponse=await fetch('map-config.json',{cache:'no-store',signal:configController.signal});if(configResponse.ok)mapConfig=window.MtaMapProvider.configuration(await configResponse.json());}catch(error){}finally{clearTimeout(configTimeout);}
+var L=window.MtaMapRenderer.library({mapboxgl:window.mapboxgl,leaflet:window.L,config:mapConfig,provider:window.MtaMapProvider,reduced:REDUCED,onStatus:function(state){
+  var native=state.renderer==='mapbox-gl',mapbox=state.provider!=='osm';
+  document.documentElement.style.setProperty('--tilefilter',mapbox?'none':'invert(1) hue-rotate(192deg) brightness(.78) contrast(.95) saturate(.45)');
+  $('mapStyle').disabled=!mapbox;$('mapboxLogo').hidden=native||!mapbox;
+  $('mapProviderStatus').textContent=native?'Mapbox GL · '+(state.ready?(state.style==='streets'?'Streets vector':'Night vector'):'loading vector map'):(state.provider==='mapbox-raster'?'Mapbox raster · '+(state.style==='streets'?'Streets':'Night')+' · Leaflet fallback':'OpenStreetMap · Leaflet fallback');
+  $('mapProviderStatus').title=state.reason||(native?'Native vector basemap and GeoJSON observation layers.':'Fallback raster basemap; observations remain available.');
+  $('mapProviderStatus').setAttribute('aria-label',$('mapProviderStatus').textContent+(state.reason?' · '+state.reason:''));
+}});
 var CORE_VIEW = L.latLngBounds([40.600, -74.045], [40.880, -73.735]);
 var COARSE = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
 
@@ -563,34 +581,11 @@ if (COARSE){
   $('lockMap').onclick=function(){map.dragging.disable();hint.classList.add('on');this.hidden=true;hint.focus();};
 }
 
-/* A deployment-only public token enables Mapbox. Never accept an sk token. */
-var ATTR_OSM = '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
-var ATTR_MTA = 'lines &amp; stations: <a href="https://www.mta.info/developers">MTA GTFS</a>';
-var ATTR_MAPBOX = '<a href="https://www.mapbox.com/about/maps/">&copy; Mapbox</a> · '+ATTR_OSM+' · <a href="https://apps.mapbox.com/feedback/">Improve this map</a>';
-var OSM_DARKEN = 'invert(1) hue-rotate(192deg) brightness(.78) contrast(.95) saturate(.45)';
-var tileStat = {ok:0,err:0,provider:'loading'}, tiles=null, mapConfig=null, mapGeneration=0;
-function installTiles(style,reason){
-  var descriptor=window.MtaMapProvider.descriptor(mapConfig,style,window.devicePixelRatio>1);
-  var usingMapbox=!!descriptor, generation=++mapGeneration, loaded=0, failed=0;
-  if(tiles){tiles.off();map.removeLayer(tiles);}
-  tileStat={ok:0,err:0,provider:usingMapbox?'mapbox':'osm'};
-  document.documentElement.style.setProperty('--tilefilter',usingMapbox?'none':OSM_DARKEN);
-  $('mapStyle').disabled=!usingMapbox;
-  $('mapboxLogo').hidden=!usingMapbox;
-  $('mapProviderStatus').textContent=usingMapbox?'Mapbox · '+(style==='streets'?'Streets':'Night'):(reason?'OpenStreetMap · fallback':'OpenStreetMap');
-  $('mapProviderStatus').title=reason||'Only visible map tiles are requested.';
-  var options={maxZoom:16,updateWhenIdle:true,keepBuffer:1,crossOrigin:true,referrerPolicy:'strict-origin-when-cross-origin',attribution:usingMapbox?ATTR_MAPBOX:ATTR_OSM};
-  if(descriptor){options.tileSize=descriptor.tileSize;options.zoomOffset=descriptor.zoomOffset;}
-  tiles=L.tileLayer(descriptor?descriptor.url:'https://tile.openstreetmap.org/{z}/{x}/{y}.png',options);
-  tiles.on('tileload',function(){if(generation!==mapGeneration)return;loaded++;tileStat.ok++;});
-  tiles.on('tileerror',function(){if(generation!==mapGeneration)return;failed++;tileStat.err++;if(usingMapbox&&failed>=3){mapConfig=null;installTiles('night','Mapbox tiles unavailable; live observations remain visible.');}});
-  tiles.addTo(map);
-}
-var configController=new AbortController(),configTimeout=setTimeout(function(){configController.abort();},4000);
-fetch('map-config.json',{cache:'no-store',signal:configController.signal}).then(function(r){if(!r.ok)throw new Error('No public map configuration');return r.json();}).then(function(config){mapConfig=window.MtaMapProvider.configuration(config);installTiles('night',mapConfig?null:'No valid public map configuration.');}).catch(function(){installTiles('night','Map configuration unavailable.');}).finally(function(){clearTimeout(configTimeout);});
-$('mapStyle').onchange=function(){installTiles(this.value);};
-map.attributionControl.addAttribution(ATTR_MTA);
-map.on('moveend',function(){var c=map.getCenter();document.querySelectorAll('.leaflet-control-attribution a[href^="https://apps.mapbox.com/feedback/"]').forEach(function(a){a.href='https://apps.mapbox.com/feedback/#/'+c.lng.toFixed(5)+'/'+c.lat.toFixed(5)+'/'+map.getZoom();});});
+/* Provider/style changes retain overlay groups and current live/replay state. */
+$('mapStyle').onchange=function(){map.setBasemap(this.value);};
+map.attributionControl.addAttribution('lines &amp; stations: <a href="https://www.mta.info/developers">MTA GTFS</a>');
+window.addEventListener('pagehide',function(event){if(!event.persisted)map.remove();});
+window.addEventListener('pageshow',function(event){if(event.persisted)map.invalidateSize();});
 
 /* Reset control — after chasing one station across four boroughs there has to be
    a way back that is not "reload the page". */
@@ -652,7 +647,7 @@ var lineShapes = [];    /* {rid, casing, poly} */
 var baseDots  = [];     /* {rid_list, marker} */
 var stationGrid = {};   /* 3-dp lat,lon cell -> [station,...] for live lookups */
 /* Exposed on purpose. `__mtaScanMap` in the console gives the render timings this
-   page claims in its own legend, plus the Leaflet map itself, so anything asserted
+   page claims in its own legend, plus the renderer facade (its native Mapbox map is `.native`), so anything asserted
    here can be checked rather than taken on trust. */
 var perf = (window.__mtaScanMap = {map: map});
 
@@ -848,10 +843,10 @@ function buildLegend(){
      caption says "at zoom 11" rather than quoting a formula the map then scales. */
   var z0 = 0.8;
   $('sizekey').innerHTML = [0.2, 0.6, 0.95].map(function(s){
-    var d = ((2.6 + Math.pow(s, 1.6) * 13) * z0 * 2).toFixed(1);
+    var d = ((1.8 + Math.pow(s, 1.6) * 4.8) * z0 * 2).toFixed(1);
     return '<span style="color:' + scoreColor(s) + '">' +
            '<i style="width:' + d + 'px;height:' + d + 'px"></i>' + s.toFixed(2) + '</span>';
-  }).join('') + '<span class="formula">radius = 2.6 + 13&middot;s<sup>1.6</sup><br>at zoom 11, scaled with zoom</span>';
+  }).join('') + '<span class="formula">radius = 1.8 + 4.8&middot;s<sup>1.6</sup><br>at zoom 11, scaled with zoom</span>';
 
   if (!COARSE && !$('zoomhint')){
     var s = document.createElement('span');
