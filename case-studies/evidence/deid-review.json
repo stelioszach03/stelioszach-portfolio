@@ -1,0 +1,94 @@
+{
+  "schema_version": 1,
+  "scope": "DeID adapter and reviewed-output workflow",
+  "recorded_utc": "2026-09-23T00:14:43.092Z",
+  "checks": {
+    "python_contract": {
+      "passed": 4,
+      "model_weights_loaded": false
+    },
+    "synthetic_browser_review": {
+      "chromium_passed": 5,
+      "webkit_passed": 5,
+      "mobile_widths_css_px": [
+        320,
+        375,
+        390
+      ],
+      "physical_device_test": false
+    },
+    "earlier_synthetic_browser_regressions": {
+      "chromium_passed": 3
+    },
+    "live_acceptance": {
+      "url": "https://stelioszach.com/demos/deid/",
+      "all_passed": true,
+      "synthetic_input_only": true,
+      "api_responses_mocked": false,
+      "browsers": [
+        {
+          "engine": "chromium",
+          "api_status": 200,
+          "analysis_requests": 1,
+          "statistical_and_rule_detectors_observed": true,
+          "keep_apply": true,
+          "manual_unicode_span": true,
+          "undo": true,
+          "explicit_export": true,
+          "no_horizontal_overflow": true
+        },
+        {
+          "engine": "webkit",
+          "api_status": 200,
+          "analysis_requests": 1,
+          "statistical_and_rule_detectors_observed": true,
+          "keep_apply": true,
+          "manual_unicode_span": true,
+          "undo": true,
+          "explicit_export": true,
+          "no_horizontal_overflow": true
+        }
+      ]
+    }
+  },
+  "not_established": [
+    "Representative precision/recall or clinical validation",
+    "Throughput or long-term availability",
+    "Complete anonymity or regulatory certification",
+    "Measured reviewer-productivity improvement"
+  ],
+  "recorded_workflow_source": {
+    "deid/static/index.html": "7a0b44d9669599064bab4a7dae3f4ca26e9f5730cb16a32490f9d773afb4a2de",
+    "deid/service.py": "436479cde4b4f23431ef382530902cb3bf6d95e8efce8b988e0f2aedf3c47666"
+  },
+  "provenance_note": "The recorded local WebKit/Chromium and live checks precede a later favicon-reference-only change. Reference export hashes are listed separately; do not attribute historical live-source hash verification to later HTML bytes.",
+  "later_export_ci": {
+    "commit": "a236749b5c83a798662e63b4dfb6786c03ec7adb",
+    "conclusion": "success",
+    "url": "https://github.com/stelioszach03/stelioszach-portfolio/actions/runs/35802120871",
+    "browser_scope": "Offline synthetic Chromium suite; not a new live-API or WebKit acceptance run."
+  },
+  "reference_export_commit": "a236749b5c83a798662e63b4dfb6786c03ec7adb",
+  "reference_export_files": [
+    {
+      "path": "demo-services/deid/service.py",
+      "sha256": "436479cde4b4f23431ef382530902cb3bf6d95e8efce8b988e0f2aedf3c47666"
+    },
+    {
+      "path": "demo-services/deid/static/index.html",
+      "sha256": "e2d96da15e979b7aaf476b0ae699453dac09f114fcbf38cc3967b0dec1258f81"
+    },
+    {
+      "path": "demo-services/service-tests/test_deid_review_backend.py",
+      "sha256": "6b29fdc80e4d1f69cf887455a2e71199023169ed4a30668b83b9dc695119e64f"
+    },
+    {
+      "path": "demo-services/tests/ui/deid-review-ui.test.mjs",
+      "sha256": "13e4a8155a1d1f6c2fed2ae3b84070dbb25e27a3f34d4fd609ac4e1fd5afcd7c"
+    },
+    {
+      "path": "demo-services/tests/ui/workspace-ui.test.mjs",
+      "sha256": "3303fe267efb765f0184014d8535a28e1d51c50833690f1fb93d4d179d377e03"
+    }
+  ]
+}
