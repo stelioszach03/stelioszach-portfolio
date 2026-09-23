@@ -132,7 +132,7 @@
               From a research question <br />to a working system.
             </h2>
             <p>
-              Three projects, with the contribution, evidence and limits kept
+              Four projects, with the contribution, evidence and limits kept
               together.
             </p>
           </div>
@@ -238,10 +238,87 @@
           </div>
         </article>
 
+        <article id="forgerl" class="case-study">
+          <div class="case-index">
+            <span>02</span>
+            <p>ForgeRL <br />Repair agents · Evaluation</p>
+          </div>
+          <div class="case-body">
+            <p class="eyebrow">Reinforcement learning · Model routing · Sandboxed execution</p>
+            <h3>Code repair with <br />an inspectable decision policy.</h3>
+            <p class="case-lead">
+              A workbench for studying how a bounded agent allocates model calls
+              using visible regression-test feedback.
+            </p>
+            <p>
+              I built the repair loop, isolated executor, durable inference
+              budget and trace interface. Frozen Granite and GPT-OSS models
+              propose edits; a finite fitted-Q controller learns routing actions
+              from collected transitions. The language models are not fine-tuned.
+            </p>
+            <div class="evidence-line">
+              <strong>24 authored tasks</strong>
+              <p>
+                Python regressions with separate training, validation and test
+                families. Inspect candidate patches, visible and held-out checks,
+                provider-reported tokens and estimated cost.
+              </p>
+            </div>
+            <details class="study-detail">
+              <summary>
+                System, experiment &amp; limitations
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </summary>
+              <div class="detail-body">
+                <div>
+                  <h4>Bounded execution</h4>
+                  <p>
+                    The public interface accepts curated task IDs, not arbitrary
+                    repositories or code uploads. Candidates run in constrained,
+                    network-isolated rootless containers. A durable ledger limits
+                    inference spending and retains uncertain billing reservations.
+                  </p>
+                </div>
+                <div>
+                  <h4>Policy comparison</h4>
+                  <p>
+                    Fixed, deliberate-only, heuristic and adaptive policies use
+                    the same three-call cap. Prospective evaluation keeps hidden
+                    checks out of model feedback and reports failures alongside
+                    successful patches. Recorded runs remain inspectable when
+                    the live inference allowance is unavailable.
+                  </p>
+                </div>
+                <div>
+                  <h4>Limits of the evidence</h4>
+                  <p>
+                    This is a small authored task suite, not SWE-bench or general
+                    repository repair. Test passes do not prove correctness;
+                    sparse controller states can require a labeled heuristic
+                    fallback. Estimated token costs are not provider invoices.
+                    No general policy advantage is claimed.
+                  </p>
+                </div>
+              </div>
+            </details>
+            <div class="case-links">
+              <a class="text-link" href="/demos/forgerl/"
+                >Open the repair workbench <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/stelioszach03/forgerl"
+                >Source &amp; methodology <span aria-hidden="true">↗</span></a>
+              <a class="text-link"
+                href="https://github.com/stelioszach03/stelioszach-portfolio/blob/main/case-studies/forgerl.md"
+                >Read the engineering case study <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+
         <span id="experience" class="anchor-alias" aria-hidden="true"></span>
         <article id="asklepios" class="case-study">
           <div class="case-index">
-            <span>02</span>
+            <span>03</span>
             <p>Former Head Engineer <br />Jun 2022–Jul 2026 <br />Pro bono</p>
           </div>
           <div class="case-body">
@@ -328,7 +405,7 @@
 
         <article id="mta-scan" class="case-study">
           <div class="case-index">
-            <span>03</span>
+            <span>04</span>
             <p>MTA-Scan <br />Live data · Evaluation</p>
           </div>
           <div class="case-body">
@@ -436,7 +513,7 @@
               Small interfaces. <br />Inspectable systems.
             </h2>
             <p>
-              Two selected live demos. Use the supplied examples; please don’t enter
+              Three selected live demos. Use the supplied examples; please don’t enter
               personal or confidential data.
             </p>
           </div>
@@ -445,6 +522,31 @@
         <div class="demo-list">
           <article class="demo-row">
             <span class="row-number" aria-hidden="true">01</span>
+            <div>
+              <h3>
+                <a href="/demos/forgerl/"
+                  >ForgeRL · Python repair workbench
+                  <span aria-hidden="true">↗</span></a>
+              </h3>
+              <p>
+                Choose an authored regression task and inspect model-generated
+                edits, test outcomes and routing decisions. Export the patch
+                and its execution trace.
+              </p>
+              <p class="demo-limit">
+                Live inference has a finite allowance. Recorded evidence remains
+                available; the small task suite does not establish general repair performance.
+              </p>
+              <details class="demo-walkthrough"><summary>Quick walkthrough</summary><p>Open a recorded run, compare public and held-out checks, and inspect its patch and trace. Use Experiments to review the recorded policy comparisons and their coverage before interpreting results.</p></details>
+            </div>
+            <a class="source-link" href="https://github.com/stelioszach03/forgerl"
+              aria-label="Source code for ForgeRL · Python repair workbench"
+              >Source
+              <svg aria-hidden="true" viewBox="0 0 24 24">
+                <path d="m8 5-7 7 7 7m8-14 7 7-7 7" /></svg></a>
+          </article>
+          <article class="demo-row">
+            <span class="row-number" aria-hidden="true">02</span>
             <div>
               <h3>
                 <a href="/demos/mta-scan/"
@@ -472,7 +574,7 @@
             ></a>
           </article>
           <article class="demo-row">
-            <span class="row-number" aria-hidden="true">02</span>
+            <span class="row-number" aria-hidden="true">03</span>
             <div>
               <h3>
                 <a href="/demos/deid/"

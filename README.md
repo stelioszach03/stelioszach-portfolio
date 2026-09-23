@@ -2,18 +2,19 @@
 
 Source for [stelioszach.com](https://stelioszach.com): a static portfolio of machine learning research and software engineering work.
 
-The site selects three core projects: the MRI reconstruction thesis, the donated AsklepiosMed platform and MTA-Scan. A compact section describes ongoing, unpublished world-model research. Two selected live demos—MTA-Scan and the secondary DeID review tool—keep their methods, evidence and limitations alongside the interface. Four demo services remain available; selection does not remove their routes or source.
+The site selects four core projects: the MRI reconstruction thesis, ForgeRL, the donated AsklepiosMed platform and MTA-Scan. A compact section describes ongoing, unpublished world-model research. Three selected live demos—ForgeRL, MTA-Scan and the secondary DeID review tool—keep their methods, evidence and limitations alongside the interface. Five demo services remain available; selection does not remove their routes or source.
 
 ## Selected projects
 
 | Project | Evidence or live interface | Source or case study |
 | --- | --- | --- |
 | MRI reconstruction | [Thesis and methods](https://stelioszach.com/#mri) | [Public BSc thesis](public/documents/zacharioudakis-bsc-thesis-2026.pdf) |
+| ForgeRL | [Python repair workbench](https://stelioszach.com/demos/forgerl/) | [Standalone source](https://github.com/stelioszach03/forgerl) · [Engineering case study](case-studies/forgerl.md) |
 | AsklepiosMed | [Public association website](https://asklepiosmed.org/) | [Engineering case study](case-studies/asklepiosmed.md) |
 | MTA-Scan | [Live subway monitor](https://stelioszach.com/demos/mta-scan/) | [Deployed adapter and UI](demo-services/mta-scan) |
 | DeID — secondary tool | [Text review interface](https://stelioszach.com/demos/deid/) | [Review workflow case study](case-studies/deid-review.md) |
 
-The demos expose bounded adapters, not every capability of their upstream repositories. Use synthetic text inputs. MTA's constructed replay is separate from live public-feed observations and does not validate incident prediction. AsklepiosMed application source and member records remain private.
+The demos expose bounded interfaces. ForgeRL selects from 24 authored Python tasks; its finite fitted-Q controller routes frozen hosted models, without language-model fine-tuning or a claim of general repair superiority. Live inference has a finite allowance, while recorded patches, tests and estimated costs remain inspectable. Use synthetic text inputs in DeID. MTA's constructed replay is separate from live public-feed observations and does not validate incident prediction. AsklepiosMed application source and member records remain private.
 
 Additional preserved interfaces—[constraint verifier](https://stelioszach.com/demos/smt-verify/) and [synthetic transaction graph](https://stelioszach.com/demos/fraud-graph/)—remain available for existing links and source inspection in [`demo-services/`](demo-services/README.md). They are not selected homepage projects.
 
@@ -44,19 +45,22 @@ The build checks that both linked documents are actual PDF files, copies `public
 
 [`demo-services/`](demo-services/README.md) contains the four standalone runtime adapters, selected vendor modules, public/synthetic data and their original licence notices. The portfolio build does not bundle or launch these services. Their model dependencies are installed separately.
 
+[ForgeRL](https://github.com/stelioszach03/forgerl) is maintained in its own repository with its task catalog, model provider, isolated executor, controller, frontend and experiment protocol. Its paid research commands are distinct from the offline regression checks. The portfolio case study describes the integration; this repository does not duplicate that runtime.
+
 The demo test package has locked **development-only** jsdom and Playwright dependencies. Separate CI jobs exercise synthetic SMT/fraud interfaces, Python worker cancellation and source checks, and offline Chromium DeID/MTA regressions. None of those jobs trains a model, sends user data, contacts live inference services or collects MTA feeds. The original website checks run unchanged in their own job. See the demo README for commands and coverage limits.
 
 ## Hosting
 
-Serve `dist/` as the website root. The four `/demos/` routes belong to separate services and are intentionally not bundled here. Preserve their reverse-proxy routes when deploying this site. The historical `/Stelios_Zacharioudakis_CV.pdf` URL is retained, including compatibility with existing query strings.
+Serve `dist/` as the website root. The five `/demos/` routes belong to separate services and are intentionally not bundled here. Preserve their reverse-proxy routes when deploying this site. The historical `/Stelios_Zacharioudakis_CV.pdf` URL is retained, including compatibility with existing query strings.
 
-The CV and thesis are served as PDF documents. The sitemap lists the portfolio and the four demo entry points. No client-side router or fallback to an empty application shell is needed.
+The CV and thesis are served as PDF documents. The sitemap lists the portfolio and the five demo entry points. No client-side router or fallback to an empty application shell is needed.
 
 ## Content and provenance
 
 - The BSc was completed in June 2026; the thesis manuscript is dated September 2026. These are separate dates.
 - The MRI figure comes from the accompanying reconstruction experiments. The case study includes the unmodified full figure. Numerical results are reported in the thesis and concern retrospective research, not clinical validation.
 - World-model research is explicitly ongoing and unpublished. The portfolio does not claim a peer-reviewed publication or general performance superiority.
+- ForgeRL is a bounded repair-agent experiment on authored tasks, not SWE-bench. The controller and the hosted language models are distinguished, and policy outcomes are reported only through recorded experiment artifacts. Cost estimates are not provider invoices.
 - The Paphos Medical Association role was pro bono, June 2022–July 2026. The public case study separates that former role from the platform’s subsequent development and does not expose member data or private application source.
 - Demos link their own source repositories and describe their data and evaluation limits. Their backend implementations are maintained separately.
 

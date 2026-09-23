@@ -36,13 +36,14 @@ test("every same-page destination exists and IDs are unique", () => {
     assert.ok(ids.includes(hash), hash);
 });
 
-test("two selected demos and local assets resolve while all four service routes remain documented", async () => {
+test("three selected demos and local assets resolve while all five service routes remain documented", async () => {
   const local = [...html.matchAll(/(?:href|src)="(\/[^"#?]+)[^"]*"/g)].map(
     (m) => m[1],
   );
   const demoLinks = new Set(local.filter((href) => href.startsWith("/demos/")));
   assert.deepEqual([...demoLinks].sort(), [
     "/demos/deid/",
+    "/demos/forgerl/",
     "/demos/mta-scan/",
   ]);
   const sitemap = await readFile(new URL("sitemap.xml", publicRoot), "utf8");
@@ -50,8 +51,9 @@ test("two selected demos and local assets resolve while all four service routes 
     assert.ok(sitemap.includes(`/demos/${route}/`), `${route} stays discoverable`);
     assert.ok((await stat(new URL(`../demo-services/${route}/static/index.html`, publicRoot))).size > 0);
   }
-  assert.equal((html.match(/class="demo-row"/g) || []).length, 2);
-  assert.match(html, /Two selected live demos/);
+  assert.ok(sitemap.includes("/demos/forgerl/"), "the separately maintained ForgeRL service stays discoverable");
+  assert.equal((html.match(/class="demo-row"/g) || []).length, 3);
+  assert.match(html, /Three selected live demos/);
   for (const retired of ["TrustQueryNet", "colab-speculative-decoding", "EuroSAT", "fraud-graph", "smt-verify"]) {
     assert.ok(!html.includes(retired), `${retired} is not actively promoted`);
   }
@@ -73,7 +75,11 @@ test("research and product claims retain their scope instead of publication or s
   assert.match(html, /ongoing, unpublished research/);
   assert.match(html, /no prospective scanner study or clinical validation/i);
   const coreIds = [...html.matchAll(/<article id="([^"]+)" class="case-study"/g)].map((m) => m[1]);
-  assert.deepEqual(coreIds, ["mri", "asklepios", "mta-scan"]);
+  assert.deepEqual(coreIds, ["mri", "forgerl", "asklepios", "mta-scan"]);
+  assert.match(html, /24 authored tasks/);
+  assert.match(html, /The language models are not fine-tuned/);
+  assert.match(html, /not SWE-bench or general repository repair/);
+  assert.match(html, /No general policy advantage is claimed/);
   assert.match(html, /constructed scenarios/);
   assert.match(html, /not official MTA incident ground truth/);
   assert.match(html, /failed controller and selection hypotheses/);
