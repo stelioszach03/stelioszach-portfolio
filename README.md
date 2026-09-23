@@ -2,19 +2,20 @@
 
 Source for [stelioszach.com](https://stelioszach.com): a static portfolio of machine learning research and software engineering work.
 
-The site presents MRI reconstruction research, ongoing unpublished world-model research, a donated medical-association platform, and four separately hosted interactive demos. Each project keeps its methods, evidence and limitations together.
+The site selects three core projects: the MRI reconstruction thesis, the donated AsklepiosMed platform and MTA-Scan. A compact section describes ongoing, unpublished world-model research. Two selected live demos—MTA-Scan and the secondary DeID review tool—keep their methods, evidence and limitations alongside the interface. Four demo services remain available; selection does not remove their routes or source.
 
-## Explore the projects
+## Selected projects
 
-| Project                    | Live interface                                          | Source or case study                                          |
-| -------------------------- | ------------------------------------------------------- | ------------------------------------------------------------- |
-| Constraint verifier        | [Open demo](https://stelioszach.com/demos/smt-verify/)  | [Adapter and UI](demo-services/smt-verify)                    |
-| Text de-identification     | [Open demo](https://stelioszach.com/demos/deid/)        | [Adapter and UI](demo-services/deid)                          |
-| Transaction graph explorer | [Open demo](https://stelioszach.com/demos/fraud-graph/) | [Adapter and UI](demo-services/fraud-graph)                   |
-| NYC subway monitor         | [Open demo](https://stelioszach.com/demos/mta-scan/)    | [Adapter and UI](demo-services/mta-scan)                      |
-| AsklepiosMed               | [Public association website](https://asklepiosmed.org/) | [Public engineering case study](case-studies/asklepiosmed.md) |
+| Project | Evidence or live interface | Source or case study |
+| --- | --- | --- |
+| MRI reconstruction | [Thesis and methods](https://stelioszach.com/#mri) | [Public BSc thesis](public/documents/zacharioudakis-bsc-thesis-2026.pdf) |
+| AsklepiosMed | [Public association website](https://asklepiosmed.org/) | [Engineering case study](case-studies/asklepiosmed.md) |
+| MTA-Scan | [Live subway monitor](https://stelioszach.com/demos/mta-scan/) | [Deployed adapter and UI](demo-services/mta-scan) |
+| DeID — secondary tool | [Text review interface](https://stelioszach.com/demos/deid/) | [Review workflow case study](case-studies/deid-review.md) |
 
-The four demos expose bounded adapters, not every capability of their upstream research/library repositories. Use synthetic inputs. AsklepiosMed application source and member records remain private.
+The demos expose bounded adapters, not every capability of their upstream repositories. Use synthetic text inputs. MTA's constructed replay is separate from live public-feed observations and does not validate incident prediction. AsklepiosMed application source and member records remain private.
+
+Additional preserved interfaces—[constraint verifier](https://stelioszach.com/demos/smt-verify/) and [synthetic transaction graph](https://stelioszach.com/demos/fraud-graph/)—remain available for existing links and source inspection in [`demo-services/`](demo-services/README.md). They are not selected homepage projects.
 
 ## Architecture
 

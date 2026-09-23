@@ -36,17 +36,25 @@ test("every same-page destination exists and IDs are unique", () => {
     assert.ok(ids.includes(hash), hash);
 });
 
-test("all local assets resolve, preserving the historical CV URL and four demo routes", async () => {
+test("two selected demos and local assets resolve while all four service routes remain documented", async () => {
   const local = [...html.matchAll(/(?:href|src)="(\/[^"#?]+)[^"]*"/g)].map(
     (m) => m[1],
   );
   const demoLinks = new Set(local.filter((href) => href.startsWith("/demos/")));
   assert.deepEqual([...demoLinks].sort(), [
     "/demos/deid/",
-    "/demos/fraud-graph/",
     "/demos/mta-scan/",
-    "/demos/smt-verify/",
   ]);
+  const sitemap = await readFile(new URL("sitemap.xml", publicRoot), "utf8");
+  for (const route of ["deid", "mta-scan", "fraud-graph", "smt-verify"]) {
+    assert.ok(sitemap.includes(`/demos/${route}/`), `${route} stays discoverable`);
+    assert.ok((await stat(new URL(`../demo-services/${route}/static/index.html`, publicRoot))).size > 0);
+  }
+  assert.equal((html.match(/class="demo-row"/g) || []).length, 2);
+  assert.match(html, /Two selected live demos/);
+  for (const retired of ["TrustQueryNet", "colab-speculative-decoding", "EuroSAT", "fraud-graph", "smt-verify"]) {
+    assert.ok(!html.includes(retired), `${retired} is not actively promoted`);
+  }
   for (const asset of new Set(
     local.filter((href) => !href.startsWith("/demos/")),
   ))
@@ -64,7 +72,14 @@ test("all local assets resolve, preserving the historical CV URL and four demo r
 test("research and product claims retain their scope instead of publication or safety claims", () => {
   assert.match(html, /ongoing, unpublished research/);
   assert.match(html, /no prospective scanner study or clinical validation/i);
-  assert.match(html, /rule-derived training labels/);
+  const coreIds = [...html.matchAll(/<article id="([^"]+)" class="case-study"/g)].map((m) => m[1]);
+  assert.deepEqual(coreIds, ["mri", "asklepios", "mta-scan"]);
+  assert.match(html, /constructed scenarios/);
+  assert.match(html, /not official MTA incident ground truth/);
+  assert.match(html, /failed controller and selection hypotheses/);
+  assert.match(html, /did not outperform random/);
+  assert.match(html, /Former Head Engineer/);
+  assert.match(html, /subsequent development/);
   assert.match(
     html,
     /single-VPS deployment is not a highly available infrastructure/,

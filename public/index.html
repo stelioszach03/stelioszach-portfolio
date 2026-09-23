@@ -326,77 +326,102 @@
           </div>
         </article>
 
-        <span id="research" class="anchor-alias" aria-hidden="true"></span>
-        <article id="world-models" class="case-study research-study">
+        <article id="mta-scan" class="case-study">
           <div class="case-index">
             <span>03</span>
-            <p>Current research <br />Ongoing · Unpublished</p>
+            <p>MTA-Scan <br />Live data · Evaluation</p>
           </div>
           <div class="case-body">
-            <p class="eyebrow">Model-based reinforcement learning</p>
-            <h3>Can a world model tell us <br />which policy to trust?</h3>
+            <p class="eyebrow">Data engineering · FastAPI · Interactive maps</p>
+            <h3>From subway observations <br />to an inspectable signal.</h3>
             <p class="case-lead">
-              Investigating the gap between imagined performance and what a
-              policy actually does in an environment.
+              A working pipeline for exploring public NYC Subway observations,
+              headway deviations and the limits of anomaly scores.
             </p>
             <p>
-              My current research studies imagination horizons, critic stability
-              and policy selection in latent world models. I develop PyTorch
-              experiments with controlled comparisons, paired evaluation
-              contexts and explicit reporting of failed hypotheses.
+              I implemented feed ingestion, the API and an interactive review
+              workflow with freshness states, native Mapbox layers, filtering
+              and explicit snapshot export. A separate replay compares an online
+              model with z-score, EWMA and fixed-threshold baselines.
             </p>
-            <ol class="research-process" aria-label="Research workflow">
-              <li><span>01</span>Learn latent dynamics</li>
-              <li><span>02</span>Train through imagination</li>
-              <li><span>03</span>Evaluate in a simulator</li>
-            </ol>
+            <dl class="system-list">
+              <div>
+                <dt>Live observations</dt>
+                <dd>Inspect the network, filter a line or station and export
+                  the successful snapshot with its selected time window.</dd>
+              </div>
+              <div>
+                <dt>Visible failure states</dt>
+                <dd>Feed freshness and provider failures stay visible. A labelled
+                  map fallback preserves the data review workflow.</dd>
+              </div>
+              <div>
+                <dt>Separate evaluation</dt>
+                <dd>Explore replay events and compare sensitivity with false
+                  alarms, without treating model scores as official reports.</dd>
+              </div>
+            </dl>
             <details class="study-detail">
               <summary>
-                Current questions &amp; evidence limits
+                Data &amp; evaluation limits
                 <svg aria-hidden="true" viewBox="0 0 24 24">
                   <path d="M12 5v14M5 12h14" />
                 </svg>
               </summary>
               <div class="detail-body">
                 <div>
-                  <h4>Questions</h4>
+                  <h4>What the live system establishes</h4>
                   <p>
-                    When do uncertainty signals help assign an imagination
-                    horizon? How do critic targets affect learning? Do internal
-                    model scores reliably rank policies by environment
-                    performance?
+                    Public-feed integration and an inspectable data workflow.
+                    Feeds can be stale or incomplete; deviation scores are not
+                    calibrated incident probabilities or explanations of a delay.
                   </p>
                 </div>
                 <div>
-                  <h4>What I have learned so far</h4>
+                  <h4>What the replay does not establish</h4>
                   <p>
-                    The outcomes are task-dependent. Recent controlled studies
-                    include failed controller and selection hypotheses, rather
-                    than evidence of a universal improvement. Source-level
-                    diagnostics help distinguish learning-objective problems
-                    from prediction error.
-                  </p>
-                </div>
-                <div>
-                  <h4>Status</h4>
-                  <p>
-                    This is ongoing, unpublished research. Experiments use
-                    simulated control environments, not physical robots. Limited
-                    task, world-model and training-seed coverage constrains
-                    generalization.
+                    The small replay contains three constructed scenarios,
+                    not official MTA incident ground truth or an independent
+                    benchmark. Higher recall in this fixture comes with more
+                    false alarms than the baselines. Neither the replay nor a
+                    working live map establishes validated incident prediction.
                   </p>
                 </div>
               </div>
             </details>
             <div class="case-links">
-              <a
-                class="text-link"
-                href="mailto:stelios@stelioszach.com?subject=World-model%20research"
-                >Discuss the research <span aria-hidden="true">↗</span></a
-              >
+              <a class="text-link" href="/demos/mta-scan/"
+                >Explore MTA-Scan <span aria-hidden="true">↗</span></a>
+              <a class="text-link"
+                href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan"
+                >Inspect the deployed source <span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </article>
+
+        <span id="research" class="anchor-alias" aria-hidden="true"></span>
+        <div id="world-models" class="further-work">
+          <h3>Ongoing research</h3>
+          <div>
+            <p>
+              <strong>World models <br />Ongoing · Unpublished</strong>
+              <span>My ongoing, unpublished research studies imagination horizons,
+                critic stability and policy selection in latent world models.
+                Controlled simulator comparisons have produced task-dependent
+                outcomes, including failed controller and selection hypotheses.</span>
+            </p>
+            <p>
+              <strong>Questions &amp; limits</strong>
+              <span>I use those failures to examine learning objectives,
+                evaluation targets and prediction error. Limited task,
+                world-model and training-seed coverage constrains generalization;
+                simulated control experiments are not physical-robot deployment.</span>
+            </p>
+            <a class="text-link"
+              href="mailto:stelios@stelioszach.com?subject=World-model%20research"
+              >Discuss the research <span aria-hidden="true">↗</span></a>
+          </div>
+        </div>
       </section>
 
       <section
@@ -411,34 +436,36 @@
               Small interfaces. <br />Inspectable systems.
             </h2>
             <p>
-              Four live demos. Use the supplied examples; please don’t enter
+              Two selected live demos. Use the supplied examples; please don’t enter
               personal or confidential data.
             </p>
           </div>
         </div>
+        <span id="projects" class="anchor-alias" aria-hidden="true"></span>
         <div class="demo-list">
           <article class="demo-row">
             <span class="row-number" aria-hidden="true">01</span>
             <div>
               <h3>
-                <a href="/demos/smt-verify/"
-                  >Constraint verifier <span aria-hidden="true">↗</span></a
+                <a href="/demos/mta-scan/"
+                  >MTA-Scan · NYC subway monitor
+                  <span aria-hidden="true">↗</span></a
                 >
               </h3>
               <p>
-                Edit constraints, run the five-case verification suite and reuse
-                a returned witness to test a corrected answer.
+                Explore live subway observations on a Mapbox vector map, filter
+                the network and inspect a separate constructed replay.
               </p>
               <p class="demo-limit">
-                Live Z3 verification with inspectable outcomes. Language-model
-                generation is outside this demo’s workflow.
+                The small constructed replay reports both recall and false alarms.
+                Model scores are separate from official incident reports.
               </p>
-              <details class="demo-walkthrough"><summary>Quick walkthrough</summary><p>Run the example suite, inspect the false-UNSAT case, then use its returned witness and verify again.</p></details>
+              <details class="demo-walkthrough"><summary>Quick walkthrough</summary><p>Filter a subway line, inspect a station and export its current snapshot. Use the separate replay timeline to examine a constructed scenario.</p></details>
             </div>
             <a
               class="source-link"
-              href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/smt-verify"
-              aria-label="Source code for constraint verifier"
+              href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan"
+              aria-label="Source code for MTA-Scan · NYC subway monitor"
               >Source
               <svg aria-hidden="true" viewBox="0 0 24 24">
                 <path d="m8 5-7 7 7 7m8-14 7 7-7 7" /></svg
@@ -449,7 +476,7 @@
             <div>
               <h3>
                 <a href="/demos/deid/"
-                  >Text de-identification <span aria-hidden="true">↗</span></a
+                  >DeID · Text review tool <span aria-hidden="true">↗</span></a
                 >
               </h3>
               <p>
@@ -471,86 +498,6 @@
                 <path d="m8 5-7 7 7 7m8-14 7 7-7 7" /></svg
             ></a>
           </article>
-          <article class="demo-row">
-            <span class="row-number" aria-hidden="true">03</span>
-            <div>
-              <h3>
-                <a href="/demos/fraud-graph/"
-                  >Transaction graph explorer
-                  <span aria-hidden="true">↗</span></a
-                >
-              </h3>
-              <p>
-                Score a synthetic transfer, inspect its actual graph neighborhood
-                and compare successive runs with their feature evidence.
-              </p>
-              <p class="demo-limit">
-                Synthetic graph and rule-derived training labels. Not validated
-                fraud-detection performance.
-              </p>
-              <details class="demo-walkthrough"><summary>Quick walkthrough</summary><p>Score a supplied transaction, inspect a neighboring account, then compare a second run. Each request changes the shared graph.</p></details>
-            </div>
-            <a
-              class="source-link"
-              href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/fraud-graph"
-              aria-label="Source code for transaction graph explorer"
-              >Source
-              <svg aria-hidden="true" viewBox="0 0 24 24">
-                <path d="m8 5-7 7 7 7m8-14 7 7-7 7" /></svg
-            ></a>
-          </article>
-          <article class="demo-row">
-            <span class="row-number" aria-hidden="true">04</span>
-            <div>
-              <h3>
-                <a href="/demos/mta-scan/"
-                  >NYC subway anomaly monitor
-                  <span aria-hidden="true">↗</span></a
-                >
-              </h3>
-              <p>
-                Explore live subway observations on a Mapbox vector map, filter
-                the network and inspect separate recorded incident replays.
-              </p>
-              <p class="demo-limit">
-                The small labelled replay reports both recall and false alarms.
-                Model scores are separate from official incident reports.
-              </p>
-              <details class="demo-walkthrough"><summary>Quick walkthrough</summary><p>Filter a subway line, inspect a station and export its current snapshot. Use the separate replay timeline to examine a recorded incident.</p></details>
-            </div>
-            <a
-              class="source-link"
-              href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan"
-              aria-label="Source code for NYC subway anomaly monitor"
-              >Source
-              <svg aria-hidden="true" viewBox="0 0 24 24">
-                <path d="m8 5-7 7 7 7m8-14 7 7-7 7" /></svg
-            ></a>
-          </article>
-        </div>
-        <div id="projects" class="further-work">
-          <h3>More experiments, with their evidence.</h3>
-          <div>
-            <p>
-              <a href="https://github.com/stelioszach03/TrustQueryNet"
-                >TrustQueryNet <span aria-hidden="true">↗</span></a
-              ><span
-                >Noisy-label repair, matched-budget controls and external
-                domain-shift evaluation. Repair gains over random selection were
-                small.</span
-              >
-            </p>
-            <p>
-              <a
-                href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab"
-                >Speculative decoding lab <span aria-hidden="true">↗</span></a
-              ><span
-                >Recorded latency experiments on one A100. Benefits depend on
-                the runtime and workload; some tested configurations were
-                slower.</span
-              >
-            </p>
-          </div>
         </div>
       </section>
 
