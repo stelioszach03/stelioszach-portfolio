@@ -44,8 +44,8 @@
     },
     {
       "destination": "deid/static/index.html",
-      "bytes": 40734,
-      "sha256": "7a0b44d9669599064bab4a7dae3f4ca26e9f5730cb16a32490f9d773afb4a2de"
+      "bytes": 40741,
+      "sha256": "e2d96da15e979b7aaf476b0ae699453dac09f114fcbf38cc3967b0dec1258f81"
     },
     {
       "destination": "deid/vendor/app/__init__.py",
@@ -119,8 +119,8 @@
     },
     {
       "destination": "fraud-graph/static/index.html",
-      "bytes": 38028,
-      "sha256": "77aa69b0a0ea579c7b3c219fbd37dd2ca5fd80defe9be275c3a0c28e8d7eb247"
+      "bytes": 38035,
+      "sha256": "295640e66026cc311691475f66966f26217f0774a42790578b2ffd698324c5b0"
     },
     {
       "destination": "fraud-graph/train_model.py",
@@ -344,8 +344,8 @@
     },
     {
       "destination": "mta-scan/static/index.html",
-      "bytes": 95177,
-      "sha256": "69a81318a71c0bb27e9eda593fd4780d1e37782a96d2575d5ae2b51d7d2115d9"
+      "bytes": 94939,
+      "sha256": "89f8136690a34332db396c28c7a42400caceb01b39ff3e39881a9f37fed1796f"
     },
     {
       "destination": "mta-scan/static/map-config.example.json",
@@ -449,8 +449,8 @@
     },
     {
       "destination": "smt-verify/static/index.html",
-      "bytes": 42629,
-      "sha256": "08f74439f65ed3a01e2b84380d365d8f54b94d8db3de9962a284d239e39eae22"
+      "bytes": 42636,
+      "sha256": "7371bd0e445c44f16b7a618624667783c10a507ee731ddcd757306a618e6c8c7"
     },
     {
       "destination": "smt-verify/vendor/cegvr/__init__.py",
@@ -504,8 +504,8 @@
     },
     {
       "destination": "tests/test_sources.py",
-      "bytes": 1734,
-      "sha256": "83c9ae9391bc33976ad35f3db31ef1c23ec7d02fae3b3574cf9d3eea9bc0c416"
+      "bytes": 3612,
+      "sha256": "c4f793910226c8481135161087381844612409c51b29beb6102243843e19955f"
     },
     {
       "destination": "tests/test_worker_serialization.py",
