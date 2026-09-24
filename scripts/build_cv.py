@@ -54,12 +54,12 @@ bullet('Design controlled ablations, paired simulator evaluations and traceable 
 para('<b>Score-based generative models for undersampled MRI reconstruction</b>  |  BSc thesis',normal,4)
 bullet('Reimplemented a published reconstruction method in PyTorch using the authors\' pretrained prior; developed MRI measurement operators and a Flax-to-PyTorch checkpoint conversion.')
 bullet('The thesis reports reproduction within 0.15 dB PSNR on 256 BraTS slices at 4x, 8x and 24x sampling factors; evaluates Monte Carlo uncertainty and retrospective domain shift.')
-para('<link href="https://stelioszach.com/documents/zacharioudakis-bsc-thesis-2026.pdf">Thesis document: September 2026</link>. Reproduction and experimental analysis; no claim of clinical validation.',small,1)
+para('<link href="https://stelioszach.com/documents/zacharioudakis-bsc-thesis-2026.pdf">Thesis: September 2026</link> | <link href="https://github.com/stelioszach03/mri-reconstruction-evidence">Public aggregate-evidence package</link>. Retrospective research; no clinical validation.',small,1)
 
 section('Selected software projects')
-para('<b><link href="https://forge.stelioszach.com/">ForgeRL / ForgeBench</link></b> - 50 authored scenarios, 10 miniature repository families and five routing policies. Completed 300 evaluation episodes plus 180 controller-training episodes; isolated execution, bounded provider spending and inspectable trajectories. Two held-out test families limit generalization.',normal,6)
+para('<b><link href="https://forge.stelioszach.com/">ForgeRL / ForgeBench</link></b> - Built isolated coding-agent evaluation and durable budget controls. A frozen prospective pilot completed 162 episodes across 27 miniature tasks and six policies, with full traces and a separate source-derived track. One seed and six test families limit generalization; model weights remain unchanged.',normal,6)
 para('<b><link href="https://stelioszach.com/demos/mta-scan/">MTA Scan</link></b> - Built a public-transit workspace with Mapbox GL, station inspection, source freshness and snapshot export. Live arrival estimates are separated from the constructed replay evaluation; no validated incident-prediction claim.',normal,6)
-para('<b><link href="https://stelioszach.com/demos/deid/">DeID Review Workspace</link></b> - Developed a human-review workflow for English text using pretrained NER and patterns: inspect spans, apply or keep suggestions, manually redact missed spans and export explicit decisions.',normal,1)
+para('<b><link href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab">Inference Systems Lab</link></b> - Ran 1,536 measured requests on an RTX 4090 with pinned vLLM/Qwen versions, concurrency sweeps and direct GPU telemetry. Recorded prefix-cache comparisons and output mismatches; no lossless speedup claim.',normal,1)
 
 section('Education')
 para('<b>BSc in Computer Science</b> - National and Kapodistrian University of Athens',normal,2)

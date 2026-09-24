@@ -54,33 +54,40 @@ endobj
 <<
 /A <<
 /S /URI /Type /Action /URI (https://stelioszach.com/documents/zacharioudakis-bsc-thesis-2026.pdf)
->> /Border [ 0 0 0 ] /Rect [ 43 342.96 178.3981 353.4 ] /Subtype /Link /Type /Annot
+>> /Border [ 0 0 0 ] /Rect [ 43 342.96 137.7778 353.4 ] /Subtype /Link /Type /Annot
 >>
 endobj
 10 0 obj
+<<
+/A <<
+/S /URI /Type /Action /URI (https://github.com/stelioszach03/mri-reconstruction-evidence)
+>> /Border [ 0 0 0 ] /Rect [ 144.877 342.96 283.1809 353.4 ] /Subtype /Link /Type /Annot
+>>
+endobj
+11 0 obj
 <<
 /A <<
 /S /URI /Type /Action /URI (https://forge.stelioszach.com/)
 >> /Border [ 0 0 0 ] /Rect [ 43 299.96 147.5563 311.6 ] /Subtype /Link /Type /Annot
 >>
 endobj
-11 0 obj
+12 0 obj
 <<
 /A <<
 /S /URI /Type /Action /URI (https://stelioszach.com/demos/mta-scan/)
 >> /Border [ 0 0 0 ] /Rect [ 43 254.36 89.8898 266 ] /Subtype /Link /Type /Annot
 >>
 endobj
-12 0 obj
-<<
-/A <<
-/S /URI /Type /Action /URI (https://stelioszach.com/demos/deid/)
->> /Border [ 0 0 0 ] /Rect [ 43 221.96 155.6655 233.6 ] /Subtype /Link /Type /Annot
->>
-endobj
 13 0 obj
 <<
-/Annots [ 4 0 R 5 0 R 6 0 R 7 0 R 8 0 R 9 0 R 10 0 R 11 0 R 12 0 R ] /Contents 17 0 R /MediaBox [ 0 0 612 792 ] /Parent 16 0 R /Resources <<
+/A <<
+/S /URI /Type /Action /URI (https://github.com/stelioszach03/colab-speculative-decoding-speed-lab)
+>> /Border [ 0 0 0 ] /Rect [ 43 221.96 148.6621 233.6 ] /Subtype /Link /Type /Annot
+>>
+endobj
+14 0 obj
+<<
+/Annots [ 4 0 R 5 0 R 6 0 R 7 0 R 8 0 R 9 0 R 10 0 R 11 0 R 12 0 R 13 0 R ] /Contents 18 0 R /MediaBox [ 0 0 612 792 ] /Parent 17 0 R /Resources <<
 /Font 1 0 R /ProcSet [ /PDF /Text /ImageB /ImageC /ImageI ]
 >> /Rotate 0 
   /Trans <<
@@ -88,31 +95,31 @@ endobj
 >> /Type /Page
 >>
 endobj
-14 0 obj
-<<
-/PageMode /UseNone /Pages 16 0 R /Type /Catalog
->>
-endobj
 15 0 obj
 <<
-/Author (Stelios Zacharioudakis) /CreationDate (D:20260923201700-04'00') /Creator (anonymous) /Keywords () /ModDate (D:20260923201700-04'00') /Producer (ReportLab PDF Library - \(opensource\)) 
-  /Subject (Professional resume - September 2026) /Title (Stelios Zacharioudakis - Machine Learning Research and Engineering) /Trapped /False
+/PageMode /UseNone /Pages 17 0 R /Type /Catalog
 >>
 endobj
 16 0 obj
 <<
-/Count 1 /Kids [ 13 0 R ] /Type /Pages
+/Author (Stelios Zacharioudakis) /CreationDate (D:20260923234814-04'00') /Creator (anonymous) /Keywords () /ModDate (D:20260923234814-04'00') /Producer (ReportLab PDF Library - \(opensource\)) 
+  /Subject (Professional resume - September 2026) /Title (Stelios Zacharioudakis - Machine Learning Research and Engineering) /Trapped /False
 >>
 endobj
 17 0 obj
 <<
-/Filter [ /ASCII85Decode /FlateDecode ] /Length 2687
+/Count 1 /Kids [ 14 0 R ] /Type /Pages
+>>
+endobj
+18 0 obj
+<<
+/Filter [ /ASCII85Decode /FlateDecode ] /Length 2740
 >>
 stream
-Gatm<gN)"?(4GpYm&(`I'G)N50$2<3JeNJb+[Adt:!H=81siM'eoXQn8Y(p7[9MYM(_\9:\Itm'\pIf9>$E%*n`RI_UP.iQ8oH=EnpHnOa_Nb;1`]DBHIQVOr?)NIiO-O7Y=f>^$esJqRDk:mifbJTP+Yr0^oq(PG:T=]X%1WlN[MArQ+$<,&M8]6\sS=YAcG'FY;H2j[EP312*.!+boIJOIOCp\cj[NlT,Oh,/+b;!G0f`km]>`<ZO`D?4q7?9j5K+h4cT=Pgn&qe^JTLU*fp/-r4I+Gs,M92C%o1J+#1U848UrcBR%0Q/F9ZNCi-X<[c+Pu/K!^G=rnUgj65-]56%[pIY6sG813i\A,;,+S&8#<.UNrMr8>iFMp5YMpeU[3lp*L["jV\4QL/g1a.9Vna0A6Tj\2N=Ga5E`W3Zd8%1'$0*A3qc%:5N"/rf'p7Kc6`)f^kT<%9>__PAYeOHC<fd?6mY,HL#']eGU[]"hOui/JZ"F];I',G!7LVUC9*h+:629ZFMA?L'P%h_7s)F)<+ha>DeE;-SBkCuDS.M6[)OL^WR%/c"1ib[S9&#'P^!,e!5K4:]pnGE(3r?M]#\VB(n,ZW"!Us)Wj_rp[#(F&\p`CH"<\Cc;W^@9hVCj7c''<_2sTBt9^/$&.c<]8LCo?+-1BjEk7ILT]L77'P'=DOsWS*FEKD84+JpQr1W@$.W`8Z6e6))W_ZiQqja5O`KE&hWuMZCO]kOh<7f[.^H;Q.Q)ZTUuXI_+#[F?1#KDMT%[nn/6Lb%K(WKSe"HfB.'"?E/RqbbWDMNkhSq<<lQL`=0/XA!e#CEn30D=B1j(=nSVj5>//C7s->nH`.7n?NrI(5#FtW,=g99ht\\+-2c=#bHLuZ(k7<D2snqKPu`@(nuah!KFZUCY4k#JbECNDRuot@3=E\PL27!XcHkhX6[qkjCT!=-c4,Am%+OcrRn_qqg!2(ZJ-GLo0X3W?iXNq4Ue%[i2*dt[IhEa.LV!uZQDLmSfK(f+h<dc,iW(en<Q7RFl-4:WK:1Z6SG8*Dn:6O=gqr=es>p"Ia=jfcJ?(N&/7h')D+nMt&_r7qSpQRMtenK6c&k(aja]?om:7@FrMZ*MQQK:XNT<]f*kheRuCPq'=<n"e4Y!mO=e&SUYhoh0/O2jAfO,,9/n&\@!l`@>4TM_g=s=cnuSN84=)ciQ%-9f8+V8r]CTkBL"Nk#R`PCn3[XgLsNh:0<;D@&()\E,VNL:(5FE<K!(cS`WD^0tIFf>'>CT18,+TWCdNq#12'N]6"CQ&4oC0+r0Xj!p"B]E##\ojhfm*\(TA%%^dM:\kNUq6Lg2]<Mn0A=FSnPml:FD.ht4([#pX-GToTs6l3)_=HR-1j7W0['oY*Q$&e#XH9[rgN&^NnKRVoOd,!%7^QZaD<,<s-)(1P)?1jc=@&87M;30t=A4n%hKN-ltZ%!#I8`\G'BSNM%]E;!5#m6=B,VY@t(8_d[-$EaC8K2a`MhcV]lg&&TV2T:J1k*a3G)+HDM"cM*oBHKDKpuY.&/Z_qG;X\ICmu<IBf<VcAu@JS%*-QqIb:Mr,Gl-[Yp4=P;sU,Hh$<,Fhg-DH.8Ctpf!b%um34L.E.!X/PB8-FXAN;d1sAi4Y&MIibnsDVLGPLZ&_X"LkD+]>nt$Eu5<0KRbG`XXd5dh;Bd0n=8XQXV3c:V;G,"(8huS[9]EA;A_uU&)+e#--W.ad_2inTP0+eaQgFIMtO&=jBK&?jerh+a!m@Vkgj2LZ6agb-An]*0X2#1:7%=B7EQ5j,c5N,_ZZO`+)9CLIHqEg543k;k$R9%el,E/U#fW=q6TfJ8bO6lp_`.s&8aO-'O[&lY0Y#()a\>oa=RWE0\?np94,;MAqd$\M4@,M<ZbtYJ2N)gM#(;S!0[]nh8Rp3ldFb^[DiVK[#KPTp2Y^DO0_->E^UDZn!VS5to<jKpYCE9'G=8GT;)[!>7=38/:N1Aa?>"Y_)QqqCqI-Xt;&sZNH*ij3D<n)T&?Vs$VQ5?CcH?qoA8F3%'3h7$9cI[RdENi>O`p%0+JNca&E%S@7rBTfV2-(YKk#FfSm&Vfn$e$(6C726t[7s)%QTF:>"H[I?4s"[/KeWo@,aLCrK+RQ4DIk/RbKSc*`.@oB*?8-G/$F,@hXtm=[4I`p826[e5nKD#SXlq,%n@S&m(Psb`FtmebB(JGSW`a>AKAd=U#->?JsJhLd^gl/XbR``o9b9#.8`tRH,YJ!oJc,t9@YE\>aj0Vh*efr&'A"Y=Q7/27G.'0ap_4g@_n1N3XR5N,0!Oa%GZIt[B)FE_DQujJUHF:bX&\"@Wm.\cPKn@j?W;AN:YA.-e$8"_k.*$YKIic"NBs2#q1,e(JSs(8i>o`YTVt)JafGV'OYp!ZA5Sh*<j^Oh]gN**a4h"l#Wkpg&THNMb[+?ks9UWL!=bNrn]SmF)JG!'M!5')a&bib,A#1PQqJb,Xo;4\,W2',*i$hG5Pt3K5QtLC&dP;nFGpV5SkNg56!GeH@`P"^UnuYra,(\D>Q)!*P?fhm*Q14#?7dhAW;F510W5<3r!//FfY)ES#P9CkX4AIM#1;2Plg*qSFT51Cr,Wakd?$ZC=eeH/*5s<4i+W>2Er'b55>=[>CW*P&pIf:3A\SOjO<&3p9P1BJhF$fh`7nC-<+6qF`]-.NS^`6;&#ZaFQ-tafltcL8k8mdoTRL=~>endstream
+Gatm<?$"^j(4Gq\\50`n/KdS,4shq@D<s6?#m%=f[C%ZIBV5U0>LVE69ko.TSo0Aqa-]F<QRb?*;YRlfhK-tZ"]WNLi;\j:U5LJ6]+-4pBtBt1=_lH-5lKqMXkj@';1iUL1TGX\<"">WeS1.PT(tlC$7#:9UL$-7DhE)tAqSg^/ko8*T3.ZjAa$l[?84$25%eY>r^##jC&60H0u&37CR5X_%mjr`m>,M:HIV24<,8q3;,B`$\6%>QHen?I5MQbG2!F\R_qX,ZNVaAo?@JQ^;1EhCTDE&FIB`MhB*ZVe\t*"19^qGcqK6Q&!k199m'si9[%/Dn>3Os\,/CG;$s\;gNm:@]o=rGoY=Q>BX46Tb:4H/]EVe:`YcE06IX$'UA%cjnr+Gpj9q]s#"?qC3OW@0^+J!A(kD>:94r;Xc0B>$CWXIcr!)\U1l/p[>&@C6<71e91L^&apK"/^16?5[Xdo+75Bl7l-YDC:\)7?[Z9QT36M7^:;*>MbV3&c4[9%&kqY*g%!S5M6-M5_2]eJWFPBJ/@4l'SARg>*g8D0G(\)7*Itp$Z%H@i[,bp7:e+;&_&o2F&QG[;YOofs?\r6/?/k*bA'H;6]2U>H.YW#T*HuAcH/=>.`Oh[fL<C&Y[):o\5=Cc>(U[*mS<$>"C)2XffE2B_"m*l>>&J=MIA?hoe?rTZc'%>ZNo#<]]?25&`EXIT[>adYMHbd/OUC'XNI=`i*!a3.3[iKm13pdY_X/W`)V-Fl0"85N\-GH5IjGO*T_;>:4W3\%WBSi-W99?dN]>!*thS#p6T1\lb:Kcnk!@B:p=8/&%toUUcQ3io--"1Tmd5l['4b6Wq8WSk].bG/]=*dJgRMT-b@sCTY'?mY]on6tM0pOXE`N=;J+)J^9-`=b9[n0cA:c2G]#@`g1.`:jTfGe:XIM3&&@B`O8*#E4>PQH.RPiTEE/s,A$4>o?$13l0Okt<YjRB]/q@8`BU0]E8CWaPpt$7V-SM&25OW(O`<Se&RC3Ldh<W*R6T,L7[(<HOXP$-+,>qo*UlRq,7<a=Tb*:EqO)^f]<)n9nhp".X4#,&l4nWKp^XRBrZ2`3>7#g?rWBl=J#EA%V:n,*b:K83_Q6?6^!J%L<cjS`>DIN!Qe]`1DQHrlX<^[JJet7j.4r9.r@8Rt@7<jta%RbqDLBBj!^S_TGf!s?rrZj6)Ju@oR3,VW-2ZWi.\4gK<G\m8nf5#6\m"O+L%HWfRZ6MZ;18_%.rN:';QQ\E.S7D_\8&kZ$=unEB;HfsnJt#5?gJscLdK>!%5Z+hNIf/R"h=.!L+G.HlG!*E\!U4+Ir:%XJdJpJC6L+9'T\m35BplBHqd+,@\n?1D*/b,]L:q=>T8u@0#kNn/NO_.5md/XV1-1H`(k<rP7dXo,)slfBE+AdNk'+[3[Ji9U`HMMM&NO-<snmSG:d#)\Mp<(^M3:`p`;qB]ms]S($PB'b,o(PM-U-\c:kC!+g'*d4C6YE>po!DC/oDg9t]KU3WnoSCU\XUqcCM`LtZe(n5H,c<!^9!,Oh=/c1=)dJPEfn6o;ZOd:>4[?4]RX]$P7S+d7.,B9o!I($[pXCr>B[q+gJOJZ#r%^SM=q28f51GfK!2ksV5Y@]l7pQ+Grt=!i!_Jj,^*'L.^_M1n)%;DWQ+3;C="dF=r^$VbkXrT(7+](Y<YO__"bfFl3lKX8hi"o'+UA2-BS,qj/:TcXfOfkUP6_CQE(,sQ5J*\fl?rqr;$+tl4@O15'Rs)Qi.U<0>!l*%d?T17j:+7[nB7if&NL01d$guA0uj+cr2l@`9NYFF.1I#Qh%?X3ZleT8^/dR>c$9>[XGc^_8W\St\?+[EAPcUPJ=>!:'l95_5-DeddsKiVQkFQ;elA=5uQh)-gl)sZF+#[/B[ju(LWYTUq!#+:Yo&t+FhGi:;4^kg%J/Hpp!Gaig(AmlW_R4pa5g0(XW3R2uU%#sW^DcuQ*iqsIMRYEn<.i/Dl/?"lOR'B[9;IN3=:W->,o_Uu!1"M6Db4FCe$G9Rt\`E@GZjIbmBC=s:o3LIjS+^M.ZQl?P/R^*]E>==',Q%hP2II7QOLo#U9KghKT]5)G?W82,C+3:7d6f(f=ip%6DC!EL8tcn>S^d&S*4Q>3%AZ9W2[#sPVT9e1\+Q-#VF\BPm/4c5$)Zt36#1a<QV;Qi[>^Y!fIAETB1a7YS1p(s6p'TRe+m'Ck>j4Fp6mfe?38K(c&MfhAs.a<e,ZZ[+*6]FOTQ-SkC6(`l#5(QGO%[(1*N25h@Bg7mlisd0;XN98Q!Shf5B3b%V51HGubVgN^5/'F>NcF^3)&Fou:\kArsRt=M>?-eX4;sm1^98_9*o/P>dcO&Bpe<\A<F.'C[VoF[cc.H(ODkH49/4e'e:mpt$Qg?S6]SgJ>^/(!cka(XhQNSdB$@e_fjjLRZ+Fo1Qld>I`;gnq1O6ec8(p_4Z=rq;3`UGbWRh$NEO%?X.i^>#5_\O=*Q0T[A4H[iSV2I'sli(-%ts;_)=9Mb]YN,DSn?>jbANJ'u@Wb'<"?aA8*ao['4+qj/CZ\!Oc/?%9H`o#%UJ"J'DgEV6F&Sbegjm,45n736;"dR#&!.C;FZ4<88gXt/:_M8`ZNW]u!Hs/VKL@qb>[WQcH0`7$LOU_XI&9'E'n-^1H8J^f`%CgMrcWHq(M\7WbS7^p]Mf2T2^EB^[T2Ske<_tE*^i8+AINk5J]W"e\gYQ@S+ppa5lRd1=:#l=`.S0V)!%Dhl4OcqAfr?&B8fW+~>endstream
 endobj
 xref
-0 18
+0 19
 0000000000 65535 f 
 0000000061 00000 n 
 0000000102 00000 n 
@@ -124,23 +131,24 @@ xref
 0000001020 00000 n 
 0000001189 00000 n 
 0000001398 00000 n 
-0000001570 00000 n 
-0000001748 00000 n 
-0000001925 00000 n 
-0000002190 00000 n 
-0000002260 00000 n 
-0000002618 00000 n 
-0000002679 00000 n 
+0000001605 00000 n 
+0000001777 00000 n 
+0000001955 00000 n 
+0000002166 00000 n 
+0000002438 00000 n 
+0000002508 00000 n 
+0000002866 00000 n 
+0000002927 00000 n 
 trailer
 <<
 /ID 
-[<3a194f42d190920afdfb7eaa14cf5689><3a194f42d190920afdfb7eaa14cf5689>]
+[<9c6e23e10f82ee31f1b2ea0a677d1443><9c6e23e10f82ee31f1b2ea0a677d1443>]
 % ReportLab generated PDF document -- digest (opensource)
 
-/Info 15 0 R
-/Root 14 0 R
-/Size 18
+/Info 16 0 R
+/Root 15 0 R
+/Size 19
 >>
 startxref
-5458
+5759
 %%EOF

@@ -54,7 +54,7 @@ test("three selected demos and local assets resolve while all five service route
   assert.ok(sitemap.includes("/demos/forgerl/"), "the separately maintained ForgeRL service stays discoverable");
   assert.equal((html.match(/class="demo-row"/g) || []).length, 3);
   assert.match(html, /Three selected live demos/);
-  for (const retired of ["TrustQueryNet", "colab-speculative-decoding", "EuroSAT", "fraud-graph", "smt-verify"]) {
+  for (const retired of ["TrustQueryNet", "EuroSAT", "fraud-graph", "smt-verify"]) {
     assert.ok(!html.includes(retired), `${retired} is not actively promoted`);
   }
   for (const asset of new Set(
@@ -76,7 +76,7 @@ test("research and product claims retain their scope instead of publication or s
   assert.match(html, /ongoing, unpublished research/);
   assert.match(html, /no prospective scanner study or clinical validation/i);
   const coreIds = [...html.matchAll(/<article id="([^"]+)" class="case-study"/g)].map((m) => m[1]);
-  assert.deepEqual(coreIds, ["mri", "forgerl", "asklepios", "mta-scan"]);
+  assert.deepEqual(coreIds, ["mri", "forgerl", "asklepios", "mta-scan", "inference-systems"]);
   assert.match(html, /50 scenarios · 10 repository families/);
   assert.match(html, /The language models are not fine-tuned/);
   assert.match(html, /authored miniature repositories, not evidence of general repository repair or long-horizon autonomy/);

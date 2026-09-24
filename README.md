@@ -2,7 +2,7 @@
 
 Source for [stelioszach.com](https://stelioszach.com): a static portfolio of machine learning research and software engineering work.
 
-The site selects four core projects: the MRI reconstruction thesis, ForgeRL, the donated AsklepiosMed platform and MTA-Scan. A compact section describes ongoing, unpublished world-model research. Three selected live demos—ForgeRL, MTA-Scan and the secondary DeID review tool—keep their methods, evidence and limitations alongside the interface. Five demo services remain available; selection does not remove their routes or source.
+The site selects five core projects: the MRI reconstruction thesis and evidence package, ForgeRL, the donated AsklepiosMed platform, MTA-Scan and Inference Systems Lab. A compact section describes ongoing, unpublished world-model research. Three selected live demos—ForgeRL, MTA-Scan and the secondary DeID review tool—keep their methods, evidence and limitations alongside the interface. Five demo services remain available; selection does not remove their routes or source.
 
 ## Selected projects
 
@@ -12,9 +12,12 @@ The site selects four core projects: the MRI reconstruction thesis, ForgeRL, the
 | ForgeRL | [ForgeBench evidence dashboard](https://stelioszach.com/demos/forgerl/) | [Standalone source](https://github.com/stelioszach03/forgerl) · [Engineering case study](case-studies/forgerl.md) |
 | AsklepiosMed | [Public association website](https://asklepiosmed.org/) | [Engineering case study](case-studies/asklepiosmed.md) |
 | MTA-Scan | [Live subway monitor](https://stelioszach.com/demos/mta-scan/) | [Deployed adapter and UI](demo-services/mta-scan) |
+| Inference Systems Lab | [Controlled RTX 4090 study](https://github.com/stelioszach03/colab-speculative-decoding-speed-lab/blob/main/artifacts/controlled-pilot-v1/RESULTS.md) | [Runner, raw traces and GPU telemetry](https://github.com/stelioszach03/colab-speculative-decoding-speed-lab) |
 | DeID — secondary tool | [Text review interface](https://stelioszach.com/demos/deid/) | [Review workflow case study](case-studies/deid-review.md) |
 
 The demos expose bounded interfaces. ForgeRL now includes ForgeBench: 50 authored scenarios across 10 miniature Python repository families and five routing policies. Its public dashboard replays recorded experiments; browsing cannot start paid inference. Private operator-run research compares GPT-OSS 20B and 120B through a fixed-provider OpenRouter profile. A finite fitted-Q controller learns routing actions; language-model weights remain unchanged. Recorded prompts, supplied files, patches, tests, retries, model switches and provider accounting remain inspectable. Catalog size and actual evaluation coverage are distinct. Use synthetic text inputs in DeID. MTA's constructed replay is separate from live public-feed observations and does not validate incident prediction. AsklepiosMed application source and member records remain private.
+
+The [MRI evidence companion](https://github.com/stelioszach03/mri-reconstruction-evidence) reproduces tables and plots from eight historical aggregate files; it does not rerun or distribute the solver. Inference Systems Lab reports a predeclared single-GPU pilot with 1,536 measured requests. Cache modes matched output text in only 210/768 paired comparisons, so the performance observations are not an output-equivalent or lossless speedup claim. DeID's separate library evaluation measured strict mapped-label F1 of 40.21% on 500 external synthetic records; that result is not a benchmark of the live review adapter or clinical validation.
 
 Additional preserved interfaces—[constraint verifier](https://stelioszach.com/demos/smt-verify/) and [synthetic transaction graph](https://stelioszach.com/demos/fraud-graph/)—remain available for existing links and source inspection in [`demo-services/`](demo-services/README.md). They are not selected homepage projects.
 

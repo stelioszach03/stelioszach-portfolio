@@ -132,13 +132,13 @@
               From a research question <br />to a working system.
             </h2>
             <p>
-              Four projects, with the contribution, evidence and limits kept
+              Five projects, with the contribution, evidence and limits kept
               together.
             </p>
           </div>
         </div>
         <nav class="evidence-strip" aria-label="Evidence at a glance">
-          <a href="https://forge.stelioszach.com/"><span>ForgeBench v0.2</span><strong>300 evaluation episodes</strong><small>5 policies · 3 study seeds · 2 held-out test families</small></a>
+          <a href="https://github.com/stelioszach03/forgerl/blob/main/artifacts/forgebench/v0.3-pilot1/report/pilot-report.md"><span>ForgeBench transfer pilot</span><strong>162 evaluation episodes</strong><small>6 policies · 1 seed · 6 fresh primary test families</small></a>
           <a href="#mri"><span>MRI reconstruction</span><strong>Within 0.15 dB PSNR</strong><small>Reference agreement reported in the BSc thesis</small></a>
           <a href="#mta-scan"><span>MTA-Scan</span><strong>Live public-feed pipeline</strong><small>Arrival estimates · explicit freshness · constructed replay</small></a>
           <a href="#asklepios"><span>Production engineering</span><strong>AsklepiosMed</strong><small>Donated association platform · private application source</small></a>
@@ -237,7 +237,10 @@
                 href="/documents/zacharioudakis-bsc-thesis-2026.pdf"
                 >Read the thesis <span class="file-label">PDF</span
                 ><span aria-hidden="true">↗</span></a
-              ><span class="quiet"
+              >
+              <a class="text-link" href="https://github.com/stelioszach03/mri-reconstruction-evidence"
+                >Reproduce the recorded tables <span aria-hidden="true">↗</span></a>
+              <span class="quiet"
                 >BSc thesis · methods, experiments and limitations.</span
               >
             </div>
@@ -271,6 +274,14 @@
                 patches, test outcomes, retries, model switches, tokens and cost.
               </p>
             </div>
+            <p>
+              A separately frozen transfer pilot completed 162 episodes across
+              27 new miniature tasks and six policies. The simpler learned
+              baseline solved 17/18 primary test tasks; fitted-Q, strong-only
+              and escalation solved 16/18. One seed and six test families do not
+              establish general superiority. All policies shared the same
+              additional verification rule.
+            </p>
             <details class="study-detail">
               <summary>
                 System, experiment &amp; limitations
@@ -317,6 +328,8 @@
                 >Source &amp; methodology <span aria-hidden="true">↗</span></a>
               <a class="text-link" href="https://forge.stelioszach.com/api/forgebench/download/technical-report.pdf"
                 >Technical report · v0.2 <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/stelioszach03/forgerl/blob/main/artifacts/forgebench/v0.3-pilot1/report/pilot-report.md"
+                >Transfer pilot · results &amp; traces <span aria-hidden="true">↗</span></a>
               <a class="text-link"
                 href="https://github.com/stelioszach03/stelioszach-portfolio/blob/main/case-studies/forgerl.md"
                 >Read the engineering case study <span aria-hidden="true">↗</span></a>
@@ -481,6 +494,52 @@
               <a class="text-link"
                 href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan"
                 >Inspect the deployed source <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/blob/main/docs/COLLECTION_COVERAGE.md"
+                >Historical collection evidence <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+
+        <article id="inference-systems" class="case-study">
+          <div class="case-index">
+            <span>05</span>
+            <p>Inference Systems Lab <br />GPU serving · Performance</p>
+          </div>
+          <div class="case-body">
+            <p class="eyebrow">vLLM · RTX 4090 · Reproducible measurement</p>
+            <h3>Measure the serving trade-offs.</h3>
+            <p class="case-lead">A controlled GPU pilot connecting request traces
+              to throughput, latency, device telemetry and output agreement.</p>
+            <p>I built a bounded streaming benchmark and fixed the model revision,
+              container, workload and settings before execution. Three paired
+              repeats compare prefix caching OFF and ON at concurrency 1, 4, 16
+              and 32; every measured stage and its raw evidence remain inspectable.</p>
+            <div class="evidence-line">
+              <strong>1,536 measured requests</strong>
+              <p>Qwen2.5-1.5B-Instruct · vLLM 0.10.2 · one RTX 4090.
+                All requests completed at the prescribed 128 output tokens.
+                Only 210/768 paired outputs matched exactly, so this is not a
+                lossless speedup or answer-quality result.</p>
+            </div>
+            <details class="study-detail">
+              <summary>Measured results &amp; limits <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg></summary>
+              <div class="detail-body">
+                <div><h4>Observed throughput</h4><p>At concurrency 32, cache-OFF
+                  runs produced 3,594–3,614 completion tokens/s and cache-ON runs
+                  4,160–4,712. The report shows all three repeats, first-text
+                  delay, request latency and directly sampled GPU use.</p></div>
+                <div><h4>Scope of the comparison</h4><p>One small model, one GPU,
+                  repeated synthetic prompts and a warmed cache. Different output
+                  text and stage order limit the comparison. The experiment does
+                  not measure answer quality, quantization improvements or
+                  general production performance.</p></div>
+              </div>
+            </details>
+            <div class="case-links">
+              <a class="text-link" href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab/blob/main/artifacts/controlled-pilot-v1/RESULTS.md"
+                >Read the measured study <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab"
+                >Source &amp; reproduction <span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </article>

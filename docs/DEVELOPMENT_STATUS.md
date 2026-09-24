@@ -1,21 +1,32 @@
 # Evidence-led development status
 
-Updated 2026-09-24 UTC. This is an implementation record and dependency backlog,
-not a list of completed research results. A release, an offline test and a model
+Updated 2026-09-24 UTC. This record distinguishes implemented software, completed
+measurements and remaining research. A release, an offline test and a model
 experiment are different kinds of evidence.
+
+## Completed execution evidence
+
+| Work | Actual outcome and scope |
+| --- | --- |
+| Forge transfer pilot | 162/162 frozen episodes. Primary test: supervised return 17/18; fitted-Q, strong-only and escalation 16/18; cheap and hand-written 15/18. Six test families, one seed; no superiority claim. All traces and a six-page technical report are [published](https://github.com/stelioszach03/forgerl/tree/main/artifacts/forgebench/v0.3-pilot1). Shared VERIFY is not learned. |
+| GPU serving | 1,536 measured requests, 24 stages, three paired cache sweeps on one RTX 4090. No request errors or fixed-output-length mismatches; only 210/768 paired text hashes match. [Raw measurements and report](https://github.com/stelioszach03/colab-speculative-decoding-speed-lab/tree/main/artifacts/controlled-pilot-v1); no lossless or output-quality claim. Pod terminated; final billing not reconciled. |
+| MRI publication | [Evidence package v0.1.0](https://github.com/stelioszach03/mri-reconstruction-evidence/releases/tag/v0.1.0): eight unchanged historical aggregates, deterministic CPU analysis, numeric figures, source/license audit. Solver, images and weights excluded; no fresh MRI inference. |
+| MTA collection | Persistent capture and daily export timer enabled. Initial actual coverage: 896 polls across eight feeds over about 111 minutes, all fresh in that interval. Weeks of data and real incident/forecasting evaluation remain pending. |
+| DeID evaluation | 500 fixed external synthetic records: strict mapped-label P39.29%, R41.17%, F1 40.21%, 90.57% gold-label coverage. [Unfavorable results and Unicode/latency checks](https://github.com/stelioszach03/deid-privacy-studio/tree/main/artifacts/external-synthetic-v1-run1) retained. No clinical or live-adapter accuracy claim. |
+| TrustQuery metadata | Recovered 14,185 candidate pairs reconcile with metadata. External lesion IDs are absent; 165 SCC labels are merged into `akiec` in the historical mapping. Future dHash search corrected and tested; image duplication and cross-dataset independence remain unmeasured. [Audit](https://github.com/stelioszach03/TrustQueryNet/blob/main/docs/OVERLAP_METADATA_AUDIT_2026-09-24.md). |
 
 ## Current portfolio selection
 
 | Project | Current evidence | Public presentation |
 | --- | --- | --- |
-| ForgeRL / ForgeBench | v0.2: 300 evaluation + 180 training episodes; v0.2.1 software; two test families | Selected project, stored-run dashboard, technical report |
+| ForgeRL / ForgeBench | Preserved v0.2 study plus 162-episode prospective transfer pilot | Selected project; v0.2 explorer and separately linked pilot report |
 | MTA-Scan | Live public feed interface; 216-row constructed replay; bounded raw history collection started 2026-09-24 UTC | Selected project; no validated disruption forecast |
-| MRI reconstruction | BSc thesis and supporting numerical reports; source publication audit in progress | Selected thesis; no public reproducible source release yet |
+| MRI reconstruction | BSc thesis and public aggregate-evidence package; solver source withheld | Selected thesis with reproducible table/plot analysis |
 | AsklepiosMed | Donated deployed application; former pro bono role; scoped public case study | Selected engineering project; source and member records private |
-| Inference Systems Lab | New streaming measurement client tested against local fixtures; separate historical Colab measurements | Repository under development; no new GPU serving comparison claimed |
+| Inference Systems Lab | Controlled single-GPU serving measurements; historical Colab results separate | Selected measured systems project with limits and raw evidence |
 | TrustQueryNet | Historical multi-seed tables, negative/uncertain comparisons, unresolved near-duplicate audit and code/result mismatch | Secondary experimental work; unpublished, not clinical validation |
 | LLM-SMT | Verifier, adapters and offline tests; no completed full model sweep | Secondary prototype; unsupported result publication assets removed |
-| DeID | Review workflow, offline regressions, deterministic generated fixtures | Secondary engineering demo; no anonymity guarantee |
+| DeID | Review workflow plus fixed external synthetic evaluation exposing weak detection | Secondary engineering demo; no anonymity guarantee |
 | Graph Fraud / EuroSAT | Synthetic prototype / completed coursework | Supporting archives; not selected flagship projects |
 | DynaDiff-VLBI | Historical measurements with disclosed geometry-ordering issue | Paused; no new imaging claim |
 
