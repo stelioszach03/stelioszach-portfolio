@@ -77,3 +77,4 @@ Original website source code is available under the [MIT licence](LICENSE). The 
 
 The [TrustQueryNet evidence release](https://github.com/stelioszach03/TrustQueryNet/releases/tag/evidence-2026-09-24) preserves a complete cross-image audit and a new matched two-seed frozen-feature repair pilot. All 36 result rows and negative findings are published; MC repair did not improve HAM balanced accuracy in this pilot. This secondary experiment is not historical full-CNN replication or clinical validation.
 
+See the [evidence index](docs/EVIDENCE_INDEX.md) for the measured results, original artifacts and remaining research limits across the public projects.
