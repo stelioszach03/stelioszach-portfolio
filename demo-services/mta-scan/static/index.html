@@ -269,6 +269,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 
 /* Native controls retain the same accessible, navy map workspace. */
 .mapboxgl-map{font:inherit}.mapboxgl-ctrl-group{background:#112240;box-shadow:none;border:1px solid #233554}.mapboxgl-ctrl-group button{width:44px;height:44px}.mapboxgl-ctrl-icon{filter:invert(1)}.mapboxgl-ctrl-attrib{background:rgba(10,25,47,.94);color:#a8b2d1}.mapboxgl-ctrl-attrib a{color:#64ffda}.mapboxgl-ctrl-attrib-button{filter:invert(1)}.mapboxgl-ctrl-bottom-left{z-index:2}.mapboxgl-popup-content{background:#112240;color:#ccd6f6;border:1px solid #233554;border-radius:6px;padding:15px;font:13px/1.5 inherit}.mapboxgl-popup-close-button{color:#ccd6f6;width:44px;height:44px;font-size:20px}.mapboxgl-popup-anchor-bottom .mapboxgl-popup-tip{border-top-color:#112240}.mta-tooltip .mapboxgl-popup-content{padding:5px 8px;font-size:12px}.mapboxgl-ctrl.mapbtn{padding:0 10px;min-height:44px;border:1px solid #233554;border-radius:4px;background:#112240;color:#ccd6f6;cursor:pointer}.portfolio-brand img{display:block;object-fit:contain;flex-shrink:0}
+.temporal-panel{margin-top:40px;padding-top:28px;border-top:1px solid var(--line)}.temporal-title{display:flex;justify-content:space-between;align-items:center;gap:20px}.temporal-title h2{margin:0}.temporal-intro{max-width:90ch;color:var(--dim);font-size:14px;line-height:1.7}.temporal-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin:24px 0}.temporal-stats dt{font-size:11px;color:var(--dim)}.temporal-stats dd{font:600 23px var(--mono);margin:8px 0 0;color:var(--fg)}.temporal-reasons,.temporal-limitations{font-size:12px;color:var(--dim);padding-left:18px;line-height:1.7}.temporal-details{margin-top:20px;padding:17px 0;border-top:1px solid var(--line)}.temporal-details summary{cursor:pointer;font-size:13px;color:var(--fg);min-height:28px}.temporal-details summary:focus-visible{outline:2px solid var(--accent);outline-offset:5px}.temporal-details .note{margin:14px 0}.temporal-details h3{margin-top:24px;font-size:13px}.temporal-feeds{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;list-style:none;padding:0;font-size:11px;color:var(--dim)}.temporal-selected td{color:var(--accent)}#temporalArtifact{overflow-wrap:anywhere}.temporal-panel table{min-width:680px}.temporal-panel .scroll{max-width:100%}@media(max-width:700px){.temporal-stats,.temporal-feeds{grid-template-columns:1fr 1fr;gap:20px 15px}.temporal-title{align-items:flex-start}.temporal-title .eyebrow{font-size:10px}.temporal-title h2{font-size:21px}.temporal-title .ghost{font-size:11px;flex-shrink:0}.temporal-stats dd{font-size:21px}.temporal-intro{font-size:13px}}
 </style>
 <link rel="stylesheet" href="workspace.css?v=2">
 </head>
@@ -356,6 +357,24 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
     </div>
   </div>
 
+  <section id="temporalPanel" class="temporal-panel" aria-labelledby="temporalHeading">
+    <div class="temporal-title"><div><p class="eyebrow">Continuous collection / chronological evaluation</p><h2 id="temporalHeading">History &amp; forecasting</h2></div><button class="ghost" id="temporalRefresh">Refresh history</button></div>
+    <div class="source-band"><strong id="temporalStatus" role="status">Loading history…</strong><span class="source-meta" id="temporalUpdated">Waiting for a validated worker snapshot</span></div>
+    <p class="temporal-intro">Follow the evidence as the dataset grows. The target is a <strong>future feed-predicted arrival-spacing proxy</strong>, not actual train passages or passenger waiting time.</p>
+    <dl class="temporal-stats"><div><dt>Retained history span</dt><dd id="temporalSpan">—</dd></div><div><dt>Complete fresh windows</dt><dd id="temporalCoverage">—</dd></div><div><dt>Five-minute windows</dt><dd id="temporalWindows">—</dd></div><div><dt>Stable route/direction groups</dt><dd id="temporalGroups">—</dd></div></dl>
+    <ul id="temporalReasons" class="temporal-reasons"></ul>
+    <p id="temporalForecastNote" class="note">Forecasts appear only after history, coverage and freshness checks pass.</p>
+    <div id="temporalForecastTable" class="scroll" tabindex="0" role="region" aria-label="Current proxy forecasts" hidden><table><thead><tr><th>Route</th><th>Platform direction</th><th>Horizon</th><th>Predicted spacing</th><th>Algorithm</th><th>Target time</th></tr></thead><tbody id="temporalForecastRows"></tbody></table></div>
+    <details class="temporal-details"><summary>Inspect temporal evaluation &amp; collection health</summary>
+      <p id="temporalEvaluationNote" class="note">No measured temporal evaluation is available yet.</p>
+      <div id="temporalMetrics" class="scroll" tabindex="0" role="region" aria-label="Temporal held-out test metrics" hidden><table><thead><tr><th>Horizon</th><th>Method</th><th>MAE</th><th>RMSE</th><th>Measured / eligible pairs</th><th>Coverage</th></tr></thead><tbody id="temporalMetricRows"></tbody></table></div>
+      <p class="note">Lower error is better. Missing 24-hour seasonal values mean no comparable lag was available. Validation-selected rows can combine different algorithms across route/direction groups; the test set does not choose the method. Platform N/S uses the documented MTA stop suffix, not an inferred compass bearing.</p>
+      <h3>Source health at publication</h3><ul class="temporal-feeds" id="temporalFeeds"></ul><p class="source-meta" id="temporalExports"></p>
+      <ul class="temporal-limitations" id="temporalLimitations"></ul><p class="source-meta" id="temporalArtifact"></p>
+      <a href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/blob/main/docs/TEMPORAL_INTERFACE.md">Inspect the protocol &amp; source ↗</a>
+    </details>
+  </section>
+
   <h2 id="replayHeading">Frozen replay · inspect a recorded scenario</h2>
   <p class="headline" id="headline">
     <b>Measured on the frozen labelled replay</b> <span class="n">(216 rows, 16 labelled, 3 incidents, 6 stations &mdash; small by design)</span>:
@@ -418,6 +437,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 </details>
 </main>
 
+<script src="temporal-view.js?v=1"></script>
 <script src="vendor/leaflet.js"></script>
 <script src="vendor/mapbox-gl-csp.js?v=3.30.0"></script>
 <script src="map-provider.js?v=3"></script>

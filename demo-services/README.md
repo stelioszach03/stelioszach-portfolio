@@ -124,3 +124,9 @@ The neighborhood fixture checks actual bounded graph edges and snapshot/reset ti
 `SOURCE_MANIFEST.json` identifies the published file bytes. Each service retains its upstream MIT notice, and Leaflet retains its own licence. MTA data provenance is documented in `mta-scan/data/SOURCES.md`; those data and tile-provider rights are not relicensed by the website's MIT grant. Fabricated examples and the tiny synthetic model are explicitly labelled. See [NOTICE](NOTICE).
 
 No environment files, credentials, user submissions, live databases, rolling feed state, logs, virtual environments or private repositories are included.
+
+### Temporal MTA evidence pane
+
+`mta-scan/temporal_view.py` serves `GET /api/temporal` from the separately supervised history worker's public `summary.json`. The adapter never reads raw protobuf/history databases or starts training. A read-only bind exposes only the public subdirectory; an allowlisted typed schema strips unknown fields and rejects nonfinite/invalid input. Snapshot and forecast expiration are checked by both API and UI. Missing/stale data disables forecasts without interrupting the existing live map.
+
+The target is a **future feed-predicted arrival-spacing proxy**, not observed train passages or passenger waiting time. Public forecasts require at least14days and the worker's coverage, freshness and held-out-evaluation gates. Earlier scores are explicitly short-window feasibility. Tests cover stale/future timestamps, insufficient history, unknown schemas, private-field stripping, safe text rendering and expiration without a new network response.

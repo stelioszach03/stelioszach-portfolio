@@ -8,12 +8,13 @@ feeds, scores headways with an online model, and writes into a hard-bounded
 SQLite window. No database server, no message broker, no API key, no GPU, no
 torch.
 
-THE FOUR ENDPOINTS THAT MATTER
+THE PRIMARY ENDPOINTS
 ------------------------------
 GET /api/health    liveness, plus feeds / storage / model / retention detail
 GET /api/state     one call, everything the page needs to render immediately
 GET /api/anomalies the ranked live list, filterable
 GET /api/replay    the frozen labelled evaluation with its sample size attached
+GET /api/temporal  allowlisted offline history summary; separate supervised worker
 
 /api/replay is the answer to "a recruiter opens this on a quiet Tuesday and the
 network is behaving": measured results are on screen in the first second,
@@ -43,6 +44,7 @@ from fastapi import FastAPI, HTTPException, Query, Request, Response
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
+from temporal_view import read_summary
 from mtascan.collector import FEEDS, Collector
 from mtascan.config import get_settings
 from mtascan.scoring import load_or_new, save_bundle
@@ -233,6 +235,12 @@ app = FastAPI(
     openapi_url="/api/openapi.json",
     redoc_url=None,
 )
+
+
+@app.get("/api/temporal", tags=["history"])
+def temporal_summary():
+    """Offline evaluation artifact only; no private history or model execution."""
+    return JSONResponse(read_summary(), headers={"Cache-Control": "no-store"})
 
 
 @app.exception_handler(Exception)

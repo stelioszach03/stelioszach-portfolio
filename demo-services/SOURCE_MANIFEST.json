@@ -14,8 +14,8 @@
     },
     {
       "destination": "README.md",
-      "bytes": 11884,
-      "sha256": "8cc0e2a91c5fe97bbb419dc96d2c91f312bdf9eebf7d441bcc3eab78c42691ab"
+      "bytes": 12860,
+      "sha256": "01b0597065aff13cf3dfb8f55fa1876fe206bc7e59ee0024e53b10cb4339f4f5"
     },
     {
       "destination": "deid/LICENSE.upstream",
@@ -329,8 +329,8 @@
     },
     {
       "destination": "mta-scan/service.py",
-      "bytes": 37674,
-      "sha256": "3981c05fd9145766243f1211304c22dd63af54fd79559c22736d650e25af15f9"
+      "bytes": 38019,
+      "sha256": "207fd9e335f864a0d5f4cd623978c0815eaa6f88b5293d7c20b74b9391424fac"
     },
     {
       "destination": "mta-scan/static/data/basemap.json",
@@ -344,8 +344,8 @@
     },
     {
       "destination": "mta-scan/static/index.html",
-      "bytes": 95736,
-      "sha256": "9552d8c0ada94b5efc9307fac096f9cec20a22ccb8e7c0665470f99880f507c5"
+      "bytes": 100249,
+      "sha256": "86d209239841a9fa5f76569b4e750a18b589794d6242167eeb58167ef4f32264"
     },
     {
       "destination": "mta-scan/static/map-config.example.json",
@@ -361,6 +361,11 @@
       "destination": "mta-scan/static/map-renderer.js",
       "bytes": 18553,
       "sha256": "bcc4467979550c8bcb8b5d646e61de0578793424ff04e9ecc428230a1b07821c"
+    },
+    {
+      "destination": "mta-scan/static/temporal-view.js",
+      "bytes": 6819,
+      "sha256": "fff3c08d580af78e49d7391dd26dc5c74b954a69d21dbfc161bb619b1f9fb040"
     },
     {
       "destination": "mta-scan/static/vendor/LICENSE.leaflet.txt",
@@ -418,6 +423,11 @@
       "sha256": "83517b6dc0f06b36481a44be4a1d884826a8326bbf2337e88f47c055cce5940b"
     },
     {
+      "destination": "mta-scan/temporal_view.py",
+      "bytes": 7140,
+      "sha256": "a31869922486499cc8d2f764cd8a70d0e10ad58a3a24869f4b9f8c45ff1b34c3"
+    },
+    {
       "destination": "mta-scan/tests/map-native-browser.test.mjs",
       "bytes": 9000,
       "sha256": "fa2137dcc0eb6e154d5207986e2bb35368b8f3150afe6ff6dcfb34f684a64543"
@@ -426,6 +436,11 @@
       "destination": "mta-scan/tests/map-renderer.test.cjs",
       "bytes": 9967,
       "sha256": "d4522eab6305962929ab60bd90af596b9307d1553cf0854dedd551ef3e2998f6"
+    },
+    {
+      "destination": "mta-scan/tests/test_temporal_view.py",
+      "bytes": 5026,
+      "sha256": "7f3bbb66ba5a02dd755840873532e559ed9e6ee415bbe0249700dc081d7f8482"
     },
     {
       "destination": "package-lock.json",
@@ -551,6 +566,11 @@
       "destination": "tests/map-provider.test.mjs",
       "bytes": 1764,
       "sha256": "50c9cee475b584a02b05531be89707f08026cf99b5dc4720b3e7fcc6b3309c31"
+    },
+    {
+      "destination": "tests/temporal-ui.test.mjs",
+      "bytes": 3381,
+      "sha256": "71eeb65a0fc57db1ebe06d1fb8961115c664309a500d7fd2382fae8161ae2487"
     },
     {
       "destination": "tests/test_sources.py",
