@@ -10,8 +10,8 @@ experiment are different kinds of evidence.
 | --- | --- |
 | Forge transfer pilot | 162/162 frozen episodes. Primary test: supervised return 17/18; fitted-Q, strong-only and escalation 16/18; cheap and hand-written 15/18. Six test families, one seed; no superiority claim. All traces and a six-page technical report are [published](https://github.com/stelioszach03/forgerl/tree/main/artifacts/forgebench/v0.3-pilot1). Shared VERIFY is not learned. |
 | GPU serving | 1,536 measured requests, 24 stages, three paired cache sweeps on one RTX 4090. No request errors or fixed-output-length mismatches; only 210/768 paired text hashes match. [Raw measurements and report](https://github.com/stelioszach03/colab-speculative-decoding-speed-lab/tree/main/artifacts/controlled-pilot-v1); no lossless or output-quality claim. Pod terminated; provider reports $0.225616 for the whole allocation. |
-| MRI publication | [Evidence package v0.1.0](https://github.com/stelioszach03/mri-reconstruction-evidence/releases/tag/v0.1.0): eight unchanged historical aggregates, deterministic CPU analysis, numeric figures, source/license audit. Solver, images and weights excluded; no fresh MRI inference. |
-| MTA collection | Persistent capture and daily export timer enabled. At 2026-09-24 11:39 UTC: 5,408 polls across eight feeds over 11h 15m, all fresh at receipt, no polling gap over 120 seconds. The [dated continuation receipt](https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/blob/main/docs/COLLECTION_COVERAGE.md) preserves the earlier 896-poll snapshot. No completed-day export or forecasting result yet. |
+| MRI publication | [Evidence package v0.2.0](https://github.com/stelioszach03/mri-reconstruction-evidence/releases/tag/v0.2.0): eight unchanged historical aggregates, deterministic CPU analysis, independent NumPy ensemble diagnostics, numeric figures and source/license audit. Twenty CPU tests and Python3.9/3.12 CI pass. The new diagnostic example is synthetic. Solver, images and weights excluded; no fresh MRI inference. |
+| MTA collection | Autonomous history, schema2 Parquet export/retry and temporal workers deployed. At 2026-09-24 21:45 UTC, the public temporal snapshot contained256 completed five-minute windows spanning21h15m and39 stable route/direction groups. Actual 15/30-minute chronological feasibility metrics are visible; seasonal values remain null without a24-hour lag. Public forecasts stay empty until at least14days plus freshness/coverage/evaluation gates. Request-start/response-availability semantics were corrected prospectively; legacy rows remain preserved and conservatively interpreted. [Protocol](https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/blob/main/docs/TEMPORAL_EVALUATION.md). No longitudinal or official-incident result. |
 | DeID evaluation | 500 fixed external synthetic records: strict mapped-label P39.29%, R41.17%, F1 40.21%, 90.57% gold-label coverage. [Unfavorable results and Unicode/latency checks](https://github.com/stelioszach03/deid-privacy-studio/tree/main/artifacts/external-synthetic-v1-run1) retained. No clinical or live-adapter accuracy claim. |
 | TrustQuery inputs | Recovered 14,185 historical candidate pairs reconcile with metadata. A new [HAM-only pixel audit](https://github.com/stelioszach03/TrustQueryNet/blob/main/artifacts/ham-pixel-audit/v1-2026-09-24/REPORT.md) decoded all 10,015 images, finding two identical-pixel pairs within the same persisted split/lesion; zero exact-pixel or metadata-lesion groups span splits. ISIC image comparison and external independence remain unresolved. No retraining or revised model accuracy is claimed. |
 | LLM-SMT feasibility | [750 recorded cells](https://github.com/stelioszach03/llm-smt-verifiable-reasoning/releases/tag/openrouter-pilot-v1): 739 completed executions and 11 deadline stops, on 50 public synthetic tasks × three requested seeds × five arms. Core-ranked repair and no-feedback both certified 55/90 SAT assignments; no advantage established. Direct Z3 solved all 500 source problems without model calls. Accounted API cost $0.867535 includes rounding and uncertain reserves; full 7,500-episode study not run. |
@@ -20,18 +20,21 @@ experiment are different kinds of evidence.
 
 | Project | Current evidence | Public presentation |
 | --- | --- | --- |
-| ForgeRL / ForgeBench | Preserved v0.2 study plus 162-episode prospective transfer pilot | Selected project; v0.2 explorer and separately linked pilot report |
+| ForgeRL / ForgeBench | Preserved v0.2 study plus 162-episode prospective transfer pilot | Selected project; nativev0.3/v0.2 explorer, recorded step replay and separate bounded live trial |
 | MTA-Scan | Live public feed interface; 216-row constructed replay; bounded raw history collection started 2026-09-24 UTC | Selected project; no validated disruption forecast |
-| MRI reconstruction | BSc thesis and public aggregate-evidence package; solver source withheld | Selected thesis with reproducible table/plot analysis |
+| MRI reconstruction | BSc thesis and public aggregate-evidence package; solver source withheld | Selected thesis with reproducible table/plot analysis and independent CPU ensemble diagnostics |
 | AsklepiosMed | Donated deployed application; former pro bono role; scoped public case study | Selected engineering project; source and member records private |
 | Inference Systems Lab | Controlled single-GPU serving measurements; historical Colab results separate | Selected measured systems project with limits and raw evidence |
 | TrustQueryNet | Historical multi-seed tables, negative/uncertain comparisons, measured HAM input/split audit; cross-ISIC near duplicates and corrected-code rerun unresolved | Secondary experimental work; unpublished, not clinical validation |
 | LLM-SMT | Actual 750-cell feasibility pilot, complete trajectories, cost/token reconciliation and a null primary comparison; full sweep not run | Completed secondary experimental snapshot, kept off the selected-project homepage; no repair-superiority claim |
 | DeID | Review workflow plus fixed external synthetic evaluation exposing weak detection | Secondary engineering demo; no anonymity guarantee |
-| Graph Fraud / EuroSAT | Synthetic prototype / completed coursework | Supporting archives; not selected flagship projects |
-| DynaDiff-VLBI | Historical measurements with disclosed geometry-ordering issue | Paused; no new imaging claim |
+| Graph Fraud / EuroSAT | Synthetic prototype / completed coursework | Original repositories private and archived; deployed Graph adapter source remains in the public portfolio repository |
+| DynaDiff-VLBI | Historical measurements with disclosed geometry-ordering issue | Private and archived; no new imaging claim |
 
 ## Shipped engineering changes in this development pass
+
+- Native Forgev0.3/v0.2 explorer and separate curated live trial deployed. One authorized production smoke solved5/5 final checks with1,212 tokens; CoreWeave reported$0.00007946, conservatively rounded to$0.000080 in the original ledger. This is an integration check, not new benchmark evidence. Exactly one request/charge; all13 live security checks passed.
+- Seven unselected repositories are now private and archived, with private Git bundle backups: EuroSAT, Graph Fraud, LimitForge, AML Graph, DoubleX Ledger, Realtime Fraud and DynaDiff-VLBI. The active Graph demo links to its public deployed adapter; archives are not advertised as public projects.
 
 - MTA adapter 2.1.1 stops treating same-trip ETA revisions and vehicle timestamps
   as measured headways. Fresh snapshot pairs estimate arrival spacing, with
@@ -108,7 +111,7 @@ clinical validation, general superiority, adoption impact or new GPU result is
 claimed merely because the corresponding software or protocol exists.
 
 New paid experiments require a concrete protocol and finite resource ceiling.
-The public Forge dashboard is read-only and has no model credential. The medical
+The public Forge process has no model credential or executor access. Recorded browsing is free; the optional fixed live trial uses a separate private broker and the original durable spending ledger. The medical
 association source and production records are not inputs to public research.
 Months of temporal evaluation require elapsed collection time; new datasets and
 external code require their own provenance review.

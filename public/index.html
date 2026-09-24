@@ -239,7 +239,7 @@
                 ><span aria-hidden="true">↗</span></a
               >
               <a class="text-link" href="https://github.com/stelioszach03/mri-reconstruction-evidence"
-                >Reproduce the recorded tables <span aria-hidden="true">↗</span></a>
+                >Inspect the evidence &amp; diagnostics <span aria-hidden="true">↗</span></a>
               <span class="quiet"
                 >BSc thesis · methods, experiments and limitations.</span
               >
@@ -293,10 +293,11 @@
                 <div>
                   <h4>Bounded execution</h4>
                   <p>
-                    The public dashboard reads stored experiments; browsing does not
-                    start paid inference. Research candidates run in constrained,
-                    network-isolated rootless containers. An operator-run harness
-                    shares a durable spending ledger across research runs.
+                    Recorded replay is free to browse. An optional curated trial
+                    makes one GPT-OSS 20B request for a fixed task, with isolated
+                    verification and persistent spending limits. Live trials are
+                    separate from benchmark results; visitors cannot submit code
+                    or arbitrary prompts. Provider failures remain visible.
                   </p>
                 </div>
                 <div>
@@ -440,8 +441,9 @@
             <p>
               I implemented feed ingestion, the API and an interactive review
               workflow with freshness states, native Mapbox layers, filtering
-              and explicit snapshot export. A separate replay compares an online
-              model with z-score, EWMA and fixed-threshold baselines.
+              and explicit snapshot export. Autonomous history collection now
+              supports chronological 15/30-minute evaluation against persistence
+              and seasonal baselines, alongside the separate constructed replay.
             </p>
             <dl class="system-list">
               <div>
@@ -455,9 +457,10 @@
                   map fallback preserves the data review workflow.</dd>
               </div>
               <div>
-                <dt>Separate evaluation</dt>
-                <dd>Explore replay events and compare sensitivity with false
-                  alarms, without treating model scores as official reports.</dd>
+                <dt>History &amp; forecasting evidence</dt>
+                <dd>Inspect collection health, held-out errors and readiness.
+                  The target is future feed-predicted arrival spacing; early
+                  measurements are feasibility evidence.</dd>
               </div>
             </dl>
             <details class="study-detail">
@@ -471,9 +474,11 @@
                 <div>
                   <h4>What the live system establishes</h4>
                   <p>
-                    Public-feed integration and an inspectable data workflow.
-                    Feeds can be stale or incomplete; deviation scores are not
-                    calibrated incident probabilities or explanations of a delay.
+                    Public-feed integration, bounded historical storage and
+                    automatic temporal evaluation. Forecasts require at least
+                    14 days plus coverage and freshness checks. The target is a
+                    later arrival-estimate proxy, not actual train passages,
+                    passenger waiting time or validated incident prediction.
                   </p>
                 </div>
                 <div>
