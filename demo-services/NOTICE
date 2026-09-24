@@ -4,7 +4,8 @@ Demo source and data notices
 The runtime adapters and vendored modules are associated with these projects:
 
 - deid: https://github.com/stelioszach03/deid-privacy-studio
-- fraud-graph: https://github.com/stelioszach03/graph-fraud-command-center
+- fraud-graph: original repository graph-fraud-command-center (owner-only private archive).
+  Public deployed implementation: https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/fraud-graph
 - mta-scan: https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection
 - smt-verify: https://github.com/stelioszach03/llm-smt-verifiable-reasoning
 

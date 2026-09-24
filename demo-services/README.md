@@ -6,7 +6,7 @@ Inspectable runtime adapters for the four [live portfolio demos](https://stelios
 | --- | --- | --- |
 | `smt-verify` | A bounded Z3 verifier for structured constraints and candidate answers. No paid language-model generation. | [LLM + SMT](https://github.com/stelioszach03/llm-smt-verifiable-reasoning) |
 | `deid` | English entity detection with spaCy and regex rules, followed by explicit transformation policies. Detection can miss identifiers. | [De-identification studio](https://github.com/stelioszach03/deid-privacy-studio) |
-| `fraud-graph` | Transaction graph features, heuristic scoring and a small CPU PyTorch model. The stream and training labels are synthetic. | [Graph fraud command center](https://github.com/stelioszach03/graph-fraud-command-center) |
+| `fraud-graph` | Transaction graph features, heuristic scoring and a small CPU PyTorch model. The stream and training labels are synthetic. | [Public deployed implementation](fraud-graph/) |
 | `mta-scan` | Public MTA feed collection, streaming features and anomaly scoring, plus a separately labelled frozen replay. | [NYC subway anomaly detection](https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection) |
 
 Use fabricated examples only. The text demo does not guarantee anonymization. Fraud scores are not fraud probabilities, and successive graph runs change their shared synthetic history. The subway replay is a small sanity evaluation, not a benchmark or official MTA incident annotation.

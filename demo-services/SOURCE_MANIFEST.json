@@ -9,13 +9,13 @@
   "files": [
     {
       "destination": "NOTICE",
-      "bytes": 2457,
-      "sha256": "cf64745ca2c6c80bfa8b982be580705da6b0a295551a864e3bcd1206f2e91506"
+      "bytes": 2599,
+      "sha256": "456e38508a6bfd8329ec191cab52efd20cea7f9908c0993d737ed715cf8fce5a"
     },
     {
       "destination": "README.md",
-      "bytes": 11927,
-      "sha256": "6ab0b8eb9b6d0ec9c2249305a672b2f12f3d11e4547e7d83492a49baa38584ce"
+      "bytes": 11884,
+      "sha256": "8cc0e2a91c5fe97bbb419dc96d2c91f312bdf9eebf7d441bcc3eab78c42691ab"
     },
     {
       "destination": "deid/LICENSE.upstream",
@@ -119,8 +119,8 @@
     },
     {
       "destination": "fraud-graph/static/index.html",
-      "bytes": 38227,
-      "sha256": "6819ec16f7ea855ea3e524c3305b7464f76ea0aa148c79d5dd95eca892249288"
+      "bytes": 38289,
+      "sha256": "1400db35b62b884f639f2d7f6218890574e6b0ccba5b0e69dc81d915d56feabf"
     },
     {
       "destination": "fraud-graph/train_model.py",
@@ -592,5 +592,8 @@
       "bytes": 14591,
       "sha256": "cd54297e8cd17fb52b3cb33bfc570c4998f52c155551183dd8fae3f879427eeb"
     }
-  ]
+  ],
+  "upstream_visibility": {
+    "fraud-graph": "private archived; deployed adapter and vendored snapshot remain public here"
+  }
 }
