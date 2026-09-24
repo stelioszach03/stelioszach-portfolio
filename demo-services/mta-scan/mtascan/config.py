@@ -60,7 +60,7 @@ def _state_dir() -> Path:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "2.0.0"
+    version: str = "2.1.0"
 
     # --- paths -----------------------------------------------------------
     state_dir: Path = _state_dir()
@@ -95,11 +95,12 @@ class Settings:
         explicit = os.environ.get("MTA_DB_PATH", "").strip()
         if explicit:
             return Path(explicit)
-        return self.state_dir / "mta.db"
+        # Keep the earlier ETA-transition data separate from trip-pair gaps.
+        return self.state_dir / "mta-arrival-gaps-v2.db"
 
     @property
     def model_path(self) -> Path:
-        return self.state_dir / "model.pkl"
+        return self.state_dir / "model-arrival-gaps-v2.pkl"
 
     @property
     def stops_path(self) -> Path:

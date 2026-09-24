@@ -278,7 +278,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 <main class="wrap" id="workspace">
 
   <div class="workspace-title"><div><p class="eyebrow">New York City / Transit observability</p><h1>Subway signal desk</h1></div><a class="toolbar-source" href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan">View deployed source ↗</a></div>
-  <p class="lede">Inspect live station observations, narrow the network and compare recorded incidents.</p>
+  <p class="lede">Inspect gaps between live arrival predictions, narrow the network and explore constructed incident replays.</p>
   
 
   <!-- Rewritten from static/data/replay.json on load so it can never drift from the
@@ -326,7 +326,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
         <span class="sizes" id="sizekey"></span>
         <span><i class="swatch"></i>station with no score in this window</span>
       </div>
-      <p class="method-note">Scores describe deviation from a learned baseline. They are not calibrated probabilities or official MTA incident reports.</p>
+      <p class="method-note">Live gaps use the first snapshot of two distinct upcoming trips at the same route, stop and direction. They are arrival estimates, not measured train passages. Scores describe deviation from a learned baseline; they are not calibrated probabilities or official MTA incident reports.</p>
     </div>
 
     <div class="rail">
@@ -918,7 +918,7 @@ function modeLabel(){
 function inspectStation(p,fromUser){
   selectedStation={route:p.route_id,stop:p.stop_id};
   var el=$('stationDetail');el.hidden=false;
-  el.innerHTML='<header><div><p class="eyebrow">Selected observation</p><h3>'+bullet(p.route_id,true)+' '+esc(p.stop_name||p.stop_id)+'</h3></div><button class="ghost" id="closeStation">Close</button></header><dl><div><dt>Anomaly score</dt><dd>'+Number(p.anomaly_score||0).toFixed(3)+'</dd></div><div><dt>Observed headway</dt><dd>'+esc(mmss(p.headway_sec))+'</dd></div><div><dt>Predicted headway</dt><dd>'+esc(mmss(p.predicted_headway_sec))+'</dd></div></dl><p>'+esc((p.reasons||[]).join(' · ')||'No explanation reported for this observation.')+'</p><p>Observed '+esc(p.observed_utc||'time not supplied')+' · '+esc(p.stop_id||'')+'</p>';
+  el.innerHTML='<header><div><p class="eyebrow">Selected observation</p><h3>'+bullet(p.route_id,true)+' '+esc(p.stop_name||p.stop_id)+'</h3></div><button class="ghost" id="closeStation">Close</button></header><dl><div><dt>Anomaly score</dt><dd>'+Number(p.anomaly_score||0).toFixed(3)+'</dd></div><div><dt>Arrival estimate gap</dt><dd>'+esc(mmss(p.headway_sec))+'</dd></div><div><dt>Model baseline</dt><dd>'+esc(mmss(p.predicted_headway_sec))+'</dd></div></dl><p>'+esc((p.reasons||[]).join(' · ')||'No explanation reported for this observation.')+'</p><p>Snapshot '+esc(p.observed_utc||'time not supplied')+' · '+esc(p.stop_id||'')+'</p>';
   $('closeStation').onclick=function(){selectedStation=null;el.hidden=true;$('stationSearch').focus();};
   if(fromUser)el.scrollIntoView({block:'nearest',behavior:'auto'});
 }
@@ -987,7 +987,7 @@ function livePopupHtml(p, s, st){
              bullets(others, true) + '</div>' : '') +
          '<div class="pop-row"><span>anomaly score</span>' +
            '<b class="pop-score" style="color:' + scoreColor(s) + '">' + s.toFixed(3) + '</b></div>' +
-         '<div class="pop-row"><span>headway now</span><b>' + mmss(p.headway_sec) + '</b></div>' +
+         '<div class="pop-row"><span>arrival estimate gap</span><b>' + mmss(p.headway_sec) + '</b></div>' +
          '<div class="pop-row"><span>model predicted</span><b>' +
            mmss(p.predicted_headway_sec) + '</b></div>' +
          (resid ? '<div class="pop-row"><span>residual</span><b>' + resid + '</b></div>' : '') +

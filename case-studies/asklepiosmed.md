@@ -30,9 +30,30 @@ A professional association needs to publish information, support its members, or
 
 The application uses React, Express and PostgreSQL, with nginx and systemd on a VPS. Work spans the interface, API behaviour and the operational procedures needed to maintain a running service.
 
+```mermaid
+flowchart LR
+  Public[Public website] --> Edge[HTTPS / nginx]
+  Member[Member portal] --> Edge
+  Staff[Secretariat workspace] --> Edge
+  Engineer[Engineering view] --> Edge
+  Edge --> API[Express API / scoped authentication]
+  API --> Roles[Ownership and assignment checks]
+  Roles --> DB[(PostgreSQL)]
+  Roles --> Files[Protected attachments]
+  API --> Jobs[Communication and event workflows]
+  DB --> Backup[Encrypted backups / restore checks]
+  API --> Ops[Service health / operational logs]
+```
+
+This is a logical view of the single-VPS application. Separate boxes describe responsibilities, not independent fault-tolerant machines. Member ownership and secretariat assignment govern confidential case access; the engineering view is not a blanket permission to read case content.
+
 Security-sensitive operations use scoped authentication checks. Confidential case access is limited by ownership and assignment, rather than treating every administrator as entitled to read everything. Content publication handles competing edits, and communication workflows make consent, review and explicit approval visible.
 
 Verification has included focused automated tests, synthetic end-to-end workflows, responsive browser checks and backup restoration exercises. These are practical checks of particular behaviours, not a claim that software can be proved bug-free.
+
+## Outcome and evidence
+
+The public website and documented member/administrative workflows form the delivered software artifact. This case study does not claim measured adoption, staff time saved, security certification or a clinical outcome: no independently audited figures for those outcomes are published here. Operational records, private screenshots and member data are not used as portfolio material.
 
 ## Boundaries
 

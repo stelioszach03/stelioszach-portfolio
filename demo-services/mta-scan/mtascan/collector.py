@@ -12,11 +12,10 @@ not anything had happened — roughly 5 000 rows a minute, 7 million a day, for
 data that mostly repeated the previous cycle. That is the mechanism behind the
 37 GB incident in the project's README.
 
-Here a row is written only when the earliest upcoming arrival at a route-stop
-*advances past the one we were already tracking* — that is, when a train
-actually cleared the stop. The gap between the old and the new arrival is the
-headway, which is the quantity being modelled in the first place. Write volume
-drops by roughly two orders of magnitude and every row now means something.
+Rows measure the predicted-arrival gap between the two nearest distinct trips
+at a route-stop-direction in a fresh snapshot, once per unordered trip pair.
+An ETA revision is not a train passage. These are prediction-based estimates,
+not measured arrivals, incident labels or validated service headways.
 
 FAILURE IS NORMAL, NOT EXCEPTIONAL
 ----------------------------------
@@ -68,6 +67,8 @@ class FeedStatus:
     error: str | None = None
     latency_ms: float | None = None
     last_success_epoch: int | None = None
+    source_epoch: int | None = None
+    source_age_sec: int | None = None
 
 
 @dataclass
@@ -104,6 +105,8 @@ class CycleResult:
                     "latency_ms": round(feed.latency_ms, 1) if feed.latency_ms else None,
                     "error": feed.error,
                     "last_success_utc": _iso(feed.last_success_epoch),
+                    "source_utc": _iso(feed.source_epoch),
+                    "source_age_sec": feed.source_age_sec,
                 }
                 for feed in self.feeds
             ],
@@ -120,27 +123,40 @@ def _iso(epoch: int | None) -> str | None:
     )
 
 
-def parse_arrivals(content: bytes) -> Iterable[tuple[str, str, int]]:
-    """Yield (route_id, stop_id, arrival_epoch) from a GTFS-RT payload."""
+@dataclass(frozen=True)
+class Arrival:
+    route_id: str
+    stop_id: str
+    trip_key: tuple[str, str, str]
+    direction: int | None
+    epoch: int
+
+
+def parse_arrivals(content: bytes) -> Iterable[Arrival]:
+    """TripUpdate predictions only; vehicle timestamps are measurement times."""
     feed = gtfs_realtime_pb2.FeedMessage()
     feed.ParseFromString(content)
     for entity in feed.entity:
+        if entity.is_deleted:
+            continue
         if entity.HasField("trip_update"):
-            route_id = entity.trip_update.trip.route_id or ""
+            trip = entity.trip_update.trip
+            if trip.schedule_relationship in (3, 7):  # CANCELED, DELETED
+                continue
+            route_id = trip.route_id or ""
+            if not trip.trip_id:
+                continue
+            trip_key = (trip.trip_id, trip.start_date, trip.start_time)
+            direction = trip.direction_id if trip.HasField("direction_id") else None
             for update in entity.trip_update.stop_time_update:
+                if update.schedule_relationship in (1, 2):  # SKIPPED, NO_DATA
+                    continue
                 stop_id = update.stop_id or ""
                 arrival = update.arrival.time if update.HasField("arrival") else 0
                 departure = update.departure.time if update.HasField("departure") else 0
                 stamp = int(arrival or departure or 0)
                 if route_id and stop_id and stamp:
-                    yield route_id, stop_id, stamp
-        elif entity.HasField("vehicle"):
-            vehicle = entity.vehicle
-            route_id = vehicle.trip.route_id or ""
-            stop_id = vehicle.stop_id or ""
-            stamp = int(vehicle.timestamp or 0)
-            if route_id and stop_id and stamp:
-                yield route_id, stop_id, stamp
+                    yield Arrival(route_id, stop_id, trip_key, direction, stamp)
 
 
 class Collector:
@@ -156,8 +172,8 @@ class Collector:
         self.store = store
         self.bundle = bundle
         self.features = FeatureEngine()
-        # Last arrival time we have already accounted for, per (route, stop).
-        self._tracked: dict[tuple[str, str], int] = {}
+        self._tracked: dict[tuple, int] = {}
+        self._seen_pairs: dict[tuple, int] = {}
         self._feed_last_success: dict[str, int] = {}
         self.cycles = 0
         self.last_cycle: CycleResult | None = None
@@ -179,7 +195,7 @@ class Collector:
         assert client is not None
 
         try:
-            arrivals: list[tuple[str, str, int]] = []
+            arrivals: list[Arrival] = []
             for label, url in FEEDS:
                 status = self._fetch_feed(client, label, url, arrivals)
                 result.feeds.append(status)
@@ -206,7 +222,7 @@ class Collector:
         client: httpx.Client,
         label: str,
         url: str,
-        sink: list[tuple[str, str, int]],
+        sink: list[Arrival],
     ) -> FeedStatus:
         status = FeedStatus(label=label, last_success_epoch=self._feed_last_success.get(label))
         began = time.monotonic()
@@ -216,6 +232,17 @@ class Collector:
             status.latency_ms = (time.monotonic() - began) * 1000.0
             if response.status_code != 200:
                 status.error = f"HTTP {response.status_code}"
+                return status
+            header = gtfs_realtime_pb2.FeedMessage()
+            header.ParseFromString(response.content)
+            now = int(time.time())
+            status.source_epoch = int(header.header.timestamp or 0) or None
+            status.source_age_sec = now - status.source_epoch if status.source_epoch else None
+            if status.source_age_sec is None or not -60 <= status.source_age_sec <= 300:
+                status.error = "Missing, stale or future feed timestamp"
+                return status
+            if header.header.incrementality != 0:
+                status.error = "Differential snapshot unsupported"
                 return status
             entities = list(parse_arrivals(response.content))
             status.entities = len(entities)
@@ -230,35 +257,46 @@ class Collector:
 
     # -- headway extraction ----------------------------------------------
     def _extract_and_score(
-        self, arrivals: list[tuple[str, str, int]], now_epoch: int
+        self, arrivals: list[Arrival], now_epoch: int
     ) -> list[dict[str, Any]]:
         """Turn a cycle's arrival predictions into scored headway observations."""
         settings = self.settings
 
-        # Earliest still-plausible arrival per (route, stop) in this cycle.
-        earliest: dict[tuple[str, str], int] = {}
-        for route_id, stop_id, stamp in arrivals:
-            if stamp < now_epoch - 3600 or stamp > now_epoch + 4 * 3600:
+        # Distinct trips within one snapshot. Prediction revisions across
+        # snapshots must never be subtracted as if they were separate trains.
+        grouped: dict[tuple, dict[tuple, Arrival]] = {}
+        for item in arrivals:
+            if item.epoch < now_epoch or item.epoch > now_epoch + 4 * 3600:
                 continue
-            key = (route_id, stop_id)
-            current = earliest.get(key)
-            if current is None or stamp < current:
-                earliest[key] = stamp
+            key = (item.route_id, item.stop_id, item.direction)
+            trips = grouped.setdefault(key, {})
+            previous = trips.get(item.trip_key)
+            if previous is None or item.epoch < previous.epoch:
+                trips[item.trip_key] = item
+
+        self._seen_pairs = {k: t for k, t in self._seen_pairs.items() if t > now_epoch - 4 * 3600}
 
         rows: list[dict[str, Any]] = []
-        for key, arrival in earliest.items():
-            previous = self._tracked.get(key)
-            self._tracked[key] = arrival
-            if previous is None:
-                # First sighting: nothing to measure a gap against yet.
+        for key, trips in grouped.items():
+            self._tracked[key] = now_epoch
+            nearest = sorted(trips.values(), key=lambda a: (a.epoch, a.trip_key))[:2]
+            if len(nearest) < 2:
                 continue
-            headway = float(arrival - previous)
-            # The front of the queue moved backwards (prediction revised) or
-            # barely moved (same train, updated ETA) — not a train event.
+            first, second = nearest
+            pair = (*key, *sorted((first.trip_key, second.trip_key)))
+            if pair in self._seen_pairs:
+                continue
+            # Hard memory bound; stop scoring new pairs until expiry instead
+            # of evicting a pair and accidentally learning it twice.
+            if len(self._seen_pairs) >= 100_000:
+                continue
+            self._seen_pairs[pair] = now_epoch
+            headway = float(second.epoch - first.epoch)
             if headway < settings.min_headway_sec or headway > settings.max_headway_sec:
                 continue
 
-            route_id, stop_id = key
+            route_id, stop_id, direction = key
+            arrival = first.epoch
             features = self.features.compute(
                 route_id=route_id,
                 stop_id=stop_id,

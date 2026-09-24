@@ -334,6 +334,21 @@ p + p {
   margin-bottom: 48px;
   align-items: start;
 }
+.evidence-strip {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 24px;
+  padding: 0 0 36px;
+  margin-bottom: 18px;
+  border-bottom: 1px solid var(--line);
+}
+.evidence-strip a { display: grid; align-content: start; gap: 8px; color: inherit; text-decoration: none; }
+.evidence-strip span { color: var(--accent); font-size: 12px; }
+.evidence-strip strong { color: var(--heading); font-size: 17px; line-height: 1.4; }
+.evidence-strip small { font-size: 12px; line-height: 1.6; }
+.evidence-strip a:hover strong { color: var(--accent); }
+@media (max-width: 900px) { .evidence-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 480px) { .evidence-strip { gap: 24px 16px; } .evidence-strip strong { font-size: 15px; } }
 .section-heading > .eyebrow {
   padding-top: 7px;
 }

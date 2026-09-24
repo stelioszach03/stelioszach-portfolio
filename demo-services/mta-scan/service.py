@@ -299,6 +299,8 @@ def health() -> dict[str, Any]:
         "ok": True,
         "service": "mta-scan",
         "version": SETTINGS.version,
+        "measurement": "first_snapshot_predicted_arrival_gap_v2",
+        "measurement_note": "Gap between two distinct upcoming trips; not an observed train passage or incident label.",
         "uptime_sec": int(time.time() - STARTED_AT),
     }
 
