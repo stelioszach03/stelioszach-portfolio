@@ -54,6 +54,11 @@ class TemporalViewTests(unittest.TestCase):
             sample = fixture(); sample['forecasts'][0][field] = value
             self.assertEqual(self.read(sample)['forecasts'], [])
 
+    def test_out_of_range_proxy_rejected_without_clipping(self):
+        for value in [-.01, 3600.01]:
+            sample = fixture(); sample['forecasts'][0]['predicted_proxy_seconds'] = value
+            self.assertEqual(self.read(sample)['forecasts'], [])
+
     def test_future_generated_and_features_rejected(self):
         for field in ['generated_ts', 'feature_cutoff_ts', 'evaluation_cutoff_ts']:
             sample = fixture(); sample[field] = NOW+100

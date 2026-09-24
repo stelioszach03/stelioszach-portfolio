@@ -80,7 +80,7 @@ class Forecast(SafeModel):
     horizon_seconds: Literal[900, 1800]
     origin_ts: Count
     target_ts: Count
-    predicted_proxy_seconds: float  # Preserve negative predictions if produced; no silent clipping.
+    predicted_proxy_seconds: Annotated[float, Field(ge=0, le=3600)]  # Reject invalid proxy range; never silently clip.
     algorithm: Literal['persistence', 'seasonal_24h', 'online_linear']
     cohort_sha256: Annotated[str, Field(pattern=r'^[a-f0-9]{64}$')]
     paired_platform_count: Annotated[int, Field(ge=1, le=3)]
