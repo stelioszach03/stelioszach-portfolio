@@ -11,9 +11,10 @@ experiment are different kinds of evidence.
 | Forge transfer pilot | 162/162 frozen episodes. Primary test: supervised return 17/18; fitted-Q, strong-only and escalation 16/18; cheap and hand-written 15/18. Six test families, one seed; no superiority claim. All traces and a six-page technical report are [published](https://github.com/stelioszach03/forgerl/tree/main/artifacts/forgebench/v0.3-pilot1). Shared VERIFY is not learned. |
 | GPU serving | 1,536 measured requests, 24 stages, three paired cache sweeps on one RTX 4090. No request errors or fixed-output-length mismatches; only 210/768 paired text hashes match. [Raw measurements and report](https://github.com/stelioszach03/colab-speculative-decoding-speed-lab/tree/main/artifacts/controlled-pilot-v1); no lossless or output-quality claim. Pod terminated; provider reports $0.225616 for the whole allocation. |
 | MRI publication | [Evidence package v0.1.0](https://github.com/stelioszach03/mri-reconstruction-evidence/releases/tag/v0.1.0): eight unchanged historical aggregates, deterministic CPU analysis, numeric figures, source/license audit. Solver, images and weights excluded; no fresh MRI inference. |
-| MTA collection | Persistent capture and daily export timer enabled. Initial actual coverage: 896 polls across eight feeds over about 111 minutes, all fresh in that interval. Weeks of data and real incident/forecasting evaluation remain pending. |
+| MTA collection | Persistent capture and daily export timer enabled. At 2026-09-24 11:39 UTC: 5,408 polls across eight feeds over 11h 15m, all fresh at receipt, no polling gap over 120 seconds. The [dated continuation receipt](https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/blob/main/docs/COLLECTION_COVERAGE.md) preserves the earlier 896-poll snapshot. No completed-day export or forecasting result yet. |
 | DeID evaluation | 500 fixed external synthetic records: strict mapped-label P39.29%, R41.17%, F1 40.21%, 90.57% gold-label coverage. [Unfavorable results and Unicode/latency checks](https://github.com/stelioszach03/deid-privacy-studio/tree/main/artifacts/external-synthetic-v1-run1) retained. No clinical or live-adapter accuracy claim. |
-| TrustQuery metadata | Recovered 14,185 candidate pairs reconcile with metadata. External lesion IDs are absent; 165 SCC labels are merged into `akiec` in the historical mapping. Future dHash search corrected and tested; image duplication and cross-dataset independence remain unmeasured. [Audit](https://github.com/stelioszach03/TrustQueryNet/blob/main/docs/OVERLAP_METADATA_AUDIT_2026-09-24.md). |
+| TrustQuery inputs | Recovered 14,185 historical candidate pairs reconcile with metadata. A new [HAM-only pixel audit](https://github.com/stelioszach03/TrustQueryNet/blob/main/artifacts/ham-pixel-audit/v1-2026-09-24/REPORT.md) decoded all 10,015 images, finding two identical-pixel pairs within the same persisted split/lesion; zero exact-pixel or metadata-lesion groups span splits. ISIC image comparison and external independence remain unresolved. No retraining or revised model accuracy is claimed. |
+| LLM-SMT feasibility | [750 recorded cells](https://github.com/stelioszach03/llm-smt-verifiable-reasoning/releases/tag/openrouter-pilot-v1): 739 completed executions and 11 deadline stops, on 50 public synthetic tasks × three requested seeds × five arms. Core-ranked repair and no-feedback both certified 55/90 SAT assignments; no advantage established. Direct Z3 solved all 500 source problems without model calls. Accounted API cost $0.867535 includes rounding and uncertain reserves; full 7,500-episode study not run. |
 
 ## Current portfolio selection
 
@@ -24,8 +25,8 @@ experiment are different kinds of evidence.
 | MRI reconstruction | BSc thesis and public aggregate-evidence package; solver source withheld | Selected thesis with reproducible table/plot analysis |
 | AsklepiosMed | Donated deployed application; former pro bono role; scoped public case study | Selected engineering project; source and member records private |
 | Inference Systems Lab | Controlled single-GPU serving measurements; historical Colab results separate | Selected measured systems project with limits and raw evidence |
-| TrustQueryNet | Historical multi-seed tables, negative/uncertain comparisons, unresolved near-duplicate audit and code/result mismatch | Secondary experimental work; unpublished, not clinical validation |
-| LLM-SMT | Verifier, adapters and offline tests; no completed full model sweep | Secondary prototype; unsupported result publication assets removed |
+| TrustQueryNet | Historical multi-seed tables, negative/uncertain comparisons, measured HAM input/split audit; cross-ISIC near duplicates and corrected-code rerun unresolved | Secondary experimental work; unpublished, not clinical validation |
+| LLM-SMT | Actual 750-cell feasibility pilot, complete trajectories, cost/token reconciliation and a null primary comparison; full sweep not run | Completed secondary experimental snapshot, kept off the selected-project homepage; no repair-superiority claim |
 | DeID | Review workflow plus fixed external synthetic evaluation exposing weak detection | Secondary engineering demo; no anonymity guarantee |
 | Graph Fraud / EuroSAT | Synthetic prototype / completed coursework | Supporting archives; not selected flagship projects |
 | DynaDiff-VLBI | Historical measurements with disclosed geometry-ordering issue | Paused; no new imaging claim |
@@ -49,6 +50,13 @@ experiment are different kinds of evidence.
 - DeID's oversized synthetic notes are generated on demand. LLM-SMT's tracked
   bytecode and unsupported publication figures/PDF are removed from the current
   tree, with source history preserved.
+- LLM-SMT's actual pilot accounts for all paid batch candidates, withholds full
+  solver witnesses from model feedback, rejects silent candidate type coercion
+  and preserves provider uncertainty. The related live SMT verifier now returns
+  structured domain failures for incomplete assignments and rejects strings or
+  floats as integer candidates. Nine pinned-runtime ASGI checks, seven portable
+  checks and six actual public requests passed; other demo health routes remained
+  healthy. Only the two reviewed verifier modules were deployed.
 - The website adds a linked evidence strip, the existing ForgeBench technical
   report, two CV editions and a logical AsklepiosMed architecture diagram.
 
