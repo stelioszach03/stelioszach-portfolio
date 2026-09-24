@@ -9,13 +9,13 @@
   "files": [
     {
       "destination": "NOTICE",
-      "bytes": 2009,
-      "sha256": "a5f41ab42c22699b9ec96fa0aa363c81abba76b3e77d2d6e85de00bb94846ef3"
+      "bytes": 2457,
+      "sha256": "cf64745ca2c6c80bfa8b982be580705da6b0a295551a864e3bcd1206f2e91506"
     },
     {
       "destination": "README.md",
-      "bytes": 9351,
-      "sha256": "7c4d937a462bb4ce31a2e5bb46ab5b30cd31507cfa9d30bd92e9404a42bc422c"
+      "bytes": 11927,
+      "sha256": "6ab0b8eb9b6d0ec9c2249305a672b2f12f3d11e4547e7d83492a49baa38584ce"
     },
     {
       "destination": "deid/LICENSE.upstream",
@@ -279,13 +279,13 @@
     },
     {
       "destination": "mta-scan/mtascan/collector.py",
-      "bytes": 14408,
-      "sha256": "2d669390293b02c4e14b3c792600e63ef6caba7b50b4eea3ab8223cc7f07b958"
+      "bytes": 17476,
+      "sha256": "0424c65090bc9099107bb3193079313585031b213446d4203eb7870994066395"
     },
     {
       "destination": "mta-scan/mtascan/config.py",
-      "bytes": 5183,
-      "sha256": "76e561da1fa1491da1e6d4810c98d0aa08a9b413e78215db2baf2b5e133a6ab1"
+      "bytes": 5292,
+      "sha256": "18522ad38a34062abd641e03d8166ab5bbda26283b510e0e42c132a18a1e81aa"
     },
     {
       "destination": "mta-scan/mtascan/features.py",
@@ -329,8 +329,8 @@
     },
     {
       "destination": "mta-scan/service.py",
-      "bytes": 36146,
-      "sha256": "8f274674a964eaa44085f290505b615966e593ca2ebd9f490decbdc5a8c413d7"
+      "bytes": 37674,
+      "sha256": "3981c05fd9145766243f1211304c22dd63af54fd79559c22736d650e25af15f9"
     },
     {
       "destination": "mta-scan/static/data/basemap.json",
@@ -344,8 +344,8 @@
     },
     {
       "destination": "mta-scan/static/index.html",
-      "bytes": 95494,
-      "sha256": "ec51ef3f38824ea8836b899d88f85c062db25d62c9504c08a95aedff13a8d25e"
+      "bytes": 95736,
+      "sha256": "9552d8c0ada94b5efc9307fac096f9cec20a22ccb8e7c0665470f99880f507c5"
     },
     {
       "destination": "mta-scan/static/map-config.example.json",
@@ -448,6 +448,11 @@
       "sha256": "f9cf47bea6db9d41479de3a8886dedf1a43678c6cf04a3889ec841374c4a74e5"
     },
     {
+      "destination": "service-tests/requirements-smt.txt",
+      "bytes": 128,
+      "sha256": "c4e8f34d7cb05d655ea4001aa1c4735827def6a7b51fcb6823c7491638a36fe5"
+    },
+    {
       "destination": "service-tests/test_deid_review_backend.py",
       "bytes": 2781,
       "sha256": "6b29fdc80e4d1f69cf887455a2e71199023169ed4a30668b83b9dc695119e64f"
@@ -461,6 +466,11 @@
       "destination": "service-tests/test_fraud_snapshot_routes.py",
       "bytes": 2894,
       "sha256": "2e0885b60a177742d5060740527392b8631e79ebfe96d7e77f05316f84777c7e"
+    },
+    {
+      "destination": "service-tests/test_smt_candidate_contract.py",
+      "bytes": 6455,
+      "sha256": "5d54aaadefe2d8dc6f71e7579e156d0f27abf2e8a97dc45f59fcf6bbb9cb9d47"
     },
     {
       "destination": "smt-verify/LICENSE.upstream",
@@ -504,13 +514,13 @@
     },
     {
       "destination": "smt-verify/vendor/cegvr/candidate/types.py",
-      "bytes": 5702,
-      "sha256": "2cc968634d05b83ad5091b03ae4f322df92b098e80d1dabb2423c18e3d49334c"
+      "bytes": 5715,
+      "sha256": "61e8b9d7b7f9f1e7729d7bcbf0fe80f3e8ad4f7bf0ac5d66a021288bd569858f"
     },
     {
       "destination": "smt-verify/vendor/cegvr/candidate/verifier.py",
-      "bytes": 11653,
-      "sha256": "bc03b7e89fa8b2c36b19e6cff2a05fb5f7c7de96269ccd42e7f9b0b040610d24"
+      "bytes": 11699,
+      "sha256": "ba2ed9b52004d3bebcdeccfa1c3778e864c3c0ce4259c396b8ad881c37594108"
     },
     {
       "destination": "smt-verify/vendor/cegvr/grammar/__init__.py",

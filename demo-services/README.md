@@ -83,7 +83,22 @@ These checks do not install spaCy, PyTorch, River or Z3; train models; call live
 
 ## Optional service-contract checks
 
-These tests are kept in `service-tests/`, outside minimal CI discovery. Use separate environments: both adapters use a vendored package named `app`, so importing both in one process would not be an isolated test.
+These tests are kept in `service-tests/`, outside minimal CI discovery. Use separate environments: DeID and fraud use a vendored package named `app`, while SMT uses `cegvr`; another project checkout must not satisfy those imports.
+
+SMT's contract tests exercise the actual ASGI endpoint and local Z3 solver with
+synthetic SAT/UNSAT examples. They verify that incomplete assignments return
+`REJECTED_DOMAIN` before solver construction, strings/floats receive a malformed
+candidate response, and native integer/boolean domain checks remain distinct:
+
+```sh
+python3 -m venv smt-verify/.venv
+smt-verify/.venv/bin/python -m pip install -r service-tests/requirements-smt.txt
+smt-verify/.venv/bin/python -m unittest discover -s service-tests -p test_smt_candidate_contract.py -v
+```
+
+The two candidate-contract modules are pinned to reviewed upstream commit
+`dc7b9de89f3a507705b259c870af82eda763621f`; see [NOTICE](NOTICE). These checks make
+no LLM/provider requests and do not execute a research study.
 
 DeID's four contract checks use the regex path without installing spaCy weights or running application startup:
 

@@ -12,6 +12,14 @@ Each service's LICENSE.upstream preserves its project's original MIT notice.
 Local adapter changes and demonstrations do not imply scientific validation.
 Third-party packages retain their own licences.
 
+SMT candidate-contract update (2026-09-24): only
+smt-verify/vendor/cegvr/candidate/types.py and verifier.py are synchronized
+byte-for-byte from llm-smt-verifiable-reasoning commit
+dc7b9de89f3a507705b259c870af82eda763621f, source paths
+src/cegvr/candidate/types.py and src/cegvr/candidate/verifier.py.
+This brings strict candidate value validation and domain checks before
+constraint evaluation. It does not import the research runner or provider.
+
 Leaflet's licence is preserved at
 mta-scan/static/vendor/LICENSE.leaflet.txt.
 MTA schedule/geometry data and frozen replay provenance are described in

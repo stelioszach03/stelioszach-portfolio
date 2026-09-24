@@ -1,0 +1,3 @@
+# Actual ASGI/Z3 contract checks; synthetic local requests and no LLM/provider.
+-r ../smt-verify/requirements.txt
+httpx==0.28.1
