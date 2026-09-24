@@ -354,7 +354,9 @@ class Collector:
                     "predicted_headway_sec": predicted,
                     "residual": headway - predicted,
                     "anomaly_score": scored["anomaly_score"],
-                    "reasons": [str(reason["label"]) for reason in scored["reasons"]],
+                    "reasons": [str(reason["label"]).replace(
+                        "headway jump vs previous train", "gap change vs previous pair estimate"
+                    ) for reason in scored["reasons"]],
                 }
             )
 
