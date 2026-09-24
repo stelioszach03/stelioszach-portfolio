@@ -41,11 +41,13 @@ Additional setup:
 - **Fraud graph:** on Linux, install the CPU PyTorch wheel before the remaining requirements: `.venv/bin/python -m pip install --index-url https://download.pytorch.org/whl/cpu torch==2.4.1`. Then install `requirements.txt`. The included 8,806-byte checkpoint is trained on synthetic rule-generated labels; it is not an external fraud benchmark. `train_model.py` is included for inspection; no training is run by the tests or CI. Load only trusted model files.
 - **Subway monitor:** to inspect the UI/replay without collecting external feeds, start with `MTA_COLLECTOR_ENABLED=0 .venv/bin/python -m uvicorn service:app --host 127.0.0.1 --port 8000`. The live view will correctly remain unavailable. Normal collector startup uses public MTA feeds. Runtime SQLite/model state defaults to a local `var/` directory, which is not source-controlled. Basemap providers may receive browser tile requests; map/data attribution is retained.
 
-### MTA measurement correction (adapter 2.1.0)
+### MTA measurement correction (adapter 2.1.1)
 
 Live `headway_sec` now means the estimated arrival gap between the nearest two distinct upcoming trips at the same route, exact stop and direction. Only the first snapshot for a trip pair is scored during a collector process (a bounded four-hour deduplication window); ETA revisions and reordered predictions do not create additional train observations. Restarting clears this in-memory pair cache and feature history. This is not observed train-passage ground truth. Missing trip IDs, canceled/deleted trips, skipped/no-data stops, vehicle timestamps, stale/missing feed timestamps and differential feeds are excluded.
 
 The earlier algorithm subtracted changes in the earliest ETA, which could mistake a revision for a train passage. Its data and checkpoint are preserved separately: the corrected defaults use `mta-arrival-gaps-v2.db` and `model-arrival-gaps-v2.pkl`. Do not override `MTA_DB_PATH` to the old database. The constructed 216-row replay remains unchanged and does not validate this new live measurement. [GTFS-Realtime field semantics](https://gtfs.org/documentation/realtime/reference/) distinguish trip predictions from vehicle observation timestamps.
+
+Departure-only predictions are excluded rather than mixed with arrival estimates. HTTP responses have a 4 MiB decoded-body limit and bounded phase/deadline checks. Live/stale status follows current source and collection-cycle freshness; the age of the last newly scored pair is reported separately, so an unchanged pair does not falsely mark fresh feeds stale. Partial feed coverage is explicit.
 
 Run the offline collector regressions after installing the MTA runtime dependencies:
 

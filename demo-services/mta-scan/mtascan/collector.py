@@ -43,6 +43,8 @@ from .store import Store
 
 
 log = logging.getLogger("mtascan.collector")
+MAX_FEED_BYTES = 4 * 1024 * 1024
+FEED_DEADLINE_SECONDS = 20.0
 
 FEED_BASE = "https://api-endpoint.mta.info/Dataservice/mtagtfsfeeds"
 
@@ -136,6 +138,8 @@ def parse_arrivals(content: bytes) -> Iterable[Arrival]:
     """TripUpdate predictions only; vehicle timestamps are measurement times."""
     feed = gtfs_realtime_pb2.FeedMessage()
     feed.ParseFromString(content)
+    if not feed.IsInitialized():
+        raise ValueError("GTFS-RT message lacks required fields")
     for entity in feed.entity:
         if entity.is_deleted:
             continue
@@ -153,8 +157,9 @@ def parse_arrivals(content: bytes) -> Iterable[Arrival]:
                     continue
                 stop_id = update.stop_id or ""
                 arrival = update.arrival.time if update.HasField("arrival") else 0
-                departure = update.departure.time if update.HasField("departure") else 0
-                stamp = int(arrival or departure or 0)
+                # Mixing departures and arrivals folds station dwell time into
+                # a metric explicitly presented as a predicted-arrival gap.
+                stamp = int(arrival or 0)
                 if route_id and stop_id and stamp:
                     yield Arrival(route_id, stop_id, trip_key, direction, stamp)
 
@@ -227,14 +232,30 @@ class Collector:
         status = FeedStatus(label=label, last_success_epoch=self._feed_last_success.get(label))
         began = time.monotonic()
         try:
-            response = client.get(url)
-            status.http_status = response.status_code
-            status.latency_ms = (time.monotonic() - began) * 1000.0
-            if response.status_code != 200:
-                status.error = f"HTTP {response.status_code}"
-                return status
+            # Bound decoded bytes, plus a wall deadline checked at each incoming
+            # chunk. A phase timeout also bounds waiting for the next chunk.
+            phase_timeout = max(0.1, min(self.settings.feed_timeout, 5.0))
+            with client.stream("GET", url, timeout=httpx.Timeout(phase_timeout),
+                               follow_redirects=False, headers={"Accept-Encoding": "identity"}) as response:
+                status.http_status = response.status_code
+                if response.status_code != 200:
+                    status.error = f"HTTP {response.status_code}"
+                    return status
+                chunks, size = [], 0
+                for chunk in response.iter_bytes():
+                    if time.monotonic() - began > FEED_DEADLINE_SECONDS:
+                        raise httpx.ReadTimeout("Feed response exceeded total read deadline")
+                    size += len(chunk)
+                    if size > MAX_FEED_BYTES:
+                        raise ValueError("Feed response exceeded 4 MiB size limit")
+                    chunks.append(chunk)
+                if time.monotonic() - began > FEED_DEADLINE_SECONDS:
+                    raise httpx.ReadTimeout("Feed response exceeded total read deadline")
+                content = b"".join(chunks)
             header = gtfs_realtime_pb2.FeedMessage()
-            header.ParseFromString(response.content)
+            header.ParseFromString(content)
+            if not header.IsInitialized():
+                raise ValueError("GTFS-RT message lacks required fields")
             now = int(time.time())
             status.source_epoch = int(header.header.timestamp or 0) or None
             status.source_age_sec = now - status.source_epoch if status.source_epoch else None
@@ -244,15 +265,16 @@ class Collector:
             if header.header.incrementality != 0:
                 status.error = "Differential snapshot unsupported"
                 return status
-            entities = list(parse_arrivals(response.content))
+            entities = list(parse_arrivals(content))
             status.entities = len(entities)
             sink.extend(entities)
             status.ok = True
             status.last_success_epoch = int(time.time())
             self._feed_last_success[label] = status.last_success_epoch
         except Exception as exc:
-            status.latency_ms = (time.monotonic() - began) * 1000.0
             status.error = f"{type(exc).__name__}: {exc}"
+        finally:
+            status.latency_ms = (time.monotonic() - began) * 1000.0
         return status
 
     # -- headway extraction ----------------------------------------------

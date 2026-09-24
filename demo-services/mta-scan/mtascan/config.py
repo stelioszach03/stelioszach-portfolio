@@ -60,7 +60,7 @@ def _state_dir() -> Path:
 
 @dataclass(frozen=True)
 class Settings:
-    version: str = "2.1.0"
+    version: str = "2.1.1"
 
     # --- paths -----------------------------------------------------------
     state_dir: Path = _state_dir()

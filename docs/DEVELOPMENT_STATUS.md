@@ -21,7 +21,7 @@ experiment are different kinds of evidence.
 
 ## Shipped engineering changes in this development pass
 
-- MTA adapter 2.1.0 stops treating same-trip ETA revisions and vehicle timestamps
+- MTA adapter 2.1.1 stops treating same-trip ETA revisions and vehicle timestamps
   as measured headways. Fresh snapshot pairs estimate arrival spacing, with
   identity/direction checks and separate new database/model defaults. The old
   derived state and replay artifacts are preserved separately.

@@ -63,6 +63,7 @@ test("three selected demos and local assets resolve while all five service route
     assert.ok((await stat(new URL(`.${asset}`, publicRoot))).size > 0, asset);
   for (const asset of [
     "Stelios_Zacharioudakis_CV.pdf",
+    "Stelios_Zacharioudakis_Systems_CV.pdf",
     "documents/zacharioudakis-bsc-thesis-2026.pdf",
   ])
     assert.equal(

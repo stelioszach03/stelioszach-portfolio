@@ -77,6 +77,41 @@ class CollectorIdentityTests(unittest.TestCase):
         vehicle.timestamp = NOW
         self.assertEqual(list(parse_arrivals(feed.SerializeToString())), [])
 
+    def test_departure_only_update_does_not_mix_with_arrival_prediction(self):
+        feed = gtfs.FeedMessage.FromString(payload([("one", NOW + 120, 0), ("two", NOW + 420, 0)]))
+        stop = feed.entity[0].trip_update.stop_time_update[0]
+        stop.ClearField("arrival")
+        stop.departure.time = NOW + 120
+        arrivals = list(parse_arrivals(feed.SerializeToString()))
+        self.assertEqual(len(arrivals), 1)
+        self.assertEqual(self.collector._extract_and_score(arrivals, NOW), [])
+
+    def test_oversized_response_is_bounded_and_excluded(self):
+        body = b"x" * (4 * 1024 * 1024 + 1)
+        with httpx.Client(transport=httpx.MockTransport(lambda r: httpx.Response(200, content=body))) as client:
+            sink = []
+            status = self.collector._fetch_feed(client, "A", "https://example.test/feed", sink)
+        self.assertFalse(status.ok)
+        self.assertIn("size limit", status.error)
+        self.assertEqual(sink, [])
+
+    def test_partial_protobuf_with_missing_required_field_is_rejected(self):
+        feed = gtfs.FeedMessage.FromString(payload([("one", NOW + 120, 0)]))
+        feed.header.ClearField("gtfs_realtime_version")
+        with httpx.Client(transport=httpx.MockTransport(lambda r: httpx.Response(200, content=feed.SerializePartialToString()))) as client:
+            with patch("mtascan.collector.time.time", return_value=NOW):
+                status = self.collector._fetch_feed(client, "A", "https://example.test/feed", [])
+        self.assertFalse(status.ok)
+        self.assertIn("required", status.error)
+
+    def test_slow_response_exceeds_total_deadline(self):
+        data = payload([("one", NOW + 120, 0)])
+        with httpx.Client(transport=httpx.MockTransport(lambda r: httpx.Response(200, content=data))) as client:
+            with patch("mtascan.collector.time.monotonic", side_effect=[0, 21, 22]):
+                status = self.collector._fetch_feed(client, "A", "https://example.test/feed", [])
+        self.assertFalse(status.ok)
+        self.assertIn("deadline", status.error)
+
     def test_stale_or_future_feed_is_not_reported_as_success(self):
         for timestamp in (NOW - 301, NOW + 61, 0):
             data = payload([("one", NOW + 120, 0), ("two", NOW + 420, 0)], timestamp=timestamp)

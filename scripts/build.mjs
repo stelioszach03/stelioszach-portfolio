@@ -12,6 +12,7 @@ import path from "node:path";
 const root = new URL("../", import.meta.url);
 for (const relative of [
   "Stelios_Zacharioudakis_CV.pdf",
+  "Stelios_Zacharioudakis_Systems_CV.pdf",
   "documents/zacharioudakis-bsc-thesis-2026.pdf",
 ]) {
   const bytes = await readFile(new URL(`public/${relative}`, root));

@@ -7,14 +7,14 @@
 
 <link rel="icon" href="/favicon.ico?v=658c0aee6f5f" type="image/x-icon" sizes="any">
 <link rel="apple-touch-icon" href="/apple-touch-icon.png?v=17f05e49a500" sizes="180x180">
-<meta name="description" content="Eight live MTA GTFS-Realtime feeds land every ~30 seconds. An online streaming model learns each station's normal train spacing as the data arrives — no labels, no offline training run.">
+<meta name="description" content="Explore predicted-arrival gaps from eight public MTA feeds, with source freshness, online baseline deviations and a separate constructed replay.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://stelioszach.com/demos/mta-scan/">
 <meta property="og:title" content="mta-scan — anomaly detection on live NYC subway feeds">
-<meta property="og:description" content="Eight live MTA GTFS-Realtime feeds land every ~30 seconds. An online streaming model learns each station's normal train spacing as the data arrives — no labels, no offline training run.">
+<meta property="og:description" content="Explore predicted-arrival gaps from eight public MTA feeds, with source freshness, online baseline deviations and a separate constructed replay.">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="mta-scan — anomaly detection on live NYC subway feeds">
-<meta name="twitter:description" content="Eight live MTA GTFS-Realtime feeds land every ~30 seconds. An online streaming model learns each station's normal train spacing as the data arrives — no labels, no offline training run.">
+<meta name="twitter:description" content="Explore predicted-arrival gaps from eight public MTA feeds, with source freshness, online baseline deviations and a separate constructed replay.">
 <link rel="stylesheet" href="vendor/leaflet.css">
 <link rel="stylesheet" href="vendor/mapbox-gl.css?v=3.30.0">
 
@@ -326,7 +326,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
         <span class="sizes" id="sizekey"></span>
         <span><i class="swatch"></i>station with no score in this window</span>
       </div>
-      <p class="method-note">Live gaps use the first snapshot of two distinct upcoming trips at the same route, stop and direction. They are arrival estimates, not measured train passages. Scores describe deviation from a learned baseline; they are not calibrated probabilities or official MTA incident reports.</p>
+      <p class="method-note">Live gaps use the first snapshot of two distinct upcoming trips at the same route, stop and direction. Departure-only updates are excluded. Repeated trip pairs are suppressed within a four-hour window; this cache resets on restart. Feed freshness is separate from the age of the latest scored pair. Scores describe deviation in arrival estimates; they are not measured train passages, calibrated probabilities or official MTA incident reports.</p>
     </div>
 
     <div class="rail">
@@ -1049,7 +1049,7 @@ function drawList(items){
       '<span class="st">' + bullet(a.route_id, true) + ' ' +
         esc(a.stop_name || a.stop_id) + '</span>' +
       '<span class="sc" style="color:' + scoreColor(s) + '">' + s.toFixed(2) + '</span>' +
-      '<span class="sub">headway ' + mmss(a.headway_sec) + ' &middot; predicted ' +
+      '<span class="sub">arrival estimate gap ' + mmss(a.headway_sec) + ' &middot; baseline ' +
         mmss(a.predicted_headway_sec) +
         (a.reasons && a.reasons.length ? ' &middot; ' + esc(a.reasons[0]) : '') + '</span>';
     var fly = function(){
@@ -1125,7 +1125,7 @@ function pollLive(){
     }
 
     lastSnapshot=st;lastSnapshotWindow=win;
-    $('freshness').textContent=(mode==='replay'?'Background feed: ':'')+(st.live.feeds_ok==null?'—':st.live.feeds_ok)+'/'+(st.live.feeds_total==null?'—':st.live.feeds_total)+' feeds · latest observation '+ago(st.live.last_observed_age_sec)+' at refresh · response '+new Date(lastResponseAt).toLocaleTimeString();
+    $('freshness').textContent=(mode==='replay'?'Background feed: ':'')+(st.live.feeds_ok==null?'—':st.live.feeds_ok)+'/'+(st.live.feeds_total==null?'—':st.live.feeds_total)+' fresh feeds · latest scored pair '+ago(st.live.last_observed_age_sec)+' at refresh · response '+new Date(lastResponseAt).toLocaleTimeString();
     renderKpis(st.counters);
     $('k-age').textContent = ago(st.live.last_observed_age_sec);
 

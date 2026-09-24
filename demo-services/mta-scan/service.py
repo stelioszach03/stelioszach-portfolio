@@ -111,6 +111,48 @@ def _window_seconds(window: str) -> int:
     return SETTINGS.default_window_sec
 
 
+def _live_status(now: int, last_observed: int | None) -> dict[str, Any]:
+    """Feed freshness is independent from whether a new trip pair was scored."""
+    collector = _collector
+    cycle = collector.last_cycle if collector else None
+    age = now - last_observed if last_observed is not None else None
+    cycle_age = now - cycle.started_epoch if cycle else None
+    cycle_recent = cycle_age is not None and 0 <= cycle_age <= SETTINGS.stale_after_sec
+    sources = []
+    for feed in cycle.feeds if cycle else []:
+        source_age = now - feed.source_epoch if feed.source_epoch is not None else None
+        fresh = bool(cycle_recent and feed.ok and source_age is not None and -60 <= source_age <= 300)
+        sources.append({"label": feed.label, "fresh": fresh, "source_age_sec": source_age,
+                        "source_utc": _iso(feed.source_epoch), "last_success_utc": _iso(feed.last_success_epoch)})
+    feeds_ok = sum(source["fresh"] for source in sources)
+    total = len(sources) or len(FEEDS)
+    observation_state = "none" if age is None else "recent" if age <= SETTINGS.stale_after_sec else "older"
+    if not SETTINGS.collector_enabled:
+        state, note = "paused", "Live collection is switched off; showing stored observations."
+    elif cycle is None:
+        state = "warming_up"
+        note = "Waiting for the first feed cycle. A gap needs two distinct upcoming trips with arrival estimates in one snapshot."
+    elif not feeds_ok:
+        state = "stale"
+        note = "No current fresh feed response is available. Showing stored observations with their original timestamps."
+    else:
+        state, note = "live", None
+        if age is None:
+            note = "Feeds are fresh. No scored pair is available in this window; a gap needs two distinct upcoming trips with arrival estimates."
+        elif observation_state == "older":
+            note = f"Feeds are fresh; no new trip pair has been scored for {max(0, age) // 60} min. Stored observations retain their original timestamps."
+        if feeds_ok < total:
+            partial = f"{feeds_ok}/{total} feeds currently fresh."
+            note = partial + (" " + note if note else " Available observations may cover only part of the network.")
+    return {
+        "state": state, "note": note, "cycles": collector.cycles if collector else 0,
+        "feeds_ok": feeds_ok, "feeds_total": total, "feed_sources": sources,
+        "last_cycle_age_sec": cycle_age, "observation_state": observation_state,
+        "last_observed_utc": _iso(last_observed), "last_observed_age_sec": age,
+        "poll_seconds": SETTINGS.poll_seconds,
+    }
+
+
 # --------------------------------------------------------------------------
 # background collection
 # --------------------------------------------------------------------------
@@ -185,7 +227,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title="MTA-Scan",
     version=SETTINGS.version,
-    description="Live anomaly detection on NYC subway headways from public GTFS-Realtime feeds.",
+    description="Prediction-gap monitoring from public NYC subway GTFS-Realtime feeds; source freshness is separate from scored-pair age.",
     lifespan=lifespan,
     docs_url="/api/docs",
     openapi_url="/api/openapi.json",
@@ -300,7 +342,7 @@ def health() -> dict[str, Any]:
         "service": "mta-scan",
         "version": SETTINGS.version,
         "measurement": "first_snapshot_predicted_arrival_gap_v2",
-        "measurement_note": "Gap between two distinct upcoming trips; not an observed train passage or incident label.",
+        "measurement_note": "Arrival-time estimates from two distinct upcoming trips; departure-only updates excluded. Not an observed train passage or incident label.",
         "uptime_sec": int(time.time() - STARTED_AT),
     }
 
@@ -352,16 +394,18 @@ def health_deep() -> dict[str, Any]:
         checks["feeds"] = {"ok": True, "enabled": True, "state": "warming_up", "cycles": 0}
     else:
         cycle = collector.last_cycle
-        age = now - cycle.started_epoch
+        feed_live = _live_status(now, None)
         checks["feeds"] = {
-            "ok": cycle.feeds_ok > 0,
-            "enabled": True,
-            "state": "live" if age <= SETTINGS.stale_after_sec else "stale",
-            "cycles": collector.cycles,
-            "last_cycle_age_sec": age,
             **cycle.as_dict(),
+            "ok": feed_live["feeds_ok"] == feed_live["feeds_total"],
+            "enabled": True,
+            "state": feed_live["state"],
+            "cycles": collector.cycles,
+            "last_cycle_age_sec": feed_live["last_cycle_age_sec"],
+            "feeds_ok": feed_live["feeds_ok"],
+            "feed_sources": feed_live["feed_sources"],
         }
-        if cycle.feeds_ok == 0:
+        if not checks["feeds"]["ok"]:
             status = "degraded"
 
     # --- geometry ---------------------------------------------------------
@@ -423,32 +467,7 @@ def state(
 
     stats = db.window_stats(since_epoch=since)
     last_observed = stats.get("last_observed_ts")
-    age = (now - last_observed) if last_observed else None
-
-    # --- liveness, stated rather than implied ---------------------------
-    collector = _collector
-    cycles = collector.cycles if collector else 0
-    if not SETTINGS.collector_enabled:
-        live_state, note = "paused", "Live collection is switched off; showing stored data."
-    elif last_observed is None:
-        live_state = "warming_up"
-        note = (
-            "Collecting. The first headway needs two consecutive sightings of a stop, "
-            f"so the map fills in about a minute (cycle {cycles})."
-        )
-    elif age is not None and age <= SETTINGS.stale_after_sec:
-        live_state, note = "live", None
-    else:
-        live_state = "stale"
-        note = (
-            f"The MTA feeds have not produced a new observation for {age // 60} min. "
-            "Showing the last known data."
-        )
-
-    feeds_ok = feeds_total = 0
-    if collector and collector.last_cycle:
-        feeds_ok = collector.last_cycle.feeds_ok
-        feeds_total = len(collector.last_cycle.feeds)
+    live = _live_status(now, last_observed)
 
     # --- map layer -------------------------------------------------------
     features: list[dict[str, Any]] = []
@@ -484,16 +503,7 @@ def state(
     return {
         "generated_utc": _iso(now),
         "window": {"label": window, "seconds": seconds, "route_id": route_id},
-        "live": {
-            "state": live_state,
-            "note": note,
-            "cycles": cycles,
-            "feeds_ok": feeds_ok,
-            "feeds_total": feeds_total or len(FEEDS),
-            "last_observed_utc": _iso(last_observed),
-            "last_observed_age_sec": age,
-            "poll_seconds": SETTINGS.poll_seconds,
-        },
+        "live": live,
         "counters": {
             "stations_reporting": stats["stations"],
             "route_stops_tracked": stats["route_stops"],
@@ -641,15 +651,7 @@ def summary(response: Response, window: str = Query(default="30m")) -> dict[str,
     last_observed = stats.get("last_observed_ts")
     age = (now - last_observed) if last_observed else None
 
-    collector = _collector
-    if not SETTINGS.collector_enabled:
-        live_state = "paused"
-    elif last_observed is None:
-        live_state = "warming_up"
-    elif age is not None and age <= SETTINGS.stale_after_sec:
-        live_state = "live"
-    else:
-        live_state = "stale"
+    live = _live_status(now, last_observed)
 
     return {
         "window": window,
@@ -665,10 +667,13 @@ def summary(response: Response, window: str = Query(default="30m")) -> dict[str,
         "last_updated_age_sec": age,
         # Not in the original API, and the reason this endpoint is safe to
         # render from: a client can tell "quiet network" from "nothing works".
-        "live_state": live_state,
-        "feeds_ok": collector.last_cycle.feeds_ok if collector and collector.last_cycle else 0,
-        "feeds_total": len(FEEDS),
-        "cycles": collector.cycles if collector else 0,
+        "live_state": live["state"],
+        "feeds_ok": live["feeds_ok"],
+        "feeds_total": live["feeds_total"],
+        "cycles": live["cycles"],
+        "observation_state": live["observation_state"],
+        "last_cycle_age_sec": live["last_cycle_age_sec"],
+        "feed_sources": live["feed_sources"],
     }
 
 
