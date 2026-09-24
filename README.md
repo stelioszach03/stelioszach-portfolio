@@ -74,3 +74,6 @@ The thesis PDF is a public copy with the student registry identifier redacted; i
 ## Licence
 
 Original website source code is available under the [MIT licence](LICENSE). The thesis, CV, research figure and any other non-code content retain their respective copyright and licensing; see [NOTICE](NOTICE). Publishing them here does not grant an MIT licence to those materials.
+
+The [TrustQueryNet evidence release](https://github.com/stelioszach03/TrustQueryNet/releases/tag/evidence-2026-09-24) preserves a complete cross-image audit and a new matched two-seed frozen-feature repair pilot. All 36 result rows and negative findings are published; MC repair did not improve HAM balanced accuracy in this pilot. This secondary experiment is not historical full-CNN replication or clinical validation.
+
