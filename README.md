@@ -58,7 +58,7 @@ Serve `dist/` as the website root. The five `/demos/` routes belong to separate 
 
 The CV and thesis are served as PDF documents. The sitemap lists the portfolio and the five demo entry points. No client-side router or fallback to an empty application shell is needed.
 
-Two CV editions share the same factual record: [Research / ML](public/Stelios_Zacharioudakis_CV.pdf) and [ML Systems / Software](public/Stelios_Zacharioudakis_Systems_CV.pdf). To regenerate them with Python and ReportLab, run `python scripts/build_cv.py` and `python scripts/build_cv.py --focus systems`; render and inspect both PDFs before publishing. PDF generation is an authoring step, not a website runtime dependency. The four-item evidence strip links to the relevant study, thesis and case studies. The ForgeBench report is a technical report, not a peer-reviewed publication or submitted preprint.
+Two CV editions share the same factual record: [Research / ML](public/Stelios_Zacharioudakis_CV.pdf) and [ML Systems / Software](public/Stelios_Zacharioudakis_Systems_CV.pdf). The primary Research / ML CV is the reviewed one-page Jobright export from September 24, 2026 (New York time), published byte-for-byte after checking its text, links and rendering. Its current source is the primary resume in Jobright; do not overwrite it with the historical ReportLab research template. The separate Systems edition can be regenerated with `python scripts/build_cv.py --focus systems`; render and inspect it before publishing. PDF authoring is not a website runtime dependency. The four-item evidence strip links to the relevant study, thesis and case studies. The ForgeBench report is a technical report, not a peer-reviewed publication or submitted preprint.
 
 ## Content and provenance
 
