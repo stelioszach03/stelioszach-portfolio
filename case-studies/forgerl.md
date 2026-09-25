@@ -1,12 +1,14 @@
 # ForgeRL / ForgeBench — inspectable routing for coding agents
 
-[Evidence dashboard](https://stelioszach.com/demos/forgerl/) · [Source](https://github.com/stelioszach03/forgerl) · [v0.2 protocol](https://github.com/stelioszach03/forgerl/blob/main/docs/forgebench/PROTOCOL.md) · [Recorded comparisons](https://stelioszach.com/demos/forgerl/bench.html#comparison)
+[Evidence dashboard](https://stelioszach.com/demos/forgerl/) · [Source](https://github.com/stelioszach03/forgerl) · [Four-seed replication](https://github.com/stelioszach03/forgerl/blob/main/artifacts/forgebench/exposed-replication-v1/RESULTS.md) · [v0.2 protocol](https://github.com/stelioszach03/forgerl/blob/main/docs/forgebench/PROTOCOL.md)
 
 ForgeRL studies a concrete systems question: how should a bounded coding agent allocate model calls after visible test feedback? ForgeBench supplies authored repository tasks, controlled routing comparisons and a public dashboard connecting every recorded outcome to its prompts, edits, tests and accounting.
 
 ## Contribution
 
 The latest [prospective transfer pilot](https://github.com/stelioszach03/forgerl/blob/main/artifacts/forgebench/v0.3-pilot1/report/pilot-report.md) completed all 162 prespecified episodes after its protocol and controllers were committed. It adds 24 authored tasks in eight new families and three separate licensed source-derived mutation tasks, with six policies. The six fresh primary test families yield 18 tasks per policy: strong-only 16/18, cheap-only 15/18, escalation 16/18, hand-written 15/18, fitted-Q 16/18 and the simpler observed-return baseline 17/18. These single-seed observations do not establish superiority. VERIFY is a shared rule, not learned; the report preserves failed final tests and the verifier's missed failures. The public explorer opens this v0.3 pilot natively and preserves the separately reported v0.2 study through its version selector.
+
+A later [four-seed replication and VERIFY ablation](https://github.com/stelioszach03/forgerl/blob/main/artifacts/forgebench/exposed-replication-v1/RESULTS.md) repeated all 27 tasks after they had become exposed. It recorded 1,296 attempts with four provider failures retained. On the original primary slice, strong-only solved 131/144 attempts for $0.028803 accounted model cost versus 128/144 for $0.036398 with the fitted-Q router. VERIFY on and off each solved 372/432 paired-policy attempts overall. This negative cost-quality result is reported plainly; it does not overturn the earlier single-seed pilot or establish performance on new repositories. The dashboard currently replays the v0.3 pilot, while the replication's aggregate data and figure are published in the research repo.
 
 I built the multi-file repair harness, task catalog, finite fitted-Q router, isolated executor, durable spending ledger and read-only evidence dashboard. The research system and public application are separate: an operator starts budgeted experiments; visitors inspect stored artifacts without inference. A separate opt-in curated trial can generate one candidate for a fixed published task; no visitor code or free-form prompt is accepted.
 
