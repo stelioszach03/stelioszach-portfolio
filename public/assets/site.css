@@ -257,6 +257,18 @@ p + p {
   font-size: 12px;
   color: var(--muted);
 }
+.hero-education a {
+  display: inline-block;
+  padding: 6px 0;
+  color: var(--accent);
+  text-underline-offset: 4px;
+}
+.thesis-grade {
+  display: block;
+  margin-top: 10px;
+  color: var(--accent);
+  font-weight: 500;
+}
 .hero-actions {
   display: flex;
   justify-content: center;
