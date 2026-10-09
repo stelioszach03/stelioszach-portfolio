@@ -9,13 +9,13 @@
   "files": [
     {
       "destination": "NOTICE",
-      "bytes": 2599,
-      "sha256": "456e38508a6bfd8329ec191cab52efd20cea7f9908c0993d737ed715cf8fce5a"
+      "bytes": 2809,
+      "sha256": "627f260a7db5be54e4e0ab9af15fd3e54ea1f2403f972e72000dbee6a302f62b"
     },
     {
       "destination": "README.md",
-      "bytes": 12860,
-      "sha256": "01b0597065aff13cf3dfb8f55fa1876fe206bc7e59ee0024e53b10cb4339f4f5"
+      "bytes": 13410,
+      "sha256": "a56f8a75dd68901ea359adf8952b30a8daf9405f2ad3747f984bf82c852f8843"
     },
     {
       "destination": "deid/LICENSE.upstream",
@@ -79,8 +79,8 @@
     },
     {
       "destination": "deid/vendor/app/deid/recognizers.py",
-      "bytes": 5581,
-      "sha256": "7c57acc3b57debeb0095ee5d049890c8d0e5360dbfc9880b20a91f239a920351"
+      "bytes": 6807,
+      "sha256": "bdbb1633e18eabde7576b3e4cd19e3e1dec82c011453e19c044776899c2afe19"
     },
     {
       "destination": "deid/vendor/app/deid/regex_rules.py",
@@ -445,7 +445,7 @@
     {
       "destination": "package-lock.json",
       "bytes": 21090,
-      "sha256": "c6f07f434dded3a11d3e2af0634cf4208ba3794db14d726188ddb03dcbe15971"
+      "sha256": "e23ce32e55f6d1f7d24c360721beaec24cf9de364d5b9863d4a662946a2466d1"
     },
     {
       "destination": "package.json",
@@ -611,6 +611,11 @@
       "destination": "tests/workspace-ui.test.mjs",
       "bytes": 14591,
       "sha256": "cd54297e8cd17fb52b3cb33bfc570c4998f52c155551183dd8fae3f879427eeb"
+    },
+    {
+      "destination": "tests/test_deid_structured_precedence.py",
+      "bytes": 3139,
+      "sha256": "b53952847861f98f38b4a348dbd8ca87199bcd9a6f99865949e40d10ebe3b989"
     }
   ],
   "upstream_visibility": {

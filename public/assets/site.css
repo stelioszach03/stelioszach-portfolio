@@ -1204,3 +1204,9 @@ p + p {
 .demo-walkthrough p { font-size: 13px; line-height: 1.75; margin: 6px 0 0; }
 .demo-walkthrough[open] { padding-bottom: 4px; }
 @media (max-width: 600px) { .demo-walkthrough summary { min-height: 44px; padding: 12px 0; } }
+
+/* Real project previews remain readable links without changing the hero. */
+.project-preview { margin: 24px 0; }
+.project-preview a { display: block; }
+.project-preview img { display: block; width: 100%; height: auto; border: 1px solid var(--line); border-radius: 4px; }
+.project-preview figcaption { margin-top: 9px; color: var(--muted); font-size: 12px; line-height: 1.6; }

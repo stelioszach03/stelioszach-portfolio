@@ -61,3 +61,14 @@ On Linux, Playwright may require system libraries; its `install --with-deps` opt
 There is no representative labelled corpus or per-label precision/recall result for this adapter. Statistical NER can mislabel names, dates and organisations; patterns miss unfamiliar identifier formats. Adding a manual redaction improves that document's draft but does not train the model. Salted hashes remain pseudonyms and can be linkable within the process lifetime. Kept originals and undetected information may remain in exported output.
 
 No clinical validation, regulatory certification, complete anonymisation, production accuracy or measured reviewer-productivity gain is claimed.
+
+## October 9, 2026 correction
+
+Structured regex spans now take precedence over conflicting statistical NER:
+complete dates remain dates, full street addresses retain the house number, and
+ZIP codes retain their postal label. Contextual identifier field names remain
+readable. Seven deterministic regressions cover overlap priority and Unicode
+positions. The staged production spaCy model was checked on all three supplied
+synthetic examples in all four transformation modes. These are regression and
+integration checks, not a new accuracy benchmark; the earlier library F1 remains
+a historical pre-fix measurement.

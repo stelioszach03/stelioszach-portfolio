@@ -130,3 +130,13 @@ No environment files, credentials, user submissions, live databases, rolling fee
 `mta-scan/temporal_view.py` serves `GET /api/temporal` from the separately supervised history worker's public `summary.json`. The adapter never reads raw protobuf/history databases or starts training. A read-only bind exposes only the public subdirectory; an allowlisted typed schema strips unknown fields and rejects nonfinite/invalid input. Snapshot and forecast expiration are checked by both API and UI. Missing/stale data disables forecasts without interrupting the existing live map.
 
 The target is a **future feed-predicted arrival-spacing proxy**, not observed train passages or passenger waiting time. Public forecasts require at least14days and the worker's coverage, freshness and held-out-evaluation gates. Earlier scores are explicitly short-window feasibility. Tests cover stale/future timestamps, insufficient history, unknown schemas, private-field stripping, safe text rendering and expiration without a new network response.
+
+### October 9 structured-span correction
+
+The DeID adapter now keeps regex-recognized complete dates, streets and postal
+codes ahead of conflicting NER spans. Identifier field labels are suppressed as
+NER only when the corresponding structured value immediately follows in field
+context. Portable regression tests are included in `npm run test:python`; the
+same tests also live in the upstream library. No new overall accuracy score is
+claimed. The production model was checked separately on the three supplied
+synthetic examples in all four modes.

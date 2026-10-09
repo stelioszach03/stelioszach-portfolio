@@ -258,10 +258,14 @@
               An authored benchmark and evidence dashboard for studying how a
               bounded coding agent allocates model calls after visible test feedback.
             </p>
+            <figure class="project-preview">
+              <a href="/demos/forgerl/" aria-label="Open forgerl interactive demo"><img src="/assets/forge-workspace.png" alt="ForgeBench recorded study explorer with task and test evidence." width="1280" height="720" loading="lazy" /></a>
+              <figcaption>Recorded evidence explorer. Open a repair to inspect its patch and test outcomes.</figcaption>
+            </figure>
             <p>
               I built the multi-file repair harness, isolated executor, durable
-              spending ledger and trajectory dashboard. Five policies compare
-              fixed model use, escalation, hand-written rules and learned routing.
+              spending ledger and trajectory dashboard to compare fixed model use,
+              escalation, hand-written rules and learned routing.
               The language models are not fine-tuned.
             </p>
             <div class="evidence-line">
@@ -274,20 +278,9 @@
               </p>
             </div>
             <p>
-              A separately frozen transfer pilot completed 162 episodes across
-              27 new miniature tasks and six policies. The simpler learned
-              baseline solved 17/18 primary test tasks; fitted-Q, strong-only
-              and escalation solved 16/18. One seed and six test families do not
-              establish general superiority. All policies shared the same
-              additional verification rule.
-            </p>
-            <p>
-              A later four-seed replication revisited the same, now-exposed
-              catalog in 1,296 attempted episodes. On its original primary
-              slice, strong-only solved 131/144 at lower accounted model cost
-              than the fitted-Q router's 128/144. VERIFY-on and VERIFY-off each
-              solved 372/432 attempts across policies. Four provider failures
-              remain in the counts; this is not new-task generalization.
+              The transfer pilot and four-seed follow-up show where routing and
+              verification help—and where they do not. Explore a recorded repair
+              with its source, patch and final test results.
             </p>
             <details class="study-detail">
               <summary>
@@ -316,6 +309,25 @@
                     a fixed OpenRouter provider. Hidden checks grade the final
                     candidate after all routing decisions.
                   </p>
+                </div>
+                <div>
+                  <h4>Transfer pilot and four-seed follow-up</h4>
+            <p>
+              A separately frozen transfer pilot completed 162 episodes across
+              27 new miniature tasks and six policies. The simpler learned
+              baseline solved 17/18 primary test tasks; fitted-Q, strong-only
+              and escalation solved 16/18. One seed and six test families do not
+              establish general superiority. All policies shared the same
+              additional verification rule.
+            </p>
+            <p>
+              A later four-seed replication revisited the same, now-exposed
+              catalog in 1,296 attempted episodes. On its original primary
+              slice, strong-only solved 131/144 at lower accounted model cost
+              than the fitted-Q router's 128/144. VERIFY-on and VERIFY-off each
+              solved 372/432 attempts across policies. Four provider failures
+              remain in the counts; this is not new-task generalization.
+            </p>
                 </div>
                 <div>
                   <h4>Limits of the evidence</h4>
@@ -444,9 +456,13 @@
             <p class="eyebrow">Data engineering · FastAPI · Interactive maps</p>
             <h3>From subway observations <br />to an inspectable signal.</h3>
             <p class="case-lead">
-              A working pipeline for exploring public NYC Subway observations,
-              headway deviations and the limits of anomaly scores.
+              A live subway data pipeline with an interactive map, arrival-spacing
+              proxy forecasts and inspectable baseline comparisons.
             </p>
+            <figure class="project-preview">
+              <a href="/demos/mta-scan/" aria-label="Open mta-scan interactive demo"><img src="/assets/mta-workspace.png" alt="MTA Scan live subway map, feed freshness and observation queue." width="1280" height="720" loading="lazy" /></a>
+              <figcaption>Workspace snapshot · October 9, 2026. Counts change as feeds update. Map © Mapbox © OpenStreetMap contributors.</figcaption>
+            </figure>
             <p>
               I implemented feed ingestion, the API and an interactive review
               workflow with freshness states, native Mapbox layers, filtering
@@ -509,7 +525,7 @@
                 href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan"
                 >Inspect the deployed source <span aria-hidden="true">↗</span></a>
               <a class="text-link" href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/blob/main/docs/COLLECTION_COVERAGE.md"
-                >Historical collection evidence <span aria-hidden="true">↗</span></a>
+                >Collection &amp; forecasting evidence <span aria-hidden="true">↗</span></a>
             </div>
           </div>
         </article>
