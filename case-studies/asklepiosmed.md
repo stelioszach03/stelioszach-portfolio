@@ -1,4 +1,4 @@
-# AsklepiosMed — Paphos Medical Association
+# AsklepiosMed — Applied AI and a production association platform
 
 **Former Head Engineer · June 2022–July 2026 · Pro bono**
 
@@ -14,10 +14,21 @@ This is a public engineering case study. Application source, operational configu
 
 A professional association needs to publish information, support its members, organise events and handle sensitive requests without turning each workflow into a separate manual process. Those tasks also require different access boundaries: members should see their own records, the secretariat should manage its assigned work, and engineering access should not automatically reveal confidential case content.
 
+## Applied AI and multilingual NLP
+
+I built AI-assisted communication workflows into the platform's administrative publishing experience: administrators can turn notes into structured announcements, prepare email drafts, proofread existing copy and improve its wording. Drafting, proofreading and rewriting remain distinct operations, so the interface can communicate the scope of an edit.
+
+The multilingual pipeline translates Greek announcements and articles into **English, Russian and Simplified Chinese**. It processes complete rich-text passages, with domain terminology and protected names carried into the target language. The implementation checks required fields, protected terms, suspicious content loss and HTML structure, and falls back to the existing translation service when an LLM response fails validation.
+
+The engineering work includes structured JSON responses, output sanitization, content-integrity checks, shared token-usage accounting, bounded retries and explicit failure states. Editors review the suggestions in the publishing workflow. These are implemented application controls; no unmeasured translation-accuracy score or guarantee of factual preservation is claimed.
+
+These capabilities describe the current project, including development after the June 2022–July 2026 pro bono role. They are LLM application engineering and multilingual NLP integration, not a claim of training or fine-tuning a foundation model. No private source or member content is published here.
+
 ## Current project capabilities
 
 | Area                          | Implemented workflows                                                                                                             |
 | ----------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| AI and multilingual content | Announcement and email preparation, proofreading, rewriting and Greek-to-English/Russian/Simplified Chinese translation |
 | Member access                 | Activation, mandatory profile review, verified contact-change flows, passkeys and recovery paths                                  |
 | Information and communication | Public articles and announcements, member notifications and explicit communication preferences                                    |
 | Secretariat publishing        | Private content drafts, preview, publication, revision restore and publication-conflict handling                                  |
@@ -41,6 +52,9 @@ flowchart LR
   Roles --> DB[(PostgreSQL)]
   Roles --> Files[Protected attachments]
   API --> Jobs[Communication and event workflows]
+  API --> AI[AI-assisted writing and translation]
+  AI --> Checks[Structured output and integrity checks]
+  Checks --> Review[Editor review and publication]
   DB --> Backup[Encrypted backups / restore checks]
   API --> Ops[Service health / operational logs]
 ```

@@ -1,72 +1,74 @@
 from pathlib import Path
+from docx import Document
+from docx.shared import Inches, Pt, RGBColor
+from docx.oxml import OxmlElement
+from docx.oxml.ns import qn
+from docx.enum.text import WD_BREAK
 import argparse
-from reportlab.pdfgen import canvas
-from reportlab.lib.pagesizes import letter
-from reportlab.lib.colors import HexColor
-from reportlab.lib.styles import ParagraphStyle
-from reportlab.platypus import Paragraph
-
 ROOT=Path(__file__).resolve().parents[1]
-parser=argparse.ArgumentParser(description='Build an evidence-grounded one-page CV.')
-parser.add_argument('--focus',choices=['research','systems'],default='research')
+parser=argparse.ArgumentParser(description='Create the November 2026 editable career CVs. Render and inspect before publishing PDFs.')
+parser.add_argument('--focus', choices=['machine-learning','systems','all'], default='all')
+parser.add_argument('--output-dir', type=Path, default=ROOT/'cv-review')
 args=parser.parse_args()
-systems=args.focus=='systems'
-OUT=ROOT/'public'/('Stelios_Zacharioudakis_Systems_CV.pdf' if systems else 'Stelios_Zacharioudakis_CV.pdf')
-OUT.parent.mkdir(parents=True,exist_ok=True)
-c=canvas.Canvas(str(OUT),pagesize=letter)
-c.setTitle('Stelios Zacharioudakis - '+('ML Systems and Software Engineering' if systems else 'Machine Learning Research and Engineering'))
-c.setAuthor('Stelios Zacharioudakis')
-c.setSubject('Professional resume - October 2026')
-W,H=letter;left=43;right=43;width=W-left-right;y=H-43
-INK=HexColor('#152537');MUTED=HexColor('#425466');ACCENT=HexColor('#164E79')
-normal=ParagraphStyle('body',fontName='Helvetica',fontSize=9.7,leading=13.2,textColor=INK,spaceAfter=0)
-small=ParagraphStyle('small',parent=normal,fontSize=8.7,leading=11.8,textColor=MUTED)
+OUT=args.output_dir
+OUT.mkdir(parents=True,exist_ok=True)
 
-def para(text,style=normal,gap=4,indent=0):
- global y
- p=Paragraph(text,style);_,height=p.wrap(width-indent,1000)
- y-=height;p.drawOn(c,left+indent,y);y-=gap
+def link(p,text,url,bold=False):
+ r=OxmlElement('w:hyperlink');r.set(qn('r:id'),p.part.relate_to(url,'http://schemas.openxmlformats.org/officeDocument/2006/relationships/hyperlink',is_external=True));run=OxmlElement('w:r');pr=OxmlElement('w:rPr');color=OxmlElement('w:color');color.set(qn('w:val'),'000000');pr.append(color);
+ if bold: pr.append(OxmlElement('w:b'))
+ run.append(pr);t=OxmlElement('w:t');t.text=text;run.append(t);r.append(run);p._p.append(r)
 
-def section(title):
- global y
- y-=11;c.setFillColor(ACCENT);c.setFont('Helvetica-Bold',10);c.drawString(left,y,title.upper());y-=7
- c.setStrokeColor(HexColor('#CBD5DF'));c.setLineWidth(.45);c.line(left,y,W-right,y);y-=11
+def build(systems=False):
+ d=Document();sec=d.sections[0];sec.page_width=Inches(8.5);sec.page_height=Inches(11);sec.top_margin=Inches(.48);sec.bottom_margin=Inches(.48);sec.left_margin=Inches(.58);sec.right_margin=Inches(.58)
+ normal=d.styles['Normal'];normal.font.name='Arial';normal.font.size=Pt(10.3);normal.font.color.rgb=RGBColor(0,0,0);pf=normal.paragraph_format;pf.space_after=Pt(3);pf.line_spacing=1.03
+ for name in ['Title','Subtitle','Heading 1','Heading 2']:
+  st=d.styles[name];st.font.name='Arial';st.font.color.rgb=RGBColor(0,0,0)
 
-def bullet(text):para('&#8226; '+text,normal,4,0)
-
-c.setFillColor(INK);c.setFont('Helvetica-Bold',25);c.drawString(left,y,'Stelios Zacharioudakis');y-=21
-c.setFont('Helvetica',11.7);c.setFillColor(ACCENT);c.drawString(left,y,'ML SYSTEMS & SOFTWARE ENGINEERING' if systems else 'MACHINE LEARNING RESEARCH & ENGINEERING');y-=18
-para('<link href="mailto:stelios@stelioszach.com">stelios@stelioszach.com</link>  |  <link href="https://stelioszach.com">stelioszach.com</link>  |  <link href="https://github.com/stelioszach03">github.com/stelioszach03</link>',small,3)
-para('<link href="https://www.linkedin.com/in/stelios-zach">linkedin.com/in/stelios-zach</link>',small,5)
-para('Software engineering for ML evaluation and deployed applications: bounded execution, APIs, data pipelines, reproducible artifacts and operational safeguards.' if systems else 'Machine learning research and software engineering, focused on generative models, model-based reinforcement learning, reliable evaluation and deployed systems.',normal,2)
-
-section('Engineering experience')
-para('<b>Former Head Engineer - Paphos Medical Association</b>  |  Pro bono',normal,2)
-para('Jun 2022 - Jul 2026',small,4)
-bullet('Led pro bono engineering for <link href="https://asklepiosmed.org">AsklepiosMed</link>, a donated member-services platform for the association.')
-bullet('Developed full-stack web applications and administrative workflows using React, Node.js/Express and PostgreSQL.')
-bullet('Maintained the platform and supported its deployment and operation on a Linux VPS.')
-
-section('Research')
-para('<b>World-model learning and evaluation</b>  |  Independent research, ongoing and unpublished',normal,4)
-bullet('Investigate imagination horizons, critic stability and policy selection with PyTorch latent world models and imagined actor-critic learning.')
-bullet('Design controlled ablations, paired simulator evaluations and traceable analyses to study task-dependent outcomes and failed hypotheses.')
-para('<b>Score-based generative models for undersampled MRI reconstruction</b>  |  BSc thesis: Excellent (10/10)',normal,4)
-bullet('Reimplemented a published reconstruction method in PyTorch using the authors\' pretrained prior; developed MRI measurement operators and a Flax-to-PyTorch checkpoint conversion.')
-bullet('The thesis reports reproduction within 0.15 dB PSNR on 256 BraTS slices at 4x, 8x and 24x sampling factors; evaluates Monte Carlo uncertainty and retrospective domain shift.')
-para('<link href="https://pergamos.lib.uoa.gr/item/uoadl:5432472">Thesis: September 2026</link> | <link href="https://github.com/stelioszach03/mri-reconstruction-evidence">Evidence + independent CPU ensemble diagnostics</link>. Retrospective research; no clinical validation.',small,1)
-
-section('Selected software projects')
-para('<b><link href="https://forge.stelioszach.com/">ForgeRL / ForgeBench</link></b> - Built isolated coding-agent evaluation and durable budget controls. A frozen prospective pilot completed 162 episodes across 27 miniature tasks and six policies, with full traces and a separate source-derived track. One seed and six test families limit generalization; model weights remain unchanged.',normal,6)
-para('<b><link href="https://stelioszach.com/demos/mta-scan/">MTA Scan</link></b> - Built a Mapbox transit workspace with autonomous collection and 15/30-minute evaluation of feed-predicted arrival-spacing proxies. Uses chronological holdouts and baselines; early feasibility only, no validated incident claim.',normal,6)
-para('<b><link href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab">Inference Systems Lab</link></b> - Ran 1,536 measured requests on an RTX 4090 with pinned vLLM/Qwen versions, concurrency sweeps and direct GPU telemetry. Recorded prefix-cache comparisons and output mismatches; no lossless speedup claim.',normal,1)
-
-section('Education')
-para('<b>BSc in Computer Science</b> - National and Kapodistrian University of Athens',normal,2)
-para('Department of Informatics and Telecommunications | June 2026 | Degree: Very Good',small,1)
-
-section('Technical focus')
-para('<b>ML:</b> Python, PyTorch, NumPy, SciPy, scikit-learn; generative models, model-based RL, uncertainty analysis and experimental evaluation.',normal,4)
-para('<b>Systems:</b> FastAPI, Node.js/Express, React, JavaScript, SQL/PostgreSQL, Redis, Linux, Nginx, Docker, Git and automated testing.',normal,0)
-assert y>32,f'CV overflow: bottom {y}'
-c.showPage();c.save();print({'path':str(OUT),'pages':1,'bottomMarginPoints':round(y,1)})
+ for st in d.styles:
+  for border in st.element.xpath('.//w:pBdr'): border.getparent().remove(border)
+ d.styles['Title'].font.size=Pt(25);d.styles['Title'].font.bold=True;d.styles['Title'].paragraph_format.space_after=Pt(3)
+ d.styles['Heading 1'].font.size=Pt(10);d.styles['Heading 1'].font.bold=True;d.styles['Heading 1'].paragraph_format.space_before=Pt(10);d.styles['Heading 1'].paragraph_format.space_after=Pt(4)
+ for name in ['Normal','Title','Heading 1']:
+  d.styles[name].paragraph_format.widow_control=True
+ d.core_properties.author='Stelios Zacharioudakis';d.core_properties.title='Stelios Zacharioudakis - '+('ML Systems Engineer' if systems else 'Machine Learning Engineer');d.core_properties.subject='Professional resume - November 2026'
+ d.add_paragraph('Stelios Zacharioudakis','Title')
+ p=d.add_paragraph();r=p.add_run('ML SYSTEMS ENGINEER | APPLIED AI & MODEL EVALUATION' if systems else 'MACHINE LEARNING ENGINEER | APPLIED AI, NLP & DEEP LEARNING');r.bold=True;r.font.size=Pt(10.3)
+ p=d.add_paragraph('New York City Metropolitan Area | ');link(p,'stelios@stelioszach.com','mailto:stelios@stelioszach.com');p.paragraph_format.space_after=Pt(1)
+ p=d.add_paragraph();link(p,'stelioszach.com','https://stelioszach.com');p.add_run(' | ');link(p,'github.com/stelioszach03','https://github.com/stelioszach03');p.add_run(' | ');link(p,'linkedin.com/in/stelios-zach','https://www.linkedin.com/in/stelios-zach')
+ for r in p.runs:r.font.size=Pt(9)
+ d.add_paragraph('Machine learning engineer combining production software ownership with applied AI/NLP, PyTorch research and GPU inference evaluation. Led architecture and delivery of a donated association platform; build reproducible experiments, LLM applications and data pipelines with explicit quality and operational controls.')
+ def head(s):d.add_paragraph(s.upper(),'Heading 1')
+ def title(s,tail='',url=None):
+  p=d.add_paragraph();p.paragraph_format.space_before=Pt(4);p.paragraph_format.space_after=Pt(2);p.paragraph_format.keep_with_next=True
+  if url:link(p,s,url,True)
+  else:p.add_run(s).bold=True
+  if tail:p.add_run(' | '+tail)
+  return p
+ def bullet(s):
+  p=d.add_paragraph();p.paragraph_format.left_indent=Inches(.12);p.paragraph_format.first_line_indent=Inches(-.12);p.add_run('• ');p.add_run(s)
+ head('Professional experience')
+ title('Paphos Medical Association - Head Engineer (Pro Bono)','Jun 2022 - Jul 2026')
+ bullet('Led architecture, development and delivery of AsklepiosMed, a donated production platform for member services and association administration.')
+ bullet('Integrated React interfaces, Node.js/Express APIs and PostgreSQL persistence; maintained access controls, administrative workflows and Linux deployment.')
+ head('Selected projects and research')
+ title('AsklepiosMed - Multilingual NLP workflows',url='https://stelioszach.com/#asklepios')
+ bullet('Engineered multilingual NLP workflows for announcement drafting, email preparation, proofreading and text improvement within the association publishing platform.')
+ bullet('Implemented Greek-to-English, Russian and Simplified Chinese translation with terminology checks, structured output validation, fallback behavior and token-usage controls.')
+ title('Inference Systems Lab - GPU serving evaluation',url='https://github.com/stelioszach03/colab-speculative-decoding-speed-lab')
+ bullet('Designed and ran 16,384 vLLM requests across RTX 4090 and A100 GPUs, two Qwen2.5 model sizes, cache modes and four repeats; measured throughput and latency, audited output parity and published reproducible aggregates.')
+ title('MRI reconstruction - PyTorch and generative models','BSc thesis: Excellent, 10/10',url='https://stelioszach.com/#mri')
+ bullet('Reimplemented a published score-based reconstruction method with Flax-to-PyTorch checkpoint conversion; reproduced reference PSNR within 0.15 dB on 256 BraTS slices at 4x, 8x and 24x undersampling.')
+ bullet('Evaluated uncertainty and retrospective domain shift; released reproducible evidence and independent CPU ensemble diagnostics. Original pretrained prior credited; no clinical validation.')
+ title('ForgeRL / ForgeBench - LLM agent evaluation',url='https://stelioszach.com/demos/forgerl/')
+ bullet('Built a sandboxed code-repair harness, durable budget ledger and trace explorer; evaluated six routing policies in a 162-episode transfer pilot and 1,296 attempts in a separate four-seed follow-up. Model weights remained unchanged.')
+ title('MTA-Scan - Streaming data and temporal evaluation',url='https://stelioszach.com/demos/mta-scan/')
+ bullet('Built live feed ingestion, a FastAPI/Mapbox workspace and bounded historical storage; automated chronological 15/30-minute proxy forecasting with baselines and freshness gates. November audit: 44 daily exports and 28 evaluated days.')
+ head('Technical skills')
+ p=d.add_paragraph();p.add_run('ML & AI: ').bold=True;p.add_run('Python, PyTorch, NumPy, SciPy, scikit-learn, generative models, NLP, LLM integration, vLLM, reinforcement learning, experiment design and model evaluation.')
+ p=d.add_paragraph();p.add_run('Engineering: ').bold=True;p.add_run('FastAPI, React, Node.js/Express, JavaScript, PostgreSQL, Redis, Linux, Nginx, Docker, Git and automated testing.')
+ head('Education and ongoing research')
+ title('BSc in Computer Science','National and Kapodistrian University of Athens, Jun 2026')
+ d.add_paragraph('Degree: Very Good | Thesis: Excellent (10/10), deposited September 2026.')
+ d.add_paragraph('Independent research: latent world models, imagination horizons and policy evaluation in PyTorch; ongoing and unpublished.')
+ path=OUT/('Stelios_Zacharioudakis_ML_Systems_CV.docx' if systems else 'Stelios_Zacharioudakis_ML_Engineer_CV.docx');d.save(path);print(path)
+for systems in ([False,True] if args.focus=='all' else [args.focus=='systems']):build(systems)
