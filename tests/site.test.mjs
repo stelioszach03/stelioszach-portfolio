@@ -16,7 +16,7 @@ const script = await readFile(new URL("assets/site.js", publicRoot), "utf8");
 test("semantic static page delivers the author and every section before JavaScript", () => {
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.match(html, /<html lang="en">/);
-  assert.match(html, /<h1[^>]*aria-label="Stelios Zacharioudakis"/);
+  assert.match(html, /<h1[^>]*aria-label="Hi, I’m Stelios Zacharioudakis"/);
   for (const title of [
     "Selected work",
     "Live demos",
@@ -76,7 +76,7 @@ test("research and product claims retain their scope instead of publication or s
   assert.match(html, /ongoing, unpublished research/);
   assert.match(html, /no prospective scanner study or clinical validation/i);
   const coreIds = [...html.matchAll(/<article id="([^"]+)" class="case-study"/g)].map((m) => m[1]);
-  assert.deepEqual(coreIds, ["asklepios", "inference-systems", "mri", "forgerl", "mta-scan"]);
+  assert.deepEqual(coreIds, ["mri", "forgerl", "asklepios", "mta-scan", "inference-systems"]);
   assert.match(html, /50 scenarios · 10 repository families/);
   assert.match(html, /The language models are not fine-tuned/);
   assert.match(html, /authored miniature repositories, not evidence of general repository repair or long-horizon autonomy/);

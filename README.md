@@ -1,8 +1,8 @@
 # Stelios Zacharioudakis — portfolio
 
-Source for [stelioszach.com](https://stelioszach.com): a static portfolio of applied AI, multilingual NLP, deep learning and ML systems engineering.
+Source for [stelioszach.com](https://stelioszach.com): a static portfolio of reinforcement learning, AI agents, self-improvement research, applied AI and ML systems engineering.
 
-The site leads with five core projects: AsklepiosMed and its multilingual NLP workflows, Inference Systems Lab, the MRI reconstruction thesis, ForgeRL and MTA-Scan. A compact section describes ongoing, unpublished world-model research. Three selected live demos—ForgeRL, MTA-Scan and the secondary DeID review tool—keep their methods, evidence and limitations alongside the interface. Five demo services remain available; selection does not remove their routes or source.
+The site retains its original design and project order: the MRI reconstruction thesis, ForgeRL, AsklepiosMed with multilingual NLP workflows, MTA-Scan and Inference Systems Lab. A compact section describes ongoing, unpublished research in verifier-guided self-improvement, continual learning and world models. Three selected live demos—ForgeRL, MTA-Scan and the secondary DeID review tool—keep their methods, evidence and limitations alongside the interface. Five demo services remain available; selection does not remove their routes or source.
 
 ## Selected projects
 

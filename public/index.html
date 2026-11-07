@@ -9,7 +9,7 @@
     </title>
     <meta
       name="description"
-      content="Machine Learning Engineer building applied AI workflows, reproducible PyTorch evaluations and GPU inference systems. Explore production engineering, measured results and live projects."
+      content="Machine Learning Engineer focused on reinforcement learning, self-improving AI systems, world models and LLM agents, with applied AI and production engineering experience."
     />
     <link rel="canonical" href="https://stelioszach.com/" />
     <meta property="og:type" content="website" />
@@ -19,7 +19,7 @@
     />
     <meta
       property="og:description"
-      content="Applied AI, deep learning and ML systems. Production software ownership, reproducible model evaluation and GPU inference benchmarks."
+      content="Reinforcement learning, self-improving systems, world models and LLM agents. Applied AI, reproducible evaluation and production engineering."
     />
     <meta property="og:url" content="https://stelioszach.com/" />
     <meta
@@ -68,33 +68,53 @@
     <main id="content">
       <section id="intro" class="hero" aria-labelledby="intro-title">
         <div class="hero-inner">
-          <div class="hero-main">
-            <p class="eyebrow hero-enter">Machine Learning Engineer · New York City</p>
-            <h1 id="intro-title" class="hero-enter" aria-label="Stelios Zacharioudakis">Stelios<br /><span class="intro-name">Zacharioudakis.</span></h1>
-            <div class="hero-bottom hero-enter">
-              <div class="hero-copy">
-                <p class="hero-statement">I build, evaluate and deploy<br />machine learning systems.</p>
-                <p>Multilingual NLP, generative models and GPU inference. I connect hands-on ML research with the engineering needed to ship reliable software.</p>
-                <div class="hero-actions">
-                  <a class="button" href="#work">Explore selected work <span aria-hidden="true">↓</span></a>
-                  <a class="button button-quiet" href="/Stelios_Zacharioudakis_CV.pdf">Download CV <span class="file-label">PDF</span></a>
-                </div>
-                <div class="hero-links"><a href="https://github.com/stelioszach03">GitHub ↗</a><a href="https://www.linkedin.com/in/stelios-zach">LinkedIn ↗</a><a href="mailto:stelios@stelioszach.com">Get in touch ↗</a></div>
+          <p class="eyebrow hero-enter">
+            Machine learning · Agents &amp; self-improvement
+          </p>
+          <h1
+            id="intro-title"
+            class="hero-enter"
+            aria-label="Hi, I’m Stelios Zacharioudakis"
+          >
+            hi, <span class="intro-name">stelios</span> here.<span
+              class="typing-cursor"
+              aria-hidden="true"
+              >|</span
+            >
+          </h1>
+          <div class="hero-bottom hero-enter">
+            <div class="hero-copy">
+              <p class="hero-statement">
+                I build learning systems.<br />And test how they improve.
+              </p>
+              <p>
+                Reinforcement learning, self-improving agents and world models.
+                I build and evaluate systems that learn from feedback, alongside
+                practical AI applications and reliable software.
+              </p>
+              <div class="hero-actions">
+                <a class="button" href="#work"
+                  >Explore my work
+                  <svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="M12 4v16m-6-6 6 6 6-6" /></svg
+                ></a>
+                <a class="button button-quiet" href="#demos"
+                  ><svg aria-hidden="true" viewBox="0 0 24 24">
+                    <path d="m9 5 10 7-10 7z" /></svg
+                  >Try a live demo</a
+                >
+              </div>
+              <div class="hero-links">
+                <a href="https://github.com/stelioszach03"
+                  >GitHub <span aria-hidden="true">↗</span></a
+                ><span aria-hidden="true">/</span
+                ><a href="https://www.linkedin.com/in/stelios-zach"
+                  >LinkedIn <span aria-hidden="true">↗</span></a
+                ><span aria-hidden="true">/</span
+                ><a href="/Stelios_Zacharioudakis_CV.pdf">CV <span class="file-label">PDF</span></a>
               </div>
             </div>
           </div>
-          <figure class="hero-study hero-enter" aria-labelledby="hero-study-title">
-            <p class="eyebrow">From the engineering notebook</p>
-            <h2 id="hero-study-title">Measure the system.<br />Inspect the trade-offs.</h2>
-            <div class="benchmark" role="img" aria-label="Cache-on versus cache-off throughput at concurrency 32 with shared prefixes: RTX 4090 Qwen 1.5B, 1.285 times; RTX 4090 Qwen 7B, 1.470 times; A100 Qwen 1.5B, 1.227 times; A100 Qwen 7B, 1.459 times. Four-repeat means. Exact output parity fails.">
-              <div class="benchmark-row"><span>4090 · 1.5B</span><i style="--ratio:85.67%"></i><b>1.285×</b></div>
-              <div class="benchmark-row"><span>4090 · 7B</span><i style="--ratio:98%"></i><b>1.470×</b></div>
-              <div class="benchmark-row"><span>A100 · 1.5B</span><i style="--ratio:81.8%"></i><b>1.227×</b></div>
-              <div class="benchmark-row"><span>A100 · 7B</span><i style="--ratio:97.27%"></i><b>1.459×</b></div>
-            </div>
-            <figcaption>16,384 requests · two GPUs · four repeats.<br />Shared-prefix throughput ratios at concurrency 32. Outputs differ; these are not lossless speedups.</figcaption>
-            <a class="text-link" href="#inference-systems">Inspect the experiment <span aria-hidden="true">↗</span></a>
-          </figure>
         </div>
       </section>
 
@@ -107,164 +127,23 @@
           <p class="eyebrow">01 / Selected work</p>
           <div>
             <h2 id="work-title">
-              Applied AI. Measured results.<br />Engineering ownership.
+              Learning systems.<br />From research to implementation.
             </h2>
             <p>
-              Five projects spanning production applications, deep learning,
-              LLM evaluation and live data systems.
+              Five projects spanning reinforcement learning, agent evaluation,
+              generative models, applied NLP and live data systems.
             </p>
           </div>
         </div>
         <nav class="evidence-strip" aria-label="Evidence at a glance">
-          <a href="#asklepios"><span>Applied AI &amp; production</span><strong>AsklepiosMed</strong><small>LLM writing workflows · full-stack ownership</small></a>
-          <a href="#inference-systems"><span>GPU inference</span><strong>16,384 requests</strong><small>RTX 4090 + A100 · controlled serving study</small></a>
-          <a href="#mri"><span>Deep learning</span><strong>Within 0.15 dB PSNR</strong><small>PyTorch reproduction · 256 test slices</small></a>
-          <a href="#mta-scan"><span>Live data engineering</span><strong>28-day evaluation</strong><small>November 7 audit · chronological holdouts</small></a>
+          <a href="https://github.com/stelioszach03/forgerl/blob/main/artifacts/forgebench/v0.3-pilot1/report/pilot-report.md"><span>ForgeBench transfer pilot</span><strong>162 evaluation episodes</strong><small>6 policies · 1 seed · 6 fresh primary test families</small></a>
+          <a href="#mri"><span>MRI reconstruction</span><strong>Within 0.15 dB PSNR</strong><small>Reference agreement reported in the BSc thesis</small></a>
+          <a href="#mta-scan"><span>MTA-Scan</span><strong>28-day evaluation</strong><small>44 verified daily exports · November 7 audit</small></a>
+          <a href="#asklepios"><span>Applied AI &amp; production</span><strong>AsklepiosMed</strong><small>Multilingual NLP · association platform</small></a>
         </nav>
-        <span id="experience" class="anchor-alias" aria-hidden="true"></span>
-        <article id="asklepios" class="case-study">
-          <div class="case-index">
-            <span>01</span>
-            <p>Former Head Engineer <br />Jun 2022–Jul 2026 <br />Pro bono</p>
-          </div>
-          <div class="case-body">
-            <p class="eyebrow">Applied AI · Multilingual NLP · Production engineering</p>
-            <h3>AI-assisted workflows.<br />A production platform.</h3>
-            <p class="case-lead">
-              AsklepiosMed combines member services, association administration
-              and AI-assisted communication in one maintained platform.
-            </p>
-            <p>
-              I developed and donated AsklepiosMed while working as Head Engineer
-              for the Paphos Medical Association, pro bono. My role ended in July
-              2026. The capabilities below describe the platform today, including
-              subsequent development.
-            </p>
-            <p>I engineered multilingual NLP workflows for announcement generation, email preparation, proofreading and text improvement. The platform translates Greek content into English, Russian and Simplified Chinese, combining terminology protection, structured output validation and fallback behavior. Editors review suggestions before publication.</p>
-            <dl class="system-list">
-              <div>
-                <dt>Applied AI</dt>
-                <dd>Text generation, editing and translation across four languages; shared usage controls, bounded retries and visible failure states.</dd>
-              </div>
-              <div>
-                <dt>Member experience</dt>
-                <dd>
-                  Profile review, passkeys, Wallet membership verification and
-                  personal communication preferences.
-                </dd>
-              </div>
-              <div>
-                <dt>Association operations</dt>
-                <dd>
-                  Content publishing, applications, meetings, attendance and
-                  scoped member casework.
-                </dd>
-              </div>
-              <div>
-                <dt>Production work</dt>
-                <dd>
-                  Role boundaries, encrypted sensitive records, backups, restore
-                  checks and service monitoring.
-                </dd>
-              </div>
-            </dl>
-            <details class="study-detail">
-              <summary>
-                Scope &amp; engineering boundaries
-                <svg aria-hidden="true" viewBox="0 0 24 24">
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </summary>
-              <div class="detail-body">
-                <div>
-                  <h4>Implementation</h4>
-                  <p>
-                    React, Express and PostgreSQL, with nginx and systemd on a
-                    VPS. The work includes application flows and the operational
-                    checks needed to maintain them.
-                  </p>
-                </div>
-                <div>
-                  <h4>Boundaries</h4>
-                  <p>
-                    A single-VPS deployment is not a highly available
-                    infrastructure. Encryption of selected records and backups
-                    is not whole-disk or end-to-end encryption. Membership
-                    verification does not certify a medical licence. Private
-                    source and member data are not published here.
-                  </p>
-                </div>
-              </div>
-            </details>
-            <div class="case-links">
-              <a class="text-link" href="https://asklepiosmed.org/"
-                >Visit the public website <span aria-hidden="true">↗</span></a
-              >
-              <a
-                class="text-link"
-                href="https://github.com/stelioszach03/stelioszach-portfolio/blob/main/case-studies/asklepiosmed.md"
-                >Read the engineering case study
-                <span aria-hidden="true">↗</span></a
-              >
-              <span class="quiet"
-                >Professional association software, not a clinical decision
-                system.</span
-              >
-            </div>
-          </div>
-        </article>
-
-        <article id="inference-systems" class="case-study">
-          <div class="case-index">
-            <span>02</span>
-            <p>Inference Systems Lab <br />GPU serving · Performance</p>
-          </div>
-          <div class="case-body">
-            <p class="eyebrow">vLLM · RTX 4090 &amp; A100 · Reproducible measurement</p>
-            <h3>Measure the serving trade-offs.</h3>
-            <p class="case-lead">Frozen GPU experiments connecting request traces
-              to throughput, latency, device telemetry and output agreement.</p>
-            <p>I built a bounded streaming benchmark and fixed the model revision,
-              container, workload and settings before execution. The first
-              1,536-request pilot on RTX 4090 was followed by a separate
-              counterbalanced experiment across two model sizes, two GPU classes,
-              prefix patterns, cache modes and four repeats.</p>
-            <div class="evidence-line">
-              <strong>16,384 measured requests · 2 GPUs</strong>
-              <p>Qwen2.5 1.5B and 7B · vLLM 0.10.2 · RTX 4090 and A100 80GB.
-                All requests completed at the HTTP level. Paired output hashes
-                frequently differed, so throughput ratios do not establish
-                lossless speedup or answer quality.</p>
-            </div>
-            <details class="study-detail">
-              <summary>Measured results &amp; limits <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg></summary>
-              <div class="detail-body">
-                <div><h4>Observed throughput</h4><p>At concurrency 32, the later
-                  study measured cached/uncached throughput ratios of 1.23–1.47
-                  with shared prefixes across its GPU/model combinations; unique
-                  prefixes were near 1.00. Four-repeat means and ranges, latency
-                  and exact-output hash counts are in the report.</p></div>
-                <div><h4>Scope of the comparison</h4><p>Each hardware class used
-                  one allocated GPU and synthetic fixed-length prompts. Output
-                  text often differed. The $3.45 allocation cost is an estimate;
-                  exact provider billing is unavailable. Neither study measures
-                  answer quality, quantization or general production performance.</p></div>
-              </div>
-            </details>
-            <div class="case-links">
-              <a class="text-link" href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab/blob/main/artifacts/factorial-serving-v1/RESULTS.md"
-                >Read the two-GPU study <span aria-hidden="true">↗</span></a>
-              <a class="text-link" href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab/blob/main/artifacts/controlled-pilot-v1/RESULTS.md"
-                >Read the original pilot <span aria-hidden="true">↗</span></a>
-              <a class="text-link" href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab"
-                >Source &amp; reproduction <span aria-hidden="true">↗</span></a>
-            </div>
-          </div>
-        </article>
-
         <article id="mri" class="case-study">
           <div class="case-index">
-            <span>03</span>
+            <span>01</span>
             <p>BSc thesis <br />September 2026<br /><strong class="thesis-grade">Excellent · 10/10</strong></p>
           </div>
           <div class="case-body">
@@ -369,7 +248,7 @@
 
         <article id="forgerl" class="case-study">
           <div class="case-index">
-            <span>04</span>
+            <span>02</span>
             <p>ForgeRL / ForgeBench <br />Agent routing · Evaluation</p>
           </div>
           <div class="case-body">
@@ -480,9 +359,102 @@
           </div>
         </article>
 
+        <span id="experience" class="anchor-alias" aria-hidden="true"></span>
+        <article id="asklepios" class="case-study">
+          <div class="case-index">
+            <span>03</span>
+            <p>Former Head Engineer <br />Jun 2022–Jul 2026 <br />Pro bono</p>
+          </div>
+          <div class="case-body">
+            <p class="eyebrow">Applied AI · Multilingual NLP · Production engineering</p>
+            <h3>AI-assisted workflows.<br />A production platform.</h3>
+            <p class="case-lead">
+              AsklepiosMed combines member services, association administration
+              and AI-assisted communication in one maintained platform.
+            </p>
+            <p>
+              I developed and donated AsklepiosMed while working as Head Engineer
+              for the Paphos Medical Association, pro bono. My role ended in July
+              2026. The capabilities below describe the platform today, including
+              subsequent development.
+            </p>
+            <p>I engineered multilingual NLP workflows for announcement generation, email preparation, proofreading and text improvement. The platform translates Greek content into English, Russian and Simplified Chinese, combining terminology protection, structured output validation and fallback behavior. Editors review suggestions before publication.</p>
+            <dl class="system-list">
+              <div>
+                <dt>Applied AI</dt>
+                <dd>Text generation, editing and translation across four languages; shared usage controls, bounded retries and visible failure states.</dd>
+              </div>
+              <div>
+                <dt>Member experience</dt>
+                <dd>
+                  Profile review, passkeys, Wallet membership verification and
+                  personal communication preferences.
+                </dd>
+              </div>
+              <div>
+                <dt>Association operations</dt>
+                <dd>
+                  Content publishing, applications, meetings, attendance and
+                  scoped member casework.
+                </dd>
+              </div>
+              <div>
+                <dt>Production work</dt>
+                <dd>
+                  Role boundaries, encrypted sensitive records, backups, restore
+                  checks and service monitoring.
+                </dd>
+              </div>
+            </dl>
+            <details class="study-detail">
+              <summary>
+                Scope &amp; engineering boundaries
+                <svg aria-hidden="true" viewBox="0 0 24 24">
+                  <path d="M12 5v14M5 12h14" />
+                </svg>
+              </summary>
+              <div class="detail-body">
+                <div>
+                  <h4>Implementation</h4>
+                  <p>
+                    React, Express and PostgreSQL, with nginx and systemd on a
+                    VPS. The work includes application flows and the operational
+                    checks needed to maintain them.
+                  </p>
+                </div>
+                <div>
+                  <h4>Boundaries</h4>
+                  <p>
+                    A single-VPS deployment is not a highly available
+                    infrastructure. Encryption of selected records and backups
+                    is not whole-disk or end-to-end encryption. Membership
+                    verification does not certify a medical licence. Private
+                    source and member data are not published here.
+                  </p>
+                </div>
+              </div>
+            </details>
+            <div class="case-links">
+              <a class="text-link" href="https://asklepiosmed.org/"
+                >Visit the public website <span aria-hidden="true">↗</span></a
+              >
+              <a
+                class="text-link"
+                href="https://github.com/stelioszach03/stelioszach-portfolio/blob/main/case-studies/asklepiosmed.md"
+                >Read the engineering case study
+                <span aria-hidden="true">↗</span></a
+              >
+              <span class="quiet"
+                >Professional association software, not a clinical decision
+                system.</span
+              >
+            </div>
+          </div>
+        </article>
+
         <article id="mta-scan" class="case-study">
           <div class="case-index">
-            <span>05</span>
+            <span>04</span>
             <p>MTA-Scan <br />Live data · Evaluation</p>
           </div>
           <div class="case-body">
@@ -563,26 +535,74 @@
           </div>
         </article>
 
+        <article id="inference-systems" class="case-study">
+          <div class="case-index">
+            <span>05</span>
+            <p>Inference Systems Lab <br />GPU serving · Performance</p>
+          </div>
+          <div class="case-body">
+            <p class="eyebrow">vLLM · RTX 4090 &amp; A100 · Reproducible measurement</p>
+            <h3>Measure the serving trade-offs.</h3>
+            <p class="case-lead">Frozen GPU experiments connecting request traces
+              to throughput, latency, device telemetry and output agreement.</p>
+            <p>I built a bounded streaming benchmark and fixed the model revision,
+              container, workload and settings before execution. The first
+              1,536-request pilot on RTX 4090 was followed by a separate
+              counterbalanced experiment across two model sizes, two GPU classes,
+              prefix patterns, cache modes and four repeats.</p>
+            <div class="evidence-line">
+              <strong>16,384 measured requests · 2 GPUs</strong>
+              <p>Qwen2.5 1.5B and 7B · vLLM 0.10.2 · RTX 4090 and A100 80GB.
+                All requests completed at the HTTP level. Paired output hashes
+                frequently differed, so throughput ratios do not establish
+                lossless speedup or answer quality.</p>
+            </div>
+            <details class="study-detail">
+              <summary>Measured results &amp; limits <svg aria-hidden="true" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14" /></svg></summary>
+              <div class="detail-body">
+                <div><h4>Observed throughput</h4><p>At concurrency 32, the later
+                  study measured cached/uncached throughput ratios of 1.23–1.47
+                  with shared prefixes across its GPU/model combinations; unique
+                  prefixes were near 1.00. Four-repeat means and ranges, latency
+                  and exact-output hash counts are in the report.</p></div>
+                <div><h4>Scope of the comparison</h4><p>Each hardware class used
+                  one allocated GPU and synthetic fixed-length prompts. Output
+                  text often differed. The $3.45 allocation cost is an estimate;
+                  exact provider billing is unavailable. Neither study measures
+                  answer quality, quantization or general production performance.</p></div>
+              </div>
+            </details>
+            <div class="case-links">
+              <a class="text-link" href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab/blob/main/artifacts/factorial-serving-v1/RESULTS.md"
+                >Read the two-GPU study <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab/blob/main/artifacts/controlled-pilot-v1/RESULTS.md"
+                >Read the original pilot <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab"
+                >Source &amp; reproduction <span aria-hidden="true">↗</span></a>
+            </div>
+          </div>
+        </article>
+
         <span id="research" class="anchor-alias" aria-hidden="true"></span>
         <div id="world-models" class="further-work">
           <h3>Ongoing research</h3>
           <div>
             <p>
-              <strong>World models <br />Ongoing · Unpublished</strong>
-              <span>My ongoing, unpublished research studies imagination horizons,
-                critic stability and policy selection in latent world models.
-                Controlled simulator comparisons have produced task-dependent
-                outcomes, including failed controller and selection hypotheses.</span>
+              <strong>Self-improvement &amp; world models <br />Ongoing · Unpublished</strong>
+              <span>My ongoing, unpublished research studies verifier-guided self-improvement,
+                continual learning and latent world models. I investigate how
+                coding agents use feedback, select learning tasks and retain
+                useful experience, alongside imagination horizons and critic stability.</span>
             </p>
             <p>
               <strong>Questions &amp; limits</strong>
-              <span>I use those failures to examine learning objectives,
-                evaluation targets and prediction error. Limited task,
-                world-model and training-seed coverage constrains generalization;
-                simulated control experiments are not physical-robot deployment.</span>
+              <span>I compare learned policies with fixed baselines and preserve
+                failed controller and selection hypotheses. Verification quality,
+                reward hacking, retention and transfer are central evaluation questions.
+                Limited task and seed coverage constrains generalization.</span>
             </p>
             <a class="text-link"
-              href="mailto:stelios@stelioszach.com?subject=World-model%20research"
+              href="mailto:stelios@stelioszach.com?subject=Learning%20systems%20research"
               >Discuss the research <span aria-hidden="true">↗</span></a>
           </div>
         </div>
@@ -706,11 +726,12 @@
         <div class="about-grid">
           <div>
             <p class="large-copy">
-              Machine learning depth.<br />Production engineering experience.
+              Learning from feedback.<br />Engineering systems that work.
             </p>
             <p>
-              I build across the ML lifecycle: data pipelines, PyTorch experiments,
-              model evaluation, serving benchmarks and applications that people use.
+              My focus is on agents and learning systems: reinforcement learning,
+              self-improvement, world models and verifiable evaluation. I also
+              build data pipelines, GPU serving experiments and AI applications.
               My pro bono Head Engineer role at the Paphos Medical Association
               ran from June 2022 to July 2026, with ownership from architecture
               through Linux deployment.
@@ -733,8 +754,8 @@
             </p>
             <h3>Working toolkit</h3>
             <p>
-              Python, PyTorch, scientific evaluation and model-based
-              reinforcement learning. React, Node.js, PostgreSQL and Linux for
+              Python, PyTorch, reinforcement learning, LLM agents, self-improvement
+              experiments, generative models and NLP. React, Node.js, PostgreSQL and Linux for
               application development and operations.
             </p>
             <a class="text-link" href="/Stelios_Zacharioudakis_CV.pdf"
