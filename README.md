@@ -2,7 +2,7 @@
 
 Source for [stelioszach.com](https://stelioszach.com): a static portfolio of reinforcement learning, AI agents, self-improvement research, applied AI and ML systems engineering.
 
-The site retains its original design and project order: the MRI reconstruction thesis, ForgeRL, AsklepiosMed with multilingual NLP workflows, MTA-Scan and Inference Systems Lab. A compact section describes ongoing, unpublished research in verifier-guided self-improvement, continual learning and world models. Three selected live demos—ForgeRL, MTA-Scan and the secondary DeID review tool—keep their methods, evidence and limitations alongside the interface. Five demo services remain available; selection does not remove their routes or source.
+The site retains its original visual template. Its content leads with production ownership in AsklepiosMed, followed by ForgeRL, Inference Systems Lab, MTA-Scan and the MRI implementation. A compact section describes ongoing, unpublished research in verifier-guided self-improvement, continual learning and world models. Three selected live demos—ForgeRL, MTA-Scan and the secondary DeID review tool—keep their methods, evidence and limitations alongside the interface. Five demo services remain available; selection does not remove their routes or source.
 
 ## Selected projects
 

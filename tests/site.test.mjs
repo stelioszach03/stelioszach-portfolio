@@ -76,7 +76,7 @@ test("research and product claims retain their scope instead of publication or s
   assert.match(html, /ongoing, unpublished research/);
   assert.match(html, /no prospective scanner study or clinical validation/i);
   const coreIds = [...html.matchAll(/<article id="([^"]+)" class="case-study"/g)].map((m) => m[1]);
-  assert.deepEqual(coreIds, ["mri", "forgerl", "asklepios", "mta-scan", "inference-systems"]);
+  assert.deepEqual(coreIds, ["asklepios", "forgerl", "inference-systems", "mta-scan", "mri"]);
   assert.match(html, /50 scenarios · 10 repository families/);
   assert.match(html, /The language models are not fine-tuned/);
   assert.match(html, /authored miniature repositories, not evidence of general repository repair or long-horizon autonomy/);
