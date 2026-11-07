@@ -16,7 +16,7 @@ const script = await readFile(new URL("assets/site.js", publicRoot), "utf8");
 test("semantic static page delivers the author and every section before JavaScript", () => {
   assert.equal((html.match(/<h1\b/g) || []).length, 1);
   assert.match(html, /<html lang="en">/);
-  assert.match(html, /<h1[^>]*aria-label="Hi, I’m Stelios Zacharioudakis"/);
+  assert.match(html, /<h1[^>]*> Stelios <span[^>]*>Zacharioudakis<\/span> <\/h1>/);
   for (const title of [
     "Selected work",
     "Live demos",
@@ -58,9 +58,15 @@ test("three selected demos and local assets resolve while all five service route
     assert.ok(!html.includes(retired), `${retired} is not actively promoted`);
   }
   for (const asset of new Set(
-    local.filter((href) => !href.startsWith("/demos/")),
+    local.filter((href) => !href.startsWith("/demos/") && href !== "/cv/"),
   ))
     assert.ok((await stat(new URL(`.${asset}`, publicRoot))).size > 0, asset);
+  const cvPage = await readFile(new URL("cv/index.html", publicRoot), "utf8");
+  const primaryCV = await readFile(new URL("Stelios_Zacharioudakis_CV.pdf", publicRoot));
+  const cvVersion = createHash("sha256").update(primaryCV).digest("hex").slice(0, 12);
+  assert.ok(cvPage.includes(`/Stelios_Zacharioudakis_CV.pdf?v=${cvVersion}`));
+  assert.doesNotMatch(cvPage, /Systems_CV\.pdf/);
+  assert.ok((await stat(new URL("assets/cv-preview.jpg", publicRoot))).size > 0);
   for (const asset of [
     "Stelios_Zacharioudakis_CV.pdf",
     "Stelios_Zacharioudakis_Systems_CV.pdf",

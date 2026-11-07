@@ -1,6 +1,6 @@
 # Stelios Zacharioudakis — portfolio
 
-Source for [stelioszach.com](https://stelioszach.com): a static portfolio of reinforcement learning, AI agents, self-improvement research, applied AI and ML systems engineering.
+Source for [stelioszach.com](https://stelioszach.com): a static portfolio for Applied AI and ML Systems, led by production engineering, coding-agent evaluation and GPU inference benchmarks.
 
 The site retains its original visual template. Its content leads with production ownership in AsklepiosMed, followed by ForgeRL, Inference Systems Lab, MTA-Scan and the MRI implementation. A compact section describes ongoing, unpublished research in verifier-guided self-improvement, continual learning and world models. Three selected live demos—ForgeRL, MTA-Scan and the secondary DeID review tool—keep their methods, evidence and limitations alongside the interface. Five demo services remain available; selection does not remove their routes or source.
 
@@ -58,7 +58,7 @@ Serve `dist/` as the website root. The five `/demos/` routes belong to separate 
 
 The CV and thesis are served as PDF documents. The sitemap lists the portfolio and the five demo entry points. No client-side router or fallback to an empty application shell is needed.
 
-The primary [Applied AI / ML Systems CV](public/Stelios_Zacharioudakis_CV.pdf) is the owner's supplied one-page PDF, selected on November 7, 2026. It is published byte-for-byte, with SHA-256 `da4330d93bd8bbc8a3ca9d65fe1b49e4cc7d236ec06024c266d0c2d8db2b88b5`. All visible CV links point to this file and include a content version to refresh browser previews. The older Systems PDF remains at its historical URL for compatibility but is no longer promoted as an alternative. Do not overwrite the owner-selected PDF with `scripts/build_cv.py`; that script is retained for prior editable drafts. The supplied PDF passed visual review and text extraction with pypdf, pdfplumber and Poppler, with embedded fonts and no image-only text. These are technical readability checks, not certification by an employer's ATS or a guarantee of selection.
+The public [CV page](public/cv/index.html) presents the primary [Applied AI and ML Systems CV](public/Stelios_Zacharioudakis_CV.pdf) with a share preview and a content-versioned PDF link. The separate [ML Systems CV](public/Stelios_Zacharioudakis_Systems_CV.pdf) is an application variant and remains available at its historical URL. Generate editable drafts with `python scripts/build_cv.py --focus all --output-dir /path/to/review`; supply the existing public contact number with `--phone` for the published editions. Render and visually review each PDF before publishing. AI/NLP project capabilities are separate from the dated pro bono position.
 
 ## Content and provenance
 
