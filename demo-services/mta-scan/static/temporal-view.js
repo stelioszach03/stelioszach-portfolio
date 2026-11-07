@@ -12,7 +12,7 @@
   function date(value) { return typeof value === 'number' ? new Date(value * 1000).toLocaleString() : '—'; }
   function row(values) { var tr = el('tr'); values.forEach(function (v) { tr.appendChild(el('td', v)); }); return tr; }
   function list(id, values) { var node = document.getElementById(id); node.replaceChildren(); (values || []).forEach(function (v) { node.appendChild(el('li', v)); }); }
-  function clearForecasts(note) { document.getElementById('temporalForecastRows').replaceChildren(); document.getElementById('temporalForecastTable').hidden = true; set('temporalForecastNote', note); }
+  function clearForecasts(note) { document.getElementById('temporalForecastRows').replaceChildren(); document.getElementById('temporalForecastTable').hidden = true; set('temporalForecastNote', note); if (latest && latest.readiness && latest.readiness.status === 'ready') set('temporalStatus', 'No current proxy forecast'); }
   function render(value) {
     latest = value;
     var ready = value.readiness || {}, coverage = value.coverage || {};
@@ -44,7 +44,7 @@
   }
   function renderForecasts() {
     var now = Date.now() / 1000, value = latest;
-    if (!value || !value.readiness || !value.readiness.public_forecasts_ready || !value.valid_until_ts || now >= value.valid_until_ts || now - value.generated_ts > 900) {
+    if (!value || !value.readiness || !value.readiness.public_forecasts_ready || !value.valid_until_ts || now >= value.valid_until_ts || now - value.generated_ts > 900 || typeof value.evaluation_cutoff_ts !== 'number' || !Number.isFinite(value.evaluation_cutoff_ts) || now - value.evaluation_cutoff_ts < 0 || now - value.evaluation_cutoff_ts > 6 * 3600) {
       clearForecasts('No current forecast is published. At least 14 days of history, comparable platform coverage and fresh validated inputs are required.'); return;
     }
     var forecasts = (value.forecasts || []).filter(function (f) { return f.target_ts > now && now - f.origin_ts >= 0 && now - f.origin_ts <= 600; });

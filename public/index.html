@@ -155,12 +155,12 @@
               and AI-assisted communication in one maintained platform.
             </p>
             <p>
-              I developed and donated AsklepiosMed while working as Head Engineer
-              for the Paphos Medical Association, pro bono. My role ended in July
-              2026. The capabilities below describe the platform today, including
-              subsequent development.
+              I owned application architecture, full-stack implementation and Linux
+              deployment for the association as Head Engineer, pro bono. The
+              capabilities below describe the platform today, including subsequent
+              development after my June 2022–July 2026 role.
             </p>
-            <p>I engineered multilingual NLP workflows for announcement generation, email preparation, proofreading and text improvement. The platform translates Greek content into English, Russian and Simplified Chinese, combining terminology protection, structured output validation and fallback behavior. Editors review suggestions before publication.</p>
+            <p>I integrated announcement drafting, email preparation, proofreading and translation into the administrative publishing workflow. Greek content can be prepared in English, Russian and Simplified Chinese, with terminology checks, structured output validation, fallback behavior and editor review before publication.</p>
             <dl class="system-list">
               <div>
                 <dt>Applied AI</dt>
@@ -412,11 +412,12 @@
               <figcaption>Workspace snapshot · October 9, 2026. Counts change as feeds update. Map © Mapbox © OpenStreetMap contributors.</figcaption>
             </figure>
             <p>
-              I implemented feed ingestion, the API and an interactive review
-              workflow with freshness states, native Mapbox layers, filtering
-              and explicit snapshot export. Autonomous history collection now
-              supports chronological 15/30-minute evaluation against persistence
-              and seasonal baselines, alongside the separate constructed replay.
+              I built the ingestion workers, FastAPI service and Mapbox workspace,
+              with bounded storage, freshness checks and exportable snapshots.
+              Independent workers maintain historical features, compare 15/30-minute
+              proxy forecasts against baselines, and archive official MTA service-alert
+              revisions. Model scores, official messages and constructed replay stay
+              explicitly separate.
             </p>
             <dl class="system-list">
               <div>
@@ -426,14 +427,15 @@
               </div>
               <div>
                 <dt>Visible failure states</dt>
-                <dd>Feed freshness and provider failures stay visible. A labelled
-                  map fallback preserves the data review workflow.</dd>
+                <dd>Feed failures and expired forecasts are visible. Models older than
+                  six hours are withheld; a labelled map fallback preserves review.</dd>
               </div>
               <div>
                 <dt>History &amp; forecasting evidence</dt>
                 <dd>Inspect collection health, held-out errors and readiness.
-                  The November 7 audit spans 28 evaluated days, 8,060
-                  retained windows and 45 stable groups, with 44 daily exports ingested.</dd>
+                  The November 7 audit spans 28 evaluated days and 44 verified
+                  daily exports. Official service alerts are archived separately
+                  with revision hashes and response-availability timestamps.</dd>
               </div>
             </dl>
             <details class="study-detail">
@@ -472,6 +474,7 @@
               <a class="text-link"
                 href="https://github.com/stelioszach03/stelioszach-portfolio/tree/main/demo-services/mta-scan"
                 >Inspect the deployed source <span aria-hidden="true">↗</span></a>
+              <a class="text-link" href="https://github.com/stelioszach03/stelioszach-portfolio/blob/main/case-studies/mta-scan.md">Engineering decisions &amp; validation <span aria-hidden="true">↗</span></a>
               <a class="text-link" href="https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/blob/main/docs/COLLECTION_COVERAGE.md"
                 >Collection &amp; forecasting evidence <span aria-hidden="true">↗</span></a>
             </div>
@@ -632,7 +635,7 @@
             <div>
               <h3>
                 <a href="/demos/forgerl/"
-                  >ForgeRL · ForgeBench research dashboard
+                  >ForgeRL · Agent evaluation workspace
                   <span aria-hidden="true">↗</span></a>
               </h3>
               <p>
@@ -647,7 +650,7 @@
               <details class="demo-walkthrough"><summary>Quick walkthrough</summary><p>Compare recorded policy results and coverage, then filter tasks by category or split. Choose an available recorded run to inspect its trajectory, patch, test outcomes and final files. Tasks without published runs are labeled explicitly.</p></details>
             </div>
             <a class="source-link" href="https://github.com/stelioszach03/forgerl"
-              aria-label="Source code for ForgeRL · ForgeBench research dashboard"
+              aria-label="Source code for ForgeRL · Agent evaluation workspace"
               >Source
               <svg aria-hidden="true" viewBox="0 0 24 24">
                 <path d="m8 5-7 7 7 7m8-14 7 7-7 7" /></svg></a>

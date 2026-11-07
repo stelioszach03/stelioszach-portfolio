@@ -357,6 +357,17 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
     </div>
   </div>
 
+  <section id="serviceAlertsPanel" class="temporal-panel" aria-labelledby="serviceAlertsHeading">
+    <div class="temporal-title"><div><p class="eyebrow">Official source / separate from model scores</p><h2 id="serviceAlertsHeading">MTA service alerts</h2></div><button class="ghost" id="serviceAlertsRefresh">Refresh alerts</button></div>
+    <div class="source-band"><strong id="serviceAlertsStatus" role="status">Loading official context...</strong><span class="source-meta" id="serviceAlertsUpdated">Waiting for the independent collector</span></div>
+    <p class="temporal-intro">Current messages published by the MTA. Planned work and service alerts provide context; they are not predictions from this model or validated incident labels.</p>
+    <div class="bar"><label class="ctl" for="serviceAlertRoute">Route <select id="serviceAlertRoute"><option value="">All routes</option></select></label></div>
+    <p id="serviceAlertsCount" class="note"></p><div id="serviceAlertList"></div>
+    <button id="serviceAlertsMore" class="ghost" hidden>Show more messages</button>
+    <p id="serviceAlertsArchive" class="source-meta"></p>
+    <p class="note"><a href="https://www.mta.info">Official MTA service information</a> · Messages can be revised or delayed. This archive began prospectively; no historical incidents are invented.</p>
+  </section>
+
   <section id="temporalPanel" class="temporal-panel" aria-labelledby="temporalHeading">
     <div class="temporal-title"><div><p class="eyebrow">Continuous collection / chronological evaluation</p><h2 id="temporalHeading">History &amp; forecasting</h2></div><button class="ghost" id="temporalRefresh">Refresh history</button></div>
     <div class="source-band"><strong id="temporalStatus" role="status">Loading history…</strong><span class="source-meta" id="temporalUpdated">Waiting for a validated worker snapshot</span></div>
@@ -375,9 +386,9 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
     </details>
   </section>
 
-  <h2 id="replayHeading">Frozen replay · inspect a recorded scenario</h2>
+  <h2 id="replayHeading">Constructed replay · inspect a scenario</h2>
   <p class="headline" id="headline">
-    <b>Measured on the frozen labelled replay</b> <span class="n">(216 rows, 16 labelled, 3 incidents, 6 stations &mdash; small by design)</span>:
+    <b>Measured on the constructed replay fixture</b> <span class="n">(216 rows, 16 labelled, 3 incidents, 6 stations &mdash; small by design)</span>:
     recall@20 <b>1.00</b> vs <b>0.625</b> for the best of three baselines, <b>3/3</b> incidents caught,
     <b>6.7&nbsp;min</b> average lead time &mdash;
     <span class="caveat">at the highest false-alarm rate of the four (0.030 vs 0.000&ndash;0.010)</span>.
@@ -437,7 +448,8 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-s
 </details>
 </main>
 
-<script src="temporal-view.js?v=1"></script>
+<script src="temporal-view.js?v=2"></script>
+<script src="service-alerts.js?v=1"></script>
 <script src="vendor/leaflet.js"></script>
 <script src="vendor/mapbox-gl-csp.js?v=3.30.0"></script>
 <script src="map-provider.js?v=3"></script>
@@ -1543,7 +1555,7 @@ function renderHeadline(RP){
   var otherFars = baselines.map(function(k){ return m[k].false_alarm_rate; });
 
   $('headline').innerHTML =
-    '<b>Measured on the frozen labelled replay</b> <span class="n">(' + ds.rows + ' rows, ' +
+    '<b>Measured on the constructed replay fixture</b> <span class="n">(' + ds.rows + ' rows, ' +
       ds.positive_rows + ' labelled, ' + ds.incidents + ' incidents, ' + ds.stops +
       ' stations &mdash; small by design)</span>: recall@20 <b>' +
       on.recall_at_k['r@20'].toFixed(2) + '</b> vs <b>' + bestBaseR20.toFixed(3) +

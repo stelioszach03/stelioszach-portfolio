@@ -42,6 +42,11 @@ class TemporalViewTests(unittest.TestCase):
         self.assertEqual(result['forecasts'], [])
         self.assertFalse(result['readiness']['public_forecasts_ready'])
 
+    def test_fresh_publication_cannot_revive_a_model_older_than_six_hours(self):
+        sample = fixture()
+        sample['evaluation_cutoff_ts'] = NOW - 6 * 3600 - 1
+        self.assertEqual(self.read(sample)['forecasts'], [])
+
     def test_ready_flag_is_insufficient_without_coverage_and_expiration(self):
         for field, val in [('valid_until_ts', NOW-1), ('feature_cutoff_ts', NOW-800), ('coverage', None)]:
             sample = fixture(); sample[field] = val

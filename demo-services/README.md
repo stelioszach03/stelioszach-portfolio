@@ -140,3 +140,13 @@ context. Portable regression tests are included in `npm run test:python`; the
 same tests also live in the upstream library. No new overall accuracy score is
 claimed. The production model was checked separately on the three supplied
 synthetic examples in all four modes.
+
+
+## Official MTA service-alert context
+
+`mta-scan/service_alerts_view.py` reads the independently collected, bounded public summary. `GET /api/service-alerts` performs no network request or training. The new context panel preserves the existing visual system and distinguishes official messages from anomaly scores and constructed replay. Raw payloads and revision history remain outside the demo namespace. See the [collector protocol and deployment steps](https://github.com/stelioszach03/NYC-Subway-Anomaly-Detection/blob/main/docs/SERVICE_ALERTS.md).
+
+Temporal forecast publication now also checks the six-hour evaluation limit in the adapter and browser. A fresh status document cannot revive an obsolete model evaluation.
+
+
+MTA startup also recovers per-route/stop feature windows from up to 100,000 retained observations, restricted to the configured window and at most 48 hours, with an 8,192-key / 24-value-per-key bound. The recovery excludes future rows, does not update model weights or stored scores, and reports its actual counts through deep health. Readiness still depends on the resulting window occupancy; missing history stays a cold start.

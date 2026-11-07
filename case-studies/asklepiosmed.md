@@ -10,6 +10,10 @@ The project has continued to evolve. The sections below describe its current cap
 
 This is a public engineering case study. Application source, operational configuration and member records remain private.
 
+## Engineering ownership
+
+I owned the React/Express/PostgreSQL implementation and Linux deployment, translating member and secretariat workflows into a maintained application. The delivered system brings publishing, member access, events and administrative work into one platform. Current AI capabilities extend that workflow with content drafting, editing and multilingual publication. The dated pro bono role and subsequent project development remain distinct.
+
 ## The problem
 
 A professional association needs to publish information, support its members, organise events and handle sensitive requests without turning each workflow into a separate manual process. Those tasks also require different access boundaries: members should see their own records, the secretariat should manage its assigned work, and engineering access should not automatically reveal confidential case content.

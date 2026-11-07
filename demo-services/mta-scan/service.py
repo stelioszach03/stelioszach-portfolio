@@ -45,6 +45,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from fastapi.staticfiles import StaticFiles
 
 from temporal_view import read_summary
+from service_alerts_view import read_service_alerts
 from mtascan.collector import FEEDS, Collector
 from mtascan.config import get_settings
 from mtascan.scoring import load_or_new, save_bundle
@@ -243,6 +244,12 @@ def temporal_summary():
     return JSONResponse(read_summary(), headers={"Cache-Control": "no-store"})
 
 
+@app.get("/api/service-alerts", tags=["context"])
+def official_service_alerts():
+    """Read an isolated official-source summary; no network call or model scoring."""
+    return JSONResponse(read_service_alerts(), headers={"Cache-Control": "no-store"})
+
+
 @app.exception_handler(Exception)
 async def unhandled(request: Request, exc: Exception) -> JSONResponse:
     """A stack trace is never the demo. Log it, hand back something renderable."""
@@ -289,11 +296,9 @@ def _model_maturity(
        score is per-stop. 20 000 rows over 20 000 stops is one headway each and
        a ranking of pure ties; the same total over 1 600 stops is a usable
        model. A row threshold cannot tell those apart.
-    2. ``rows_seen`` is restored from the model checkpoint on restart, but the
-       feature windows are **in-memory and are not**. After a restart the
-       counter is as high as ever while every window is empty and every score
-       is back at 1.00 — so a row-based gate would report "warm" over exactly
-       the red map it exists to warn about.
+    2. Startup now seeds feature windows from bounded retained observations,
+       while ``rows_seen`` is restored from the model checkpoint. Recovery may
+       be incomplete or unavailable, so readiness still measures actual windows.
 
     Measured cold start (rows grouped by the stop's observation index at the
     time it was scored): 0.0 % of 1st observations sit at exactly 1.00, 38.4 %
@@ -433,6 +438,7 @@ def health_deep() -> dict[str, Any]:
             "drift_events": telemetry.drift_events,
             "mae_ema_sec": round(telemetry.mae_ema, 2),
             "last_batch_scored": telemetry.last_batch_scored,
+            "startup_history": collector.startup_history,
             "checkpoint": str(SETTINGS.model_path),
             "checkpoint_bytes": (
                 SETTINGS.model_path.stat().st_size if SETTINGS.model_path.exists() else 0

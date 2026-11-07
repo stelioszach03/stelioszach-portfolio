@@ -183,6 +183,17 @@ class Collector:
         self.cycles = 0
         self.last_cycle: CycleResult | None = None
         self.started_epoch = int(time.time())
+        self.startup_history = {"status": "unavailable"}
+        try:
+            records = store.baseline_history(
+                since_epoch=self.started_epoch - min(settings.retention_sec, 48 * 3600),
+                before_epoch=self.started_epoch,
+            )
+            self.startup_history = {"status": "restored", **self.features.restore_history(records, now_epoch=self.started_epoch)}
+            log.info("startup baseline recovery: %s", self.startup_history)
+        except Exception:
+            # Keep the honest cold-start state if the retained store is unavailable.
+            log.exception("baseline recovery unavailable; starting with empty feature windows")
 
     # -- one cycle --------------------------------------------------------
     def run_cycle(self, client: httpx.Client | None = None) -> CycleResult:

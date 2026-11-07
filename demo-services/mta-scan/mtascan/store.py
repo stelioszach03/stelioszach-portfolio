@@ -380,6 +380,17 @@ class Store:
         return result
 
     # -- reads ------------------------------------------------------------
+    def baseline_history(self, *, since_epoch: int, before_epoch: int, limit: int = 100_000) -> list[dict[str, Any]]:
+        """Bounded startup input, newest first; no rescoring or database mutation."""
+        limit = min(max(int(limit), 0), 100_000)
+        rows = self._read.execute(
+            "SELECT observed_ts,route_id,stop_id,headway_sec FROM observations "
+            "WHERE observed_ts>=? AND observed_ts<=? AND headway_sec>=0 AND headway_sec<=3600 "
+            "ORDER BY observed_ts DESC,id DESC LIMIT ?",
+            (int(since_epoch), int(before_epoch), limit),
+        ).fetchall()
+        return [dict(row) for row in rows]
+
     def recent(
         self,
         *,

@@ -186,15 +186,57 @@ class FeatureEngine:
     def active_keys(self) -> int:
         return len(self._state)
 
+    def restore_history(self, records: list[dict[str, Any]], *, now_epoch: int) -> dict[str, int]:
+        """Seed windows from at most 100k retained rows, without learning a model.
+
+        Input is newest-first. The most recently observed 8,192 keys are eligible;
+        each keeps only its final 24 values. Build locally before replacing state.
+        This is bounded recovery, not a claim of bit-identical pre-crash memory.
+        """
+        if self._state or len(records) > 100_000:
+            raise ValueError("History recovery requires an empty engine and bounded input")
+        valid = []
+        keys = set()
+        previous = None
+        for record in records:
+            timestamp = _to_epoch(record.get("observed_ts"))
+            try:
+                value = float(record.get("headway_sec"))
+            except (ValueError, TypeError):
+                continue
+            route, stop = str(record.get("route_id") or ""), str(record.get("stop_id") or "")
+            if (timestamp is None or not now_epoch - 48 * 3600 <= timestamp <= now_epoch
+                    or not np.isfinite(value) or not 0 <= value <= 3600
+                    or not 0 < len(route) <= 64 or not 0 < len(stop) <= 64):
+                continue
+            if previous is not None and timestamp > previous:
+                raise ValueError("Recovery records must be newest-first")
+            previous = timestamp
+            key = (route, stop)
+            if key not in keys and len(keys) >= 8192:
+                continue
+            keys.add(key)
+            valid.append((key, timestamp, value))
+        restored = {}
+        for key, timestamp, value in reversed(valid):
+            state = restored.get(key)
+            if state is None:
+                state = _KeyState()
+                restored[key] = state
+            state.history.append(value)
+            state.prev_observed_epoch = timestamp
+        self._state = restored
+        return {"rows_read": len(records), "rows_used": len(valid), "keys": len(restored),
+                "retained_values": sum(len(s.history) for s in restored.values()),
+                "row_limit": 100_000, "key_limit": 8192}
+
     def history_stats(self) -> dict[str, float]:
         """How full the per-stop windows are — the real readiness signal.
 
-        This state is **in-memory only**. The model checkpoint persists across
-        restarts but these windows do not, so a cumulative counter like
-        ``telemetry.rows_seen`` keeps climbing while the windows it is supposed
-        to describe are empty again. Anything that reports "is the model ready"
-        has to ask here instead, or it will claim ready on a freshly restarted
-        process whose scores are all pinned to 1.00.
+        Windows are held in memory and seeded from a bounded slice of retained
+        observations at startup. Readiness still uses their actual occupancy,
+        never the model checkpoint's cumulative ``telemetry.rows_seen`` counter.
+        Missing or insufficient retained data remain a cold start.
 
         ``ready`` counts stops with at least ``_MIN_HISTORY_FOR_MAD`` headways,
         which is where a real MAD replaces the 30-second floor in

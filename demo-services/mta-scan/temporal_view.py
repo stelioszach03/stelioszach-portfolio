@@ -143,6 +143,7 @@ def read_summary(path=None, *, now=None):
         ready = summary.readiness
         valid = (summary.valid_until_ts is not None and now < summary.valid_until_ts <= summary.generated_ts + 900
                  and summary.feature_cutoff_ts is not None and 0 <= now - summary.feature_cutoff_ts <= 600
+                 and summary.evaluation_cutoff_ts is not None and 0 <= now - summary.evaluation_cutoff_ts <= 6 * 3600
                  and summary.coverage is not None and summary.coverage.span_seconds >= 14 * 86400
                  and summary.coverage.complete_fresh_window_fraction >= .9)
         if not ready.public_forecasts_ready or ready.status != 'ready' or not valid:
