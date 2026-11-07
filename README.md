@@ -58,7 +58,7 @@ Serve `dist/` as the website root. The five `/demos/` routes belong to separate 
 
 The CV and thesis are served as PDF documents. The sitemap lists the portfolio and the five demo entry points. No client-side router or fallback to an empty application shell is needed.
 
-The public [CV page](public/cv/index.html) presents the primary [Applied AI and ML Systems CV](public/Stelios_Zacharioudakis_CV.pdf) with a share preview and a content-versioned PDF link. The separate [ML Systems CV](public/Stelios_Zacharioudakis_Systems_CV.pdf) is an application variant and remains available at its historical URL. Generate editable drafts with `python scripts/build_cv.py --focus all --output-dir /path/to/review`; supply the existing public contact number with `--phone` for the published editions. Render and visually review each PDF before publishing. AI/NLP project capabilities are separate from the dated pro bono position.
+The [CV page](public/cv/index.html) links to the sole public [Applied AI and ML Systems CV](public/Stelios_Zacharioudakis_CV.pdf). Publish the PDF directly from Jobright’s ATS-friendly export without re-rendering or rewriting it. Update the PDF link’s version to the first 12 characters of its SHA-256 and refresh the share preview when the exported CV changes.
 
 ## Content and provenance
 

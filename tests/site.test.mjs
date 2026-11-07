@@ -66,10 +66,9 @@ test("three selected demos and local assets resolve while all five service route
   const cvVersion = createHash("sha256").update(primaryCV).digest("hex").slice(0, 12);
   assert.ok(cvPage.includes(`/Stelios_Zacharioudakis_CV.pdf?v=${cvVersion}`));
   assert.doesNotMatch(cvPage, /Systems_CV\.pdf/);
-  assert.ok((await stat(new URL("assets/cv-preview.jpg", publicRoot))).size > 0);
+  assert.ok((await stat(new URL("assets/cv-preview-jobright.jpg", publicRoot))).size > 0);
   for (const asset of [
     "Stelios_Zacharioudakis_CV.pdf",
-    "Stelios_Zacharioudakis_Systems_CV.pdf",
     "documents/zacharioudakis-bsc-thesis-2026.pdf",
   ])
     assert.equal(
