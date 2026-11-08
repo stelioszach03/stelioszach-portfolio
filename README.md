@@ -58,7 +58,7 @@ Serve `dist/` as the website root. The five `/demos/` routes belong to separate 
 
 The CV and thesis are served as PDF documents. The sitemap lists the portfolio and the five demo entry points. No client-side router or fallback to an empty application shell is needed.
 
-The [CV page](public/cv/index.html) links to the sole public [Applied AI and ML Systems CV](public/Stelios_Zacharioudakis_CV.pdf). Publish the PDF directly from Jobright’s ATS-friendly export without re-rendering or rewriting it. Update the PDF link’s version to the first 12 characters of its SHA-256 and refresh the share preview when the exported CV changes.
+All portfolio CV buttons open the sole public [Applied AI and ML Systems CV](public/Stelios_Zacharioudakis_CV.pdf) directly. The [CV page](public/cv/index.html) remains its visual sharing page. Publish the PDF directly from Jobright’s ATS-friendly export without re-rendering or rewriting it, and refresh its preview image. The build automatically versions every PDF and preview link by content hash on both pages. There is no alternate CV generator or second public CV.
 
 ## Content and provenance
 
@@ -66,7 +66,7 @@ The [CV page](public/cv/index.html) links to the sole public [Applied AI and ML 
 - The MRI figure comes from the accompanying reconstruction experiments. The case study includes the unmodified full figure. Numerical results are reported in the thesis and concern retrospective research, not clinical validation.
 - World-model research is explicitly ongoing and unpublished. The portfolio does not claim a peer-reviewed publication or general performance superiority.
 - ForgeBench uses 50 authored miniature-repository scenarios with reference implementations and hidden grading; it is not SWE-bench or a contamination-resistant private benchmark. Its five-policy protocol separates controller learning from unchanged language-model weights. Outcomes are reported only through recorded artifacts, and reported provider charges are distinguished from conservative reservations. The v0.1 pilot remains separately archived; its results are not pooled with v0.2.
-- The Paphos Medical Association role was pro bono, June 2022–July 2026. The public case study separates that former role from the platform’s subsequent development and does not expose member data or private application source.
+- The Paphos Medical Association Head Engineer role ran from June 2022 to July 2026. The public case study separates that role from subsequent LLM/NLP development and does not expose member data or private application source.
 - Demos link their own source repositories and describe their data and evaluation limits. Their backend implementations are maintained separately.
 
 The thesis PDF is a public copy with the student registry identifier redacted; its academic content is unchanged. Public documents and research imagery are not covered by the code licence below.

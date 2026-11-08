@@ -23,7 +23,7 @@ experiment are different kinds of evidence.
 | ForgeRL / ForgeBench | Preserved v0.2 study plus 162-episode prospective transfer pilot | Selected project; native v0.3/v0.2 explorer, recorded step replay and separate bounded live trial |
 | MTA-Scan | Live public feed interface; 216-row constructed replay; bounded raw history collection started 2026-09-24 UTC | Selected project; no validated disruption forecast |
 | MRI reconstruction | BSc thesis and public aggregate-evidence package; solver source withheld | Selected thesis with reproducible table/plot analysis and independent CPU ensemble diagnostics |
-| AsklepiosMed | Donated deployed application; former pro bono role; scoped public case study | Selected engineering project; source and member records private |
+| AsklepiosMed | Production platform; Head Engineer, June 2022–July 2026; continued LLM/NLP development | Selected engineering project; source and member records private |
 | Inference Systems Lab | Controlled single-GPU serving measurements; historical Colab results separate | Selected measured systems project with limits and raw evidence |
 | TrustQueryNet | Preserved historical tables, complete cross-image audit and a new matched two-seed frozen-feature repair pilot with modest/negative outcomes | Secondary measured experimental work; external patient independence unresolved, not clinical validation |
 | LLM-SMT | Actual 750-cell feasibility pilot, complete trajectories, cost/token reconciliation and a null primary comparison; full sweep not run | Completed secondary experimental snapshot, kept off the selected-project homepage; no repair-superiority claim |

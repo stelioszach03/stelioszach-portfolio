@@ -62,9 +62,7 @@ test("three selected demos and local assets resolve while all five service route
   ))
     assert.ok((await stat(new URL(`.${asset}`, publicRoot))).size > 0, asset);
   const cvPage = await readFile(new URL("cv/index.html", publicRoot), "utf8");
-  const primaryCV = await readFile(new URL("Stelios_Zacharioudakis_CV.pdf", publicRoot));
-  const cvVersion = createHash("sha256").update(primaryCV).digest("hex").slice(0, 12);
-  assert.ok(cvPage.includes(`/Stelios_Zacharioudakis_CV.pdf?v=${cvVersion}`));
+  assert.ok(cvPage.includes('href="/Stelios_Zacharioudakis_CV.pdf"'));
   assert.doesNotMatch(cvPage, /Systems_CV\.pdf/);
   assert.ok((await stat(new URL("assets/cv-preview-jobright.jpg", publicRoot))).size > 0);
   for (const asset of [
@@ -90,7 +88,7 @@ test("research and product claims retain their scope instead of publication or s
   assert.match(html, /not official MTA incident ground truth/);
   assert.match(html, /failed controller and selection hypotheses/);
   assert.match(html, /did not outperform random/);
-  assert.match(html, /Former Head Engineer/);
+  assert.match(html, /Head Engineer/);
   assert.match(html, /subsequent development/);
   assert.match(
     html,
@@ -225,6 +223,14 @@ test("build versions CSS/JS by content and hashes the final HTML without changin
       built.includes(`"/${relative}?v=${version}"`),
       `${relative} requires content version`,
     );
+  }
+  const cvVersion = createHash("sha256")
+    .update(await readFile(new URL("Stelios_Zacharioudakis_CV.pdf", publicRoot)))
+    .digest("hex").slice(0, 12);
+  const builtCV = await readFile(new URL("dist/cv/index.html", root), "utf8");
+  for (const page of [built, builtCV]) {
+    assert.ok(page.includes(`/Stelios_Zacharioudakis_CV.pdf?v=${cvVersion}`));
+    assert.ok(!page.includes('href="/Stelios_Zacharioudakis_CV.pdf"'));
   }
   const manifest = JSON.parse(
     await readFile(new URL("build-manifest.json", root), "utf8"),

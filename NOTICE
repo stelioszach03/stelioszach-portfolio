@@ -49,3 +49,13 @@ in that ICO is used, without redrawing, recoloring or resampling, as
 public/assets/personal-logo.png for headers. These personal branding assets
 are excluded from the MIT source-code grant and retain their original rights.
 Stock React icons and the illustrated avatar are not used as the personal logo.
+
+Measured inference figure
+-------------------------
+
+public/assets/inference-cache-throughput.png is the unmodified
+artifacts/factorial-serving-v1/cache-throughput-c32.png from
+stelioszach03/colab-speculative-decoding-speed-lab. It presents the September 25,
+2026 synthetic serving experiment's four-repeat means and full ranges.
+Its research content retains the source project's rights. It is not evidence
+of answer quality, lossless speedup or general production performance.

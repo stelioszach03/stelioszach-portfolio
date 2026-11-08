@@ -22,21 +22,26 @@ const destination = new URL("dist/", root);
 await rm(destination, { recursive: true, force: true });
 await mkdir(destination, { recursive: true });
 await cp(new URL("public/", root), destination, { recursive: true });
-// Version asset URLs in the output only, so returning visitors cannot reuse a
-// previous release's stylesheet or script under the same unversioned URL.
-const indexFile = new URL("index.html", destination);
-let builtHtml = await readFile(indexFile, "utf8");
-for (const relative of ["assets/site.css", "assets/site.js"]) {
+// Version documents and previews along with CSS/JS. Every CV entry point must
+// resolve to the same Jobright export when a new PDF replaces the previous one.
+const versions = new Map();
+for (const relative of ["assets/site.css", "assets/site.js", "Stelios_Zacharioudakis_CV.pdf", "assets/cv-preview-jobright.jpg"]) {
   const version = createHash("sha256")
     .update(await readFile(new URL(relative, destination)))
     .digest("hex")
     .slice(0, 12);
-  const sourceUrl = `"/${relative}"`;
-  if (!builtHtml.includes(sourceUrl))
-    throw new Error(`Missing asset link: ${relative}`);
-  builtHtml = builtHtml.replaceAll(sourceUrl, `"/${relative}?v=${version}"`);
+  versions.set(relative, version);
 }
-await writeFile(indexFile, builtHtml);
+for (const page of ["index.html", "cv/index.html"]) {
+  const htmlFile = new URL(page, destination);
+  let builtHtml = await readFile(htmlFile, "utf8");
+  for (const [relative, version] of versions) {
+    for (const prefix of ["/", "https://stelioszach.com/"]) {
+      builtHtml = builtHtml.replaceAll(`"${prefix}${relative}"`, `"${prefix}${relative}?v=${version}"`);
+    }
+  }
+  await writeFile(htmlFile, builtHtml);
+}
 
 const manifest = {};
 async function walk(directory, prefix = "") {

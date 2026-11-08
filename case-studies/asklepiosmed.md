@@ -1,10 +1,10 @@
 # AsklepiosMed — Applied AI and a production association platform
 
-**Former Head Engineer · June 2022–July 2026 · Pro bono**
+**Head Engineer · June 2022–July 2026**
 
 [Public website](https://asklepiosmed.org/) · [Portfolio overview](https://stelioszach.com/#asklepios)
 
-I worked as Head Engineer for the Paphos Medical Association from June 2022 to July 2026, pro bono, and developed and donated AsklepiosMed to support its member services and administrative work. My role ended in July 2026.
+As Head Engineer for the Paphos Medical Association from June 2022 to July 2026, I led architecture and delivery of AsklepiosMed, a production platform unifying member services, publishing and association administration.
 
 The project has continued to evolve. The sections below describe its current capabilities and architecture, including development after my tenure. The platform now combines a public website, a member portal, secretariat workflows and a separate engineering view.
 
@@ -12,7 +12,7 @@ This is a public engineering case study. Application source, operational configu
 
 ## Engineering ownership
 
-I owned the React/Express/PostgreSQL implementation and Linux deployment, translating member and secretariat workflows into a maintained application. The delivered system brings publishing, member access, events and administrative work into one platform. Current AI capabilities extend that workflow with content drafting, editing and multilingual publication. The dated pro bono role and subsequent project development remain distinct.
+I engineered React interfaces, Express APIs and PostgreSQL workflows with role-based access controls, owning application deployment and service operations. The delivered system brings publishing, member access, events and administrative work into one platform. Continued project work after July 2026 extends it with LLM-assisted drafting, editing and multilingual publication.
 
 ## The problem
 
@@ -26,7 +26,7 @@ The multilingual pipeline translates Greek announcements and articles into **Eng
 
 The engineering work includes structured JSON responses, output sanitization, content-integrity checks, shared token-usage accounting, bounded retries and explicit failure states. Editors review the suggestions in the publishing workflow. These are implemented application controls; no unmeasured translation-accuracy score or guarantee of factual preservation is claimed.
 
-These capabilities describe the current project, including development after the June 2022–July 2026 pro bono role. They are LLM application engineering and multilingual NLP integration, not a claim of training or fine-tuning a foundation model. No private source or member content is published here.
+These capabilities describe continued project development after the June 2022–July 2026 role. The contribution is LLM application engineering and multilingual NLP: workflow design, model integration, validation and failure handling. The underlying foundation-model weights are unchanged. No private source or member content is published here.
 
 ## Current project capabilities
 

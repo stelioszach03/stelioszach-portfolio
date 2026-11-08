@@ -9,7 +9,7 @@
     </title>
     <meta
       name="description"
-      content="Machine Learning Engineer in Applied AI and ML Systems. Owned a production platform from architecture to Linux deployment and built reproducible evaluations for LLM agents and GPU inference."
+      content="Machine Learning Engineer in Applied AI and ML Systems. End-to-end platform engineering, multilingual LLM applications, agent evaluation and GPU inference performance. Based in the New York City area."
     />
     <link rel="canonical" href="https://stelioszach.com/" />
     <meta property="og:type" content="website" />
@@ -58,7 +58,7 @@
       <nav id="primary-navigation" aria-label="Main navigation">
         <a href="#work">Selected work</a><a href="#demos">Live demos</a
         ><a href="#about">About</a><a href="#contact">Contact</a>
-        <a class="nav-cv" href="/cv/"
+        <a class="nav-cv" href="/Stelios_Zacharioudakis_CV.pdf"
           >CV<svg aria-hidden="true" viewBox="0 0 24 24">
             <path d="M7 17 17 7M7 7h10v10" /></svg
         ></a>
@@ -79,15 +79,17 @@
           <div class="hero-bottom hero-enter">
             <div class="hero-copy">
               <p class="hero-statement">
-                Production software, LLM evaluation and GPU inference.
+                Applied AI, from system design to production.
               </p>
               <p>
-                I owned AsklepiosMed from architecture through Linux deployment.
-                My ML work includes a six-policy coding-agent benchmark and a
-                controlled vLLM study covering 16,384 requests across two GPU types.
+                I led architecture and delivery of AsklepiosMed, a production
+                platform for member services and administration. My work spans
+                multilingual LLM applications, RL-based agents and GPU inference,
+                including a controlled study of 16,384 requests across two GPU types.
               </p>
+              <p class="quiet">New York City area · Open to Applied AI &amp; ML Systems roles</p>
               <div class="hero-actions">
-                <a class="button" href="/cv/"
+                <a class="button" href="/Stelios_Zacharioudakis_CV.pdf"
                   >CV</a
                 >
                 <a class="button button-quiet" href="#work">View selected work</a>
@@ -131,22 +133,23 @@
         <article id="asklepios" class="case-study">
           <div class="case-index">
             <span>01</span>
-            <p>Former Head Engineer <br />Jun 2022–Jul 2026 <br />Pro bono</p>
+            <p>Head Engineer <br />Jun 2022–Jul 2026</p>
           </div>
           <div class="case-body">
             <p class="eyebrow">Applied AI · Multilingual NLP · Production engineering</p>
             <h3>AsklepiosMed</h3>
             <p class="case-lead">
-              I built and donated a production platform that consolidates member
-              services and association administration.
+              I led architecture and delivery of a production platform unifying
+              member services, publishing and association administration.
             </p>
             <p>
-              As pro bono Head Engineer, I owned the React, Express and
-              PostgreSQL stack, role-based access and Linux deployment. The
+              As Head Engineer, I engineered React interfaces, Express APIs and
+              PostgreSQL workflows with role-based access controls, owning
+              application deployment and service operations. The
               capabilities below describe the platform today, including subsequent
               development after my June 2022–July 2026 role.
             </p>
-            <p>In subsequent project work, I added LLM-assisted drafting, proofreading and translation to the administrative publishing workflow. Greek content can be prepared in English, Russian and Simplified Chinese, with terminology checks, structured output validation, fallback behavior and editor review before publication.</p>
+            <p>In continued project work after July 2026, I developed LLM-assisted drafting, email preparation, proofreading and multilingual NLP. Greek content can be prepared in English, Russian and Simplified Chinese, with structured JSON outputs, terminology and integrity checks, bounded retries, fallback handling and editorial review.</p>
             <dl class="system-list">
               <div>
                 <dt>Applied AI</dt>
@@ -176,7 +179,7 @@
             </dl>
             <details class="study-detail">
               <summary>
-                Scope &amp; engineering boundaries
+                Architecture &amp; reliability
                 <svg aria-hidden="true" viewBox="0 0 24 24">
                   <path d="M12 5v14M5 12h14" />
                 </svg>
@@ -185,9 +188,10 @@
                 <div>
                   <h4>Implementation</h4>
                   <p>
-                    React, Express and PostgreSQL, with nginx and systemd on a
-                    VPS. The work includes application flows and the operational
-                    checks needed to maintain them.
+                    React clients connect to Express APIs and PostgreSQL through
+                    an HTTPS reverse proxy. Scoped authorization, supervised
+                    services, encrypted backups and restoration checks support
+                    the platform's operation.
                   </p>
                 </div>
                 <div>
@@ -348,6 +352,12 @@
               1,536-request pilot on RTX 4090 was followed by a separate
               counterbalanced experiment across two model sizes, two GPU classes,
               prefix patterns, cache modes and four repeats.</p>
+            <figure class="project-preview">
+              <a href="https://github.com/stelioszach03/colab-speculative-decoding-speed-lab/blob/main/artifacts/factorial-serving-v1/RESULTS.md" aria-label="Read the measured prefix-caching study">
+                <img src="/assets/inference-cache-throughput.png" alt="Measured cached-to-uncached throughput at concurrency 32: shared prefixes yield 1.29× and 1.47× on RTX 4090, and 1.23× and 1.46× on A100 for Qwen 1.5B and 7B. Unique-prefix ratios stay near 1.00×." width="1620" height="792" loading="lazy" />
+              </a>
+              <figcaption>Measured throughput ratios · Four-repeat means and full ranges · September 25, 2026. Synthetic workload; output hashes were not always equal.</figcaption>
+            </figure>
             <div class="evidence-line">
               <strong>16,384 measured requests · 2 GPUs</strong>
               <p>Qwen2.5 1.5B and 7B · vLLM 0.10.2 · RTX 4090 and A100 80GB.
@@ -740,7 +750,7 @@
               experiments, generative models and NLP. React, Node.js, PostgreSQL and Linux for
               application development and operations.
             </p>
-            <a class="text-link" href="/cv/"
+            <a class="text-link" href="/Stelios_Zacharioudakis_CV.pdf"
               >CV <span aria-hidden="true">↗</span></a>
           </div>
         </div>
@@ -768,7 +778,7 @@
               >GitHub <span aria-hidden="true">↗</span></a
             ><a href="https://www.linkedin.com/in/stelios-zach"
               >LinkedIn <span aria-hidden="true">↗</span></a
-            ><a href="/cv/"
+            ><a href="/Stelios_Zacharioudakis_CV.pdf"
               >CV</a
             >
           </div>
