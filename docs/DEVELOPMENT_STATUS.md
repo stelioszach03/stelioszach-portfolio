@@ -55,15 +55,14 @@ was run as part of this presentation update.
 - Every prepared CV button points to the single canonical PDF. The build versions
   the PDF and its preview by content hash to avoid stale cached downloads. The
   sharing page remains /cv/; there is no second CV or alternate generator.
-- The revised site is built and staged on the VPS. Final publication is pending
-  receipt of the current native Jobright PDF export: the browser export did not
-  provide an accessible file to upload. The existing public PDF has not been
-  silently replaced with a differently generated document.
+- The native Jobright export was received and verified on November 8. The release
+  includes that byte-identical, 70,113-byte, one-page Letter PDF and a preview
+  rendered from its actual page. The PDF SHA-256 is
+  `4a9f18edfecad4d96b5f12865c157dc9fdc1b9c6bfd953c8efb037a9956f2353`.
 
-Release steps remaining: receive the native PDF, verify its text and one-page
-layout, replace the canonical PDF and its preview, rerun the relevant build
-checks, and publish the synchronized release. Verify the public PDF hash and
-every CV button after publication.
+The release procedure verifies the build and PDF hash before switching the
+production symlink, keeps the previous release available for rollback, and checks
+the public PDF hash and every CV button after publication.
 
 ## Further evidence to build
 
